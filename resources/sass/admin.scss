@@ -1,0 +1,184 @@
+/* 登入 */
+.admin_login_form {
+    width: 300px;
+    margin: 0 auto;
+}
+
+/* 布局 */
+.admin_container {
+    padding-left: 220px;
+    transition: all 0.4s ease-in-out;
+}
+
+.admin_container.extend {
+    padding-left: 0;
+}
+
+@media (max-width: 767px) {
+    .admin_container {
+        padding-left: 0;
+    }    
+}
+
+.admin_loader_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: rgba(0,0,0,.6);
+    z-index: 1200;
+}
+
+.admin_sidebar_close_mask {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,.5);
+}
+
+.admin_sidebar_close_mask.show {
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .admin_sidebar_close_mask.show {
+        display: none !important;
+    }    
+}
+
+.admin_sidebar {
+    position: fixed;
+    z-index: 200;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100vh;
+    background: #001529;
+    transition: all 0.4s ease-in-out;
+    overflow-y: auto;
+}
+
+.admin_sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.admin_sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+ 
+.admin_sidebar::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+	background: #cbd5e1;
+}
+
+.admin_sidebar::-webkit-scrollbar-thumb:hover {
+	background: #94a3b8; 
+}
+
+.admin_sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.admin_sidebar_header {
+    color: #fff;
+    padding: 15px 15px;
+    font-size: 20px;
+}
+
+.admin_nav_link,
+.admin_navi_dropdown_title,
+.admin_nav_sub_link {
+    display: block;
+    color: rgba(255, 255, 255, 0.65);
+    padding: 10px 15px 10px 30px;
+    transition: all 0.4s ease-in-out;
+}
+
+.admin_nav_link {
+    display: block;   
+}
+
+.admin_navi_dropdown_title {
+    position: relative;
+}
+
+.admin_navi_dropdown_title i {
+    position: absolute;
+    font-size: 14px;
+    top: 17px;
+    right: 30px;
+}
+
+.admin_navi_dropdown_content {
+    background: #000C17;
+}
+
+.admin_nav_sub_link {
+    padding: 10px 15px 10px 40px;
+}
+
+.admin_nav_link:hover,
+.admin_navi_dropdown_title:hover,
+.admin_nav_sub_link:hover {
+    color: #fff;
+    cursor: pointer;
+}
+
+.admin_nav_link.active,
+.admin_navi_dropdown_title.active,
+.admin_navi_dropdown_title.admin_navi_dropdown_title_active,
+.admin_nav_sub_link.active {
+    color: #fff;
+}
+
+.admin_nav_link.active,
+.admin_nav_sub_link.active {
+    background: #1890FF;
+}
+
+.admin_navi_dropdown_title.active i {
+    transform: rotate(180deg);
+}
+
+.admin_navi_dropdown_content {
+    display: none;
+}
+
+.admin_main {
+    min-height: 100vh;
+    background: #F0F2F5;
+}
+
+.admin_header_btn {
+    padding: 20px 25px;
+    color: rgba(0,0,0,.65);
+}
+
+.admin_header_btn:hover {
+    color: #40a9ff
+}
+
+#toggle_sidebar_btn.reverse i {
+    transform: rotateY(180deg);
+}
+
+/* 後台管理內容 */
+.admin_title {
+    font-weight: bold;
+    font-size: 20px;
+    color: rgba(0,0,0,.65);
+    margin-bottom: 20px;
+}
+
+/* sweetalert2 */
+.swal2-styled.swal2-confirm {
+    background-color: #0069d9 !important;
+}

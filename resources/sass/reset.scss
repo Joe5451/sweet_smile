@@ -1,0 +1,113 @@
+* {
+	font-family: 'Microsoft JhengHei', sans-serif;
+}
+
+button, input, select, textarea, div {
+    outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: 5000s ease-in-out 0s;
+    transition-property: background-color, color;
+}
+
+input[type=checkbox] {
+cursor: pointer;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
+input[type=number] {
+-moz-appearance: textfield;
+}
+
+.custom_horizontal_scrollbar::-webkit-scrollbar {
+    height: 5px;
+}
+
+.custom_horizontal_scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.custom_horizontal_scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+}
+
+.custom_horizontal_scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+
+.custom_scrollbar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.custom_scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+.custom_scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+}
+
+.custom_scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* sweetalert2 */
+.custom_loader {
+    border-color: #2778c4 !important;
+    border-right-color: transparent !important;
+}
+
+/* custom bootstrap */
+:root{
+    scroll-behavior: auto;
+}
+
+body {
+    background-color: #fff;
+}
+
+.btn:focus {
+    box-shadow: none;
+}
+
+.form-control,
+.form-control:focus {
+    background-color: #fff;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus,
+.page-link:focus {
+    box-shadow: none;
+}
+
+.page-link:focus {
+    background-color: #fff;
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+.table-lg>:not(caption)>*>* {
+    padding: 1rem;
+}

@@ -45,6 +45,7 @@ Route::prefix('admin')->group(function() {
     Route::post('/product_category', [AdminProductCategoryController::class, 'add']);
     Route::get('/product_category', [AdminProductCategoryController::class, 'getProductCategories']);
     Route::get('/product_category/{id}', [AdminProductCategoryController::class, 'getProductCategory']);
+    Route::put('/product_category/{id}', [AdminProductCategoryController::class, 'updateProductCategory']);
     
 
     Route::post('/news', [AdminNewsController::class, 'add']);

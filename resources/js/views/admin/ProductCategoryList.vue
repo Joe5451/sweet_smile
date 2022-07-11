@@ -20,14 +20,15 @@
                             <span v-for="(product_subcategory, sub_index) in product_category.product_subcategories"
                             :class="{
                                 'text-primary': product_subcategory.subcategory_display,
-                                'text-black-50 text-decoration-line-through': !product_subcategory.subcategory_display,
+                                'text-danger': !product_subcategory.subcategory_display,
                             }"
                             :key="product_category.product_category_id + '-' + sub_index">
-                                {{ product_subcategory.subcategory_name }}<br>
+                                {{ product_subcategory.subcategory_name }}
+                                <span v-if="!product_subcategory.subcategory_display" class="text-danger">(下架)</span> <br>
                             </span>
                         </td>
                         <td class="text-center">
-                            <input type="number" class="form-control text-center" style="width: 70px;" value="0">
+                            <input type="number" class="form-control text-center" style="width: 70px;" :value="product_category.category_sequence">
                         </td>
                         <td class="text-center">
                             <span v-if="product_category.category_display == 1" style="color: blue;">上架</span>
@@ -108,7 +109,7 @@
                     }
                 })
                 .then(function (response) {
-                    console.log(response);
+                    // console.log(response);
 
                     vm.product_categories = response.data.product_categories;
                     vm.total = response.data.total;

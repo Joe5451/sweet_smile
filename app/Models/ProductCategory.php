@@ -32,7 +32,7 @@ class ProductCategory extends Model
         return $this->hasMany(ProductSubCategory::class, 'product_category_id')
         ->select(['product_subcategory_id', 'subcategory_display', 'subcategory_name', 'subcategory_sequence'])
         ->orderBy('subcategory_sequence', 'asc')
-        ->orderBy('product_subcategory_id', 'desc');
+        ->orderBy('product_subcategory_id', 'asc');
     }
 
     // public function prices()

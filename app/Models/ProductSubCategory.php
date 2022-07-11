@@ -34,4 +34,9 @@ class ProductSubCategory extends Model
         ->select('product_id', 'product_name', 'product_sequence')
         ->orderBy('product_subcategory_and_product.product_sequence', 'asc');
     }
+
+    public function subcategory_and_product()
+    {
+        return $this->hasMany(ProductSubCategoryAndProduct::class, 'product_subcategory_id', 'product_subcategory_id');
+    }
 }

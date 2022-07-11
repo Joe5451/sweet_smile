@@ -2,6 +2,10 @@
     <div>
         <div class="admin_title">商品分類管理</div>
 
+        <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-sm btn-info text-white" @click="$router.back()">回上一頁</button>
+        </div>
+
         <form @submit.prevent="checkForm">
             <div class="mb-4">
                 <label class="form-label">商品主分類名稱</label>
@@ -38,6 +42,9 @@
                             <td width="90">排序</td>
                             <td width="80">操作</td>
                         </tr>
+                        <tr v-if="product_subcategories.length == 0">
+                            <td colspan="5" class="text-center">無</td>
+                        </tr>
                         <tr v-for="(subcategory, subcategory_index) in product_subcategories" :key="'subcategory-' + subcategory.product_subcategory_id">
                             <td>
                                 <input type="text" class="form-control subcategory_name" v-model="subcategory.subcategory_name">
@@ -73,7 +80,7 @@
             </div>
             
             <div class="d-flex justify-content-between py-3">
-                <button class="btn btn-primary">新增</button>
+                <button class="btn btn-primary">更新</button>
             </div>
         </form>
 
@@ -136,25 +143,22 @@
         data() {
             return {
                 product_category_id: this.$route.params.product_category_id,
-
                 subcateogry_products_modal: null,
                 category_name: '',
                 category_display: 1,
                 category_sequence: 0,
                 product_subcategories: [
-                    {
-                        product_subcategory_id: '', // 綁定 v-for 元素 key
-                        subcategory_name: '',
-                        subcategory_display: 1,
-                        subcategory_sequence: 0,
-                        subcategory_products: []
-                    }
+                    // {
+                    //     product_subcategory_id: '', // 綁定 v-for 元素 key
+                    //     subcategory_name: '',
+                    //     subcategory_display: 1,
+                    //     subcategory_sequence: 0,
+                    //     subcategory_products: []
+                    // }
                 ],
                 current_subcategory_products: [],
                 current_subcategory_index: null,
-                products: [],
-
-                category_data: null,
+                products: []
             }
         },
         async mounted() {
@@ -271,10 +275,10 @@
                     return;
                 }
                 else {
-                    this.addProductCategory();
+                    this.updateProductCategory();
                 }
             },
-            addProductCategory() {
+            updateProductCategory() {
                 const vm = this;
 
                 vm.$store.commit('admin_setting/showLoading');
@@ -284,10 +288,10 @@
                     category_name: vm.category_name,
                     category_display: vm.category_display,
                     category_sequence: vm.category_sequence,
-                    subcategories: vm.subcategories
+                    subcategories: vm.product_subcategories
                 });
                 
-                axios.post('/admin/product_category', {
+                axios.post('/admin/product_category/' + vm.product_category_id + '?_method=PUT', {
                     data: json_data,
                 })
                 .then(function (response) {
@@ -297,11 +301,12 @@
                     if (response.data.status == 'success') {
                         Swal.fire({
                             icon: 'success',
-                            title: '新增成功',
+                            title: '更新成功',
                             timer: 1500,
                             showConfirmButton: false,
                             willClose: () => {
-                                vm.$router.push({name: 'adminProductCategoryList'});
+                                vm.$store.commit('admin_setting/updateContentComponentKey'); // 更新畫面
+                                // vm.$router.push({name: 'adminProductCategoryList'});
                             },
                         });
                     } else if (response.data.status == 'fail') {
@@ -342,10 +347,9 @@
 
                 await axios.get('/admin/product_category/' + vm.product_category_id)
                 .then(function (response) {
-                    console.log(response);
+                    // console.log(response);
 
                     Object.assign(vm, response.data.product_category);
-                    // vm.product_category = response.data.product_category;
                 })
                 .catch(function(error) {
                     console.error("Error: ", error);
@@ -361,17 +365,6 @@
                 });
             },
             deleteSubCategoryRow(index) {
-                if (this.product_subcategories.length == 1) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '至少需含一項子分類',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-
-                    return;
-                }
-
                 this.product_subcategories.splice(index, 1);
             },
             alertInvalidMessage(element, invalid_message) {

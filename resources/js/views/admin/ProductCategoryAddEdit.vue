@@ -38,6 +38,11 @@
                             <td width="90">排序</td>
                             <td width="80">操作</td>
                         </tr>
+
+                        <tr v-if="subcategories.length == 0">
+                            <td colspan="5" class="text-center">無</td>
+                        </tr>
+                        
                         <tr v-for="(subcategory, subcategory_index) in subcategories" :key="subcategory.subcategory_key">
                             <td>
                                 <input type="text" class="form-control subcategory_name" v-model="subcategory.subcategory_name">
@@ -140,13 +145,13 @@
                 category_display: 1,
                 category_sequence: 0,
                 subcategories: [
-                    {
-                        subcategory_key: this.getRandomKey(), // 綁定 v-for 元素 key
-                        subcategory_name: '',
-                        subcategory_display: 1,
-                        subcategory_sequence: 0,
-                        subcategory_products: []
-                    }
+                    // {
+                    //     subcategory_key: this.getRandomKey(), // 綁定 v-for 元素 key
+                    //     subcategory_name: '',
+                    //     subcategory_display: 1,
+                    //     subcategory_sequence: 0,
+                    //     subcategory_products: []
+                    // }
                 ],
                 current_subcategory_products: [],
                 current_subcategory_index: null,
@@ -338,17 +343,6 @@
                 });
             },
             deleteSubCategoryRow(index) {
-                if (this.subcategories.length == 1) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: '至少需含一項子分類',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-
-                    return;
-                }
-
                 this.subcategories.splice(index, 1);
             },
             alertInvalidMessage(element, invalid_message) {

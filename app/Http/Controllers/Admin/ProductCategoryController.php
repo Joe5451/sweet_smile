@@ -18,17 +18,12 @@ class ProductCategoryController extends Controller
         // json_decode() 第二參數設為 true 強制轉為陣列，才可透過 Validator 驗證及 insert DB
         $data = isset($origin_data['data']) ? json_decode($origin_data['data'], true) : null;
 
-        // return response()->json([
-        //     'status' => 'success',
-        //     'message' => $data,
-        // ]);
-
-        $category_validator = Validator::make($data,
+        $validator = Validator::make($data,
         [
             'category_name' => 'required|string',
             'category_display' => 'required|int',
             'category_sequence' => 'required|int',
-            'subcategories' => 'required|array',
+            'subcategories' => 'array',
             // 巢狀陣列，如果為物件陣列則為 subcategories.subcategory_name
             'subcategories.*.subcategory_name' => 'required|string',
             'subcategories.*.subcategory_display' => 'required|int',
@@ -40,8 +35,8 @@ class ProductCategoryController extends Controller
             'subcategories.*.subcategory_products.*.product_sequence' => 'required|int',
         ]);
 
-        if ($category_validator->fails()) {
-            $error = $category_validator->messages();
+        if ($validator->fails()) {
+            $error = $validator->messages();
 
             return response()->json([
                 'status' => 'fail',
@@ -49,12 +44,6 @@ class ProductCategoryController extends Controller
                 'error' => $error
             ]);
         }
-        // else {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => ''
-        //     ]);
-        // }
 
         $product_category = ProductCategory::create([
             'category_name' => $data['category_name'],
@@ -135,49 +124,28 @@ class ProductCategoryController extends Controller
         ]);
     }
 
-    public function updateProduct($id, Request $request) {
-        $data = $request->input();
-        unset($data['_method']);
-
-        $data['is_product_cover_img_update'] = ($data['is_product_cover_img_update'] === 'true') ? true : false;
+    public function updateProductCategory($id, Request $request) {
+        $origin_data = $request->input();
+        $data = isset($origin_data['data']) ? json_decode($origin_data['data'], true) : null;
 
         $validator = Validator::make($data,
         [
-            'is_product_cover_img_update' => 'required|boolean',
-            'product_name' => 'required|string',
-            'original_price' => 'nullable|int',
-            'price' => 'required|int',
-            'summary' => 'nullable|string',
-            'content' => 'nullable|string',
-            'display' => 'nullable|int'
+            'category_name' => 'required|string',
+            'category_display' => 'required|int',
+            'category_sequence' => 'required|int',
+            'subcategories' => 'array',
+            // 巢狀陣列，如果為物件陣列則為 subcategories.subcategory_name
+            'subcategories.*.subcategory_name' => 'required|string',
+            'subcategories.*.subcategory_display' => 'required|int',
+            'subcategories.*.subcategory_sequence' => 'required|int',
+            'subcategories.*.subcategory_products' => 'array', // 允許空陣列
+            // 綁定商品驗證
+            'subcategories.*.subcategory_products.*.product_id' => 'required|alpha_num',
+            'subcategories.*.subcategory_products.*.product_name' => 'required|string',
+            'subcategories.*.subcategory_products.*.product_sequence' => 'required|int',
         ]);
-
-        if (!$validator->fails()) {
-            if ($data['is_product_cover_img_update']) {
-                if (!is_null($request->file('product_cover_img_update_file')) && $request->file('product_cover_img_update_file')->isValid()) {
-                    $upload_file = $request->file('product_cover_img_update_file');
         
-                    $file_path = Storage::disk('s3')->putFile('img', $upload_file, ['visibility' => 'public']);
-                    $file_url = Storage::disk('s3')->url($file_path);
-                    $data['product_cover_img'] = $file_url;
-                } else {
-                    return response()->json([
-                        'status' => 'fail',
-                        'message' => '商品圖片上傳失敗，請重新嘗試'
-                    ]);
-                }
-            }
-
-            unset($data['product_cover_img_update_file']); // 沒上傳檔案會是 null，含在 $data
-            unset($data['is_product_cover_img_update']);
-
-            Product::where('id', $id)->update($data);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => '',
-            ]);
-        } else {
+        if ($validator->fails()) {
             $error = $validator->messages();
 
             return response()->json([
@@ -186,6 +154,46 @@ class ProductCategoryController extends Controller
                 'error' => $error
             ]);
         }
+
+        $product_category = ProductCategory::find($id);
+
+        $product_category->update([
+            'category_name' => $data['category_name'],
+            'category_display' => $data['category_display'],
+            'category_sequence' => $data['category_sequence'],
+        ]);
+
+        // 刪除
+        $product_category->product_subcategories->each(function ($product_subcategory) {
+            $product_subcategory_id = $product_subcategory->product_subcategory_id;
+
+            $product_subcategory->delete();
+            ProductSubCategoryAndProduct::where('product_subcategory_id', $product_subcategory_id)->delete();
+        });
+
+        // 新增
+        foreach($data['subcategories'] as $subcategory) {
+            $product_subcategory = ProductSubCategory::create([
+                'product_category_id' => $product_category->product_category_id,
+                'subcategory_name' => $subcategory['subcategory_name'],
+                'subcategory_display' => $subcategory['subcategory_display'],
+                'subcategory_sequence' => $subcategory['subcategory_sequence']
+            ]);
+
+            foreach($subcategory['subcategory_products'] as $subcategory_product) {
+                ProductSubCategoryAndProduct::create([
+                    'product_subcategory_id' => $product_subcategory->product_subcategory_id,
+                    'product_id' => $subcategory_product['product_id'],
+                    'product_sequence' => $subcategory_product['product_sequence']
+                ]);
+            }
+        }
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => '',
+        ]);
+        
     }
 
     // public function deleteMember($id, Request $request) {

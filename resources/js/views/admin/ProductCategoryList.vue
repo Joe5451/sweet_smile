@@ -2,16 +2,6 @@
     <div>
         <div class="admin_title">商品分類</div>
 
-        <!-- <div class="d-flex justify-content-end mb-3">
-            <router-link class="btn btn-sm btn-primary" :to="{name: 'adminProductCategoryAdd'}">
-                新增商品分類
-            </router-link>
-
-            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#productCategoryAddModal">
-                新增商品分類
-            </button>
-        </div> -->
-
         <div class="mb-5 table-responsive custom_horizontal_scrollbar">
             <table class="table table-bordered table-striped align-middle mb-0" style="min-width: 800px;">
                 <tbody>
@@ -23,91 +13,56 @@
                         <td width="80">狀態</td>
                         <td width="120">操作</td>
                     </tr>
-                    <tr>
-                        <td class="text-end">1</td>
-                        <td>商品分類名稱</td>
+                    <tr v-for="(product_category, index) in product_categories" :key="product_category.product_category_id">
+                        <td class="text-end">{{ index + start_index }}</td>
+                        <td>{{ product_category.category_name }}</td>
                         <td>
-                            商品子分類名稱1<br>
-                            商品子分類名稱2<br>
-                            商品子分類名稱3<br>
-                            商品子分類名稱4<br>
+                            <span v-for="(product_subcategory, sub_index) in product_category.product_subcategories"
+                            :class="{
+                                'text-primary': product_subcategory.subcategory_display,
+                                'text-black-50 text-decoration-line-through': !product_subcategory.subcategory_display,
+                            }"
+                            :key="product_category.product_category_id + '-' + sub_index">
+                                {{ product_subcategory.subcategory_name }}<br>
+                            </span>
                         </td>
                         <td class="text-center">
                             <input type="number" class="form-control text-center" style="width: 70px;" value="0">
                         </td>
                         <td class="text-center">
-                            <span style="color: blue;">上架</span>
+                            <span v-if="product_category.category_display == 1" style="color: blue;">上架</span>
+                            <span v-else style="color: red;">下架</span>
                         </td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-sm btn-primary">管理</a>
+                            <router-link class="btn btn-sm btn-primary" :to="{name: 'adminProductCategoryUpdate', params: { product_category_id: product_category.product_category_id }}">
+                                管理
+                            </router-link>
+
                             <a href="#" class="btn btn-sm btn-danger">刪除</a>
                         </td>
                     </tr>
 
-                    <tr>
-                        <td class="text-end">2</td>
-                        <td>商品分類名稱</td>
-                        <td>商品子分類名稱</td>
-                        <td class="text-center">
-                            <input type="number" class="form-control text-center" style="width: 70px;" value="0">
-                        </td>
-                        <td class="text-center">
-                            <span style="color: blue;">上架</span>
-                        </td>
-                        <td class="text-center">
-                            <a href="#" class="mx-1 text-primary">管理</a>
-                            <a href="#" class="mx-1 text-danger">刪除</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-end">3</td>
-                        <td>商品分類名稱<br>第二行</td>
-                        <td>商品子分類名稱</td>
-                        <td class="text-center">
-                            <input type="number" class="form-control text-center" style="width: 70px;" value="0">
-                        </td>
-                        <td class="text-center">
-                            <span style="color: blue;">上架</span>
-                        </td>
-                        <td class="text-center">
-                            <a href="#" class="mx-1 text-primary">管理</a>
-                            <a href="#" class="mx-1 text-danger">刪除</a>
-                        </td>
-                    </tr>
                 </tbody>
             </table>
         </div>
 
-        <admin-product-category-add-modal></admin-product-category-add-modal>
-
-        <ul class="pagination flex-wrap mb-4">
-            <li class="page-item mx-1 my-1">
-                <a class="page-link rounded" href="#">
-                    第一頁
-                </a>
-            </li>
-
-            <li class="page-item mx-1 my-1">
-                <a class="page-link rounded" href="#" aria-label="Previous">
+        <ul class="pagination flex-wrap justify-content-center mb-4" v-if="total > 0">
+            <li class="page-item mx-1 my-1" v-if="page != 1">
+                <router-link class="page-link rounded" :to="{name: 'adminProductCategoryList', params: { page: page - 1 }}" aria-label="Previous">
                     上一頁
-                </a>
+                </router-link>
             </li>
 
-            <li class="page-item mx-1 my-1"><a class="page-link rounded" href="#">1</a></li>
-            <li class="page-item mx-1 my-1"><a class="page-link rounded" href="#">2</a></li>
-            <li class="page-item mx-1 my-1"><a class="page-link rounded" href="#">3</a></li>
+            <li class="page-item mx-1 my-1" :class="{ active: (cur_page_num == page) }" v-for="cur_page_num in page_num" :key="cur_page_num">
+                <router-link class="page-link rounded" :to="{name: 'adminProductCategoryList', params: { page: cur_page_num }}">
+                    {{ cur_page_num }}
+                </router-link>
+            </li>
 
-            <li class="page-item mx-1 my-1">
-                <a class="page-link rounded" href="#" aria-label="Next">
+            <li class="page-item mx-1 my-1" v-if="page != page_num">
+                <router-link class="page-link rounded" :to="{name: 'adminProductCategoryList', params: { page: page + 1 }}" aria-label="Next">
                     下一頁
-                </a>
-            </li>
-
-            <li class="page-item mx-1 my-1">
-                <a class="page-link rounded" href="#">
-                    最末頁
-                </a>
+                </router-link>
             </li>
         </ul>
     </div>
@@ -116,5 +71,58 @@
 <script>
     export default {
         name: 'ProducCategoryList',
+        computed: {
+            page() {
+                let new_page = this.$route.params.page;
+                return (new_page === undefined) ? 1 : new_page;
+            }
+        },
+        watch: {
+            page(new_page, old_page) {
+                this.getProductCategories();
+            }
+        },
+        data() {
+            return {
+                product_categories: [],
+                total: 0,
+                limit: 15,
+                page_num: 0,
+                start_index: 1,
+                cur_product_id: ''
+            }
+        },
+        mounted() {
+            this.getProductCategories();
+        },
+        methods: {
+            async getProductCategories() {
+                const vm = this;
+
+                vm.$store.commit('admin_setting/showLoading');
+
+                await axios.get('/admin/product_category', {
+                    params: { 
+                        page: vm.page,
+                        limit: vm.limit
+                    }
+                })
+                .then(function (response) {
+                    console.log(response);
+
+                    vm.product_categories = response.data.product_categories;
+                    vm.total = response.data.total;
+                    vm.start_index = 1 + (vm.page - 1) * vm.limit;
+                    vm.page_num = parseInt(vm.total / vm.limit);
+                    vm.page_num += (vm.total%vm.limit != 0) ? 1 : 0;
+                    
+                    vm.$store.commit('admin_setting/hideLoading');
+                })
+                .catch(function(error) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    console.error("Error: ", error);
+                });
+            }
+        }
     }
 </script>

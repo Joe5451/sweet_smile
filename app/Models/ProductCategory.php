@@ -27,11 +27,13 @@ class ProductCategory extends Model
         'category_sequence',
     ];
 
-    // public function product_subcategories()
-    // {
-    //     // category_id 外鍵, product_category_id 本地鍵
-    //     return $this->hasMany(ProductSubCategory::class, 'category_id', 'product_category_id')->orderBy('sequence', 'asc');
-    // }
+    public function product_subcategories()
+    {
+        return $this->hasMany(ProductSubCategory::class, 'product_category_id')
+        ->select(['product_subcategory_id', 'subcategory_display', 'subcategory_name', 'subcategory_sequence'])
+        ->orderBy('subcategory_sequence', 'asc')
+        ->orderBy('product_subcategory_id', 'desc');
+    }
 
     // public function prices()
     // {

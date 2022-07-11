@@ -14,6 +14,7 @@ import AdminMemberAddEdit from '../views/admin/MemberAddEdit.vue';
 import AdminProductList from '../views/admin/ProductList.vue';
 import AdminProductCategoryList from '../views/admin/ProductCategoryList.vue';
 import AdminProductCategoryAddEdit from '../views/admin/ProductCategoryAddEdit.vue';
+import AdminProductCategoryUpdateEdit from '../views/admin/ProductCategoryUpdateEdit.vue';
 import AdminProductAddEdit from '../views/admin/ProductAddEdit.vue';
 import AdminProductUpdateEdit from '../views/admin/ProductUpdateEdit.vue';
 import AdminNewsList from '../views/admin/NewsList.vue';
@@ -109,6 +110,11 @@ export default new Router({
                     path: 'product/category_add',
                     name: 'adminProductCategoryAdd',
                     component: AdminProductCategoryAddEdit,
+                },
+                {
+                    path: 'product/category_update/:product_category_id',
+                    name: 'adminProductCategoryUpdate',
+                    component: AdminProductCategoryUpdateEdit,
                 },
                 
                 {

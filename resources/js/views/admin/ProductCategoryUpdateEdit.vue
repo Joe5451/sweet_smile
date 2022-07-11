@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="admin_title">商品分類新增</div>
+        <div class="admin_title">商品分類管理</div>
 
         <form @submit.prevent="checkForm">
             <div class="mb-4">
@@ -38,7 +38,7 @@
                             <td width="90">排序</td>
                             <td width="80">操作</td>
                         </tr>
-                        <tr v-for="(subcategory, subcategory_index) in subcategories" :key="subcategory.subcategory_key">
+                        <tr v-for="(subcategory, subcategory_index) in product_subcategories" :key="'subcategory-' + subcategory.product_subcategory_id">
                             <td>
                                 <input type="text" class="form-control subcategory_name" v-model="subcategory.subcategory_name">
                                 <div class="invalid-feedback"></div>
@@ -132,16 +132,18 @@
 
 <script>
     export default {
-        name: 'ProductCategoryAddEdit',
+        name: 'ProductCategoryUpdateEdit',
         data() {
             return {
+                product_category_id: this.$route.params.product_category_id,
+
                 subcateogry_products_modal: null,
                 category_name: '',
                 category_display: 1,
                 category_sequence: 0,
-                subcategories: [
+                product_subcategories: [
                     {
-                        subcategory_key: this.getRandomKey(), // 綁定 v-for 元素 key
+                        product_subcategory_id: '', // 綁定 v-for 元素 key
                         subcategory_name: '',
                         subcategory_display: 1,
                         subcategory_sequence: 0,
@@ -150,18 +152,29 @@
                 ],
                 current_subcategory_products: [],
                 current_subcategory_index: null,
-                products: []
+                products: [],
+
+                category_data: null,
             }
         },
-        mounted() {
+        async mounted() {
             const vm = this;
 
             let modal_element = document.getElementById('subcategoryProductsModal')
             this.subcateogry_products_modal = new bootstrap.Modal(modal_element);
 
-            this.getProducts();            
+            vm.$store.commit('admin_setting/showLoading');
+
+            this.getProducts();
+            await this.getProductCategory();
+            
+            vm.$store.commit('admin_setting/hideLoading');
         },
         methods: {
+            async getProductsAndProductCategory() {
+                this.getProducts();
+                await this.getProductCategory();
+            },
             updateCurrentSubCategoryProducts(subcategory_products, subcategory_index) {
                 // [...] 複製陣列，否則在 js 中陣列也是物件，js 物件為 pass by reference 會指向同一個物件
                 this.current_subcategory_products = [...subcategory_products];
@@ -220,7 +233,7 @@
                         return a.product_sequence - b.product_sequence;
                     });
 
-                    this.subcategories[this.current_subcategory_index].subcategory_products = this.current_subcategory_products;
+                    this.product_subcategories[this.current_subcategory_index].subcategory_products = this.current_subcategory_products;
                     this.current_subcategory_products = [];
 
                     this.subcateogry_products_modal.hide(); // 關閉 modal
@@ -307,12 +320,10 @@
             deleteSubCategoryProduct(index) {
                 this.current_subcategory_products.splice(index, 1);
             },
-            async getProducts() {
+            getProducts() {
                 const vm = this;
 
-                vm.$store.commit('admin_setting/showLoading');
-
-                await axios.get('/admin/products', {
+                axios.get('/admin/products', {
                     params: { 
                         page: 1,
                         limit: null
@@ -321,16 +332,28 @@
                 .then(function (response) {
                     // console.log(response);
                     vm.products = response.data.products;
-                    vm.$store.commit('admin_setting/hideLoading');
                 })
                 .catch(function(error) {
-                    vm.$store.commit('admin_setting/hideLoading');
+                    console.error("Error: ", error);
+                });
+            },
+            async getProductCategory() {
+                const vm = this;
+
+                await axios.get('/admin/product_category/' + vm.product_category_id)
+                .then(function (response) {
+                    console.log(response);
+
+                    Object.assign(vm, response.data.product_category);
+                    // vm.product_category = response.data.product_category;
+                })
+                .catch(function(error) {
                     console.error("Error: ", error);
                 });
             },
             addSubCategoryRow() {
-                this.subcategories.unshift({
-                    subcategory_key: this.getRandomKey(),
+                this.product_subcategories.unshift({
+                    product_subcategory_id: this.getRandomKey(),
                     subcategory_name: '',
                     subcategory_display: 1,
                     subcategory_sequence: 0,
@@ -338,7 +361,7 @@
                 });
             },
             deleteSubCategoryRow(index) {
-                if (this.subcategories.length == 1) {
+                if (this.product_subcategories.length == 1) {
                     Swal.fire({
                         icon: 'warning',
                         title: '至少需含一項子分類',
@@ -349,7 +372,7 @@
                     return;
                 }
 
-                this.subcategories.splice(index, 1);
+                this.product_subcategories.splice(index, 1);
             },
             alertInvalidMessage(element, invalid_message) {
                 element.addClass('is-invalid');

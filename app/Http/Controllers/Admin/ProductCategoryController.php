@@ -85,31 +85,53 @@ class ProductCategoryController extends Controller
         ]);
     }
 
-    public function getProductList(Request $request) {
+    public function getProductCategories(Request $request) {
         $page = (int) $request->query('page', 1);
         $limit = (int) $request->query('limit', 15);
         $offset = ($page - 1) * $limit;
 
-        $products = Product::orderBy('created_at', 'desc')
-        ->orderBy('id', 'desc')
-        ->select(['id', 'product_name', 'price', 'display'])
+        $product_categories = ProductCategory::orderBy('category_sequence', 'asc')
+        ->orderBy('product_category_id', 'desc')
+        ->select(['product_category_id', 'category_name', 'category_display', 'category_sequence'])
         ->offset($offset)
         ->limit($limit)
         ->get();
+        
+        $product_categories->each(function ($item) {
+            $item->product_subcategories;
+            
+            /**
+             * 可參考
+             * 1. https://learnku.com/docs/laravel/8.x/eloquent-relationships/9407
+             * 2. https://laravel.com/docs/8.x/eloquent-relationships
+             */
 
-        $total = Product::count();
+            // 添加 products
+            // $item->product_subcategories->each(function ($product_subcategory) {
+            //     $product_subcategory->subcategory_products->makeHidden('pivot');
+            // });
+        });
+
+        $total = ProductCategory::count();
         
         return response()->json([
-            'products' => $products,
+            'product_categories' => $product_categories,
             'total' => $total,
         ]);
     }
 
-    public function getProduct($id, Request $request) {
-        $product = Product::find($id);
+    public function getProductCategory($id, Request $request) {
+        $product_category = ProductCategory::select('category_display', 'category_name', 'category_sequence', 'product_category_id')->find($id);
+
+        // 必須要 select 'product_category_id' 才能透過 model 的 hasMany() 去關聯 product_subcategories，但可以用 makeHidden 在輸出時隱藏
+        $product_category->makeHidden('product_category_id');
+        
+        $product_category->product_subcategories->each(function ($product_subcategory) {
+            $product_subcategory->subcategory_products->makeHidden('pivot');
+        });
 
         return response()->json([
-            'product' => $product
+            'product_category' => $product_category
         ]);
     }
 

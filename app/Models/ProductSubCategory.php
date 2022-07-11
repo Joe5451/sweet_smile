@@ -27,4 +27,11 @@ class ProductSubCategory extends Model
         'subcategory_display',
         'subcategory_sequence',
     ];
+
+    public function subcategory_products()
+    {
+        return $this->belongsToMany(Product::class, 'product_subcategory_and_product', 'product_subcategory_id', 'product_id')
+        ->select('product_id', 'product_name', 'product_sequence')
+        ->orderBy('product_subcategory_and_product.product_sequence', 'asc');
+    }
 }

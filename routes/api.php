@@ -43,7 +43,9 @@ Route::prefix('admin')->group(function() {
     // Route::delete('/products/{id}', [AdminProductController::class, 'deleteProduct']);
 
     Route::post('/product_category', [AdminProductCategoryController::class, 'add']);
-
+    Route::get('/product_category', [AdminProductCategoryController::class, 'getProductCategories']);
+    Route::get('/product_category/{id}', [AdminProductCategoryController::class, 'getProductCategory']);
+    
 
     Route::post('/news', [AdminNewsController::class, 'add']);
     Route::get('/news', [AdminNewsController::class, 'getNewsList']);

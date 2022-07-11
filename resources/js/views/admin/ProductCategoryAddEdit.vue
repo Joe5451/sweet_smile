@@ -2,10 +2,11 @@
     <div>
         <div class="admin_title">商品分類新增</div>
 
-        <form>
+        <form @submit.prevent="checkForm">
             <div class="mb-4">
                 <label class="form-label">商品主分類名稱</label>
-                <input type="text" class="form-control" v-model="category_name">
+                <input type="text" name="category_name" class="form-control" v-model="category_name">
+                <div class="invalid-feedback"></div>
             </div>
 
             <div class="row mb-3">
@@ -18,7 +19,8 @@
                 </div>
                 <div class="mb-4 col-sm-6">
                     <label class="form-label">排序</label>
-                    <input type="number" class="form-control" v-model="category_sequence">
+                    <input type="number" name="category_sequence" class="form-control" v-model.number="category_sequence">
+                    <div class="invalid-feedback"></div>
                 </div>
             </div>
 
@@ -36,12 +38,13 @@
                             <td width="90">排序</td>
                             <td width="80">操作</td>
                         </tr>
-                        <tr v-for="(subcategory, subcategory_index) in subcategories" :key="subcategory_index">
+                        <tr v-for="(subcategory, subcategory_index) in subcategories" :key="subcategory.subcategory_key">
                             <td>
-                                <input type="text" class="form-control" v-model="subcategory.subcategory_name">
+                                <input type="text" class="form-control subcategory_name" v-model="subcategory.subcategory_name">
+                                <div class="invalid-feedback"></div>
                             </td>
                             <td>
-                                <span @click="updateCurrentSubCategoryProducts(subcategory.subcategory_products, subcategory_index)" data-bs-toggle="modal" data-bs-target="#subcategoryProductsModal">
+                                <span @click="updateCurrentSubCategoryProducts(subcategory.subcategory_products, subcategory_index)" class="text-primary" style="border-bottom: 2px dashed #0d6efd; cursor:pointer;" data-bs-toggle="modal" data-bs-target="#subcategoryProductsModal">
                                     <span v-if="subcategory.subcategory_products.length > 0">
                                         <span v-for="(subcategory_product, subcategory_product_index) in subcategory.subcategory_products" :key="subcategory_product_index">
                                             {{ subcategory_product.product_name }} <br>
@@ -58,7 +61,8 @@
                                 </select>
                             </td>
                             <td class="text-center">
-                                <input type="number" class="form-control text-center" style="width: 70px;" v-model.number="subcategory.subcategory_sequence">
+                                <input type="number" class="form-control text-center subcategory_sequence" style="width: 70px;" v-model.number="subcategory.subcategory_sequence">
+                                <div class="invalid-feedback"></div>
                             </td>
                             <td class="text-center">
                                 <button type="button" @click="deleteSubCategoryRow(subcategory_index)" class="btn btn-sm btn-danger">刪除</button>
@@ -73,6 +77,7 @@
             </div>
         </form>
 
+        <!-- 子分類綁定商品 modal -->
         <div class="modal fade" tabindex="-1" id="subcategoryProductsModal">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
@@ -95,7 +100,6 @@
                                     </tr>
                                     <tr v-for="(current_subcategory_product, current_subcategory_product_index) in current_subcategory_products" :key="current_subcategory_product_index">
                                         <td>
-                                            <!-- <select v-model="current_subcategory_product.product_id" @change="current_subcategory_product.product_name = product.product_name" class="form-select"> -->
                                             <select v-model="current_subcategory_product.product_id" class="form-select">
                                                 <option value="">未選擇</option>
                                                 <option v-for="(product, product_index) in products" :value="product.id" :key="product_index">{{ product.product_name }}</option>
@@ -119,6 +123,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -127,11 +132,13 @@
         name: 'ProductCategoryAddEdit',
         data() {
             return {
+                subcateogry_products_modal: null,
                 category_name: '',
                 category_display: 1,
                 category_sequence: 0,
                 subcategories: [
                     {
+                        subcategory_key: this.getRandomKey(), // 綁定 v-for 元素 key
                         subcategory_name: '',
                         subcategory_display: 1,
                         subcategory_sequence: 0,
@@ -144,7 +151,12 @@
             }
         },
         mounted() {
-            this.getProducts();
+            const vm = this;
+
+            let modal_element = document.getElementById('subcategoryProductsModal')
+            this.subcateogry_products_modal = new bootstrap.Modal(modal_element);
+
+            this.getProducts();            
         },
         methods: {
             updateCurrentSubCategoryProducts(subcategory_products, subcategory_index) {
@@ -186,7 +198,6 @@
                     });
                 });
 
-
                 if (!product_id_pass || !product_sequence_pass) {
                     let title = '';
 
@@ -208,8 +219,87 @@
 
                     this.subcategories[this.current_subcategory_index].subcategory_products = this.current_subcategory_products;
                     this.current_subcategory_products = [];
-                    // console.log(this.subcategories);
+
+                    this.subcateogry_products_modal.hide(); // 關閉 modal
                 }
+            },
+            checkForm() {
+                $('input').removeClass('is-invalid');
+                $('input').next('.invalid-feedback').text('');
+
+                let is_subcategory_pass = true;
+                
+                $('.subcategory_name').each(function () {
+                    if ($(this).val() === '') {
+                        $(this).addClass('is-invalid');
+                        $(this).siblings('.invalid-feedback').text('請輸入商品子分類名稱');
+
+                        is_subcategory_pass = false;
+                    }
+                });
+
+                $('.subcategory_sequence').each(function () {
+                    if ($(this).val() === '') {
+                        $(this).addClass('is-invalid');
+                        $(this).siblings('.invalid-feedback').text('請輸入商品子分類排序');
+
+                        is_subcategory_pass = false;
+                    }
+                });
+
+                if (this.category_name == '')
+                    this.alertInvalidMessage($('input[name=category_name]'), '請輸入商品主分類名稱');
+                else if (this.category_sequence === '')
+                    this.alertInvalidMessage($('input[name=category_sequence]'), '請輸入商品主分類排序');
+                else if (!is_subcategory_pass) {
+                    return;
+                }
+                else {
+                    this.addProductCategory();
+                }
+            },
+            addProductCategory() {
+                const vm = this;
+
+                vm.$store.commit('admin_setting/showLoading');
+
+                // 使用 json 字串傳送資料
+                let json_data = JSON.stringify({
+                    category_name: vm.category_name,
+                    category_display: vm.category_display,
+                    category_sequence: vm.category_sequence,
+                    subcategories: vm.subcategories
+                });
+                
+                axios.post('/admin/product_category', {
+                    data: json_data,
+                })
+                .then(function (response) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    console.log(response);
+
+                    if (response.data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '新增成功',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            willClose: () => {
+                                vm.$router.push({name: 'adminProductCategoryList'});
+                            },
+                        });
+                    } else if (response.data.status == 'fail') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: response.data.message,
+                            timer: 1500,
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    console.error("Error: ", error);
+                });
             },
             deleteSubCategoryProduct(index) {
                 this.current_subcategory_products.splice(index, 1);
@@ -237,6 +327,7 @@
             },
             addSubCategoryRow() {
                 this.subcategories.unshift({
+                    subcategory_key: this.getRandomKey(),
                     subcategory_name: '',
                     subcategory_display: 1,
                     subcategory_sequence: 0,
@@ -256,7 +347,31 @@
                 }
 
                 this.subcategories.splice(index, 1);
-            }
+            },
+            alertInvalidMessage(element, invalid_message) {
+                element.addClass('is-invalid');
+                element.siblings('.invalid-feedback').text(invalid_message);
+
+                // 移至元素位置
+                let contentTop = element.offset().top - 120;
+
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: contentTop
+                }, 800, 'swing', function() {
+                    element.focus();
+                });
+            },
+            getRandomKey() {
+                const word = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789";
+                const word_len = word.length;
+                let key = "";
+
+                for (let i = 0; i < 6; i++) {
+                    key += word.charAt(Math.floor(Math.random() * word_len));
+                }
+
+                return key;
+            },
         }
     }
 </script>

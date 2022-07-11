@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ProductCategoryController as AdminProductCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
@@ -40,6 +41,9 @@ Route::prefix('admin')->group(function() {
     Route::get('/products/{id}', [AdminProductController::class, 'getProduct']);
     Route::put('/products/{id}', [AdminProductController::class, 'updateProduct']);
     // Route::delete('/products/{id}', [AdminProductController::class, 'deleteProduct']);
+
+    Route::post('/product_category', [AdminProductCategoryController::class, 'add']);
+
 
     Route::post('/news', [AdminNewsController::class, 'add']);
     Route::get('/news', [AdminNewsController::class, 'getNewsList']);

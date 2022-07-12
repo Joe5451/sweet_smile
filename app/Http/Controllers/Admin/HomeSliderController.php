@@ -11,8 +11,6 @@ use App\Models\HomeSlider;
 class HomeSliderController extends Controller
 {
     public function addItem(Request $request) {
-        
-        
         $data = $request->input();
 
         $validator = Validator::make($data,
@@ -104,7 +102,7 @@ class HomeSliderController extends Controller
                 } else {
                     return response()->json([
                         'status' => 'fail',
-                        'message' => '商品圖片上傳失敗，請重新嘗試'
+                        'message' => '圖片上傳失敗，請重新嘗試'
                     ]);
                 }
             }

@@ -11,6 +11,9 @@
                 </div>
             </div>
             <div class="admin_nav_item">
+                <router-link class="admin_nav_link" :to="{name: 'adminHeadImgList'}">上方大圖</router-link>
+            </div>
+            <div class="admin_nav_item">
                 <router-link class="admin_nav_link" :to="{name: 'adminAbout'}">關於我們</router-link>
             </div>
             <div class="admin_nav_item">

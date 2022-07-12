@@ -21,7 +21,7 @@ class NewsController extends Controller
         } else {
             return response()->json([
                 'status' => 'fail',
-                'message' => '商品圖片上傳失敗，請重新嘗試'
+                'message' => '圖片上傳失敗，請重新嘗試'
             ]);
         }
         
@@ -107,7 +107,7 @@ class NewsController extends Controller
                 } else {
                     return response()->json([
                         'status' => 'fail',
-                        'message' => '商品圖片上傳失敗，請重新嘗試'
+                        'message' => '圖片上傳失敗，請重新嘗試'
                     ]);
                 }
             }

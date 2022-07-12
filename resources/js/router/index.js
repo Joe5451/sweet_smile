@@ -11,6 +11,10 @@ import AdminWelcome from '../views/admin/Welcome.vue';
 import AdminHomeSliderList from '../views/admin/HomeSliderList.vue';
 import AdminHomeSliderAddEdit from '../views/admin/HomeSliderAddEdit.vue';
 import AdminHomeSliderUpdateEdit from '../views/admin/HomeSliderUpdateEdit.vue';
+
+import AdminHeadImgList from '../views/admin/HeadImgList.vue';
+import AdminHeadImgUpdateEdit from '../views/admin/HeadImgUpdateEdit.vue'
+
 import AdminAboutEdit from '../views/admin/AboutEdit.vue';
 import AdminMemberList from '../views/admin/MemberList.vue';
 import AdminMemberAddEdit from '../views/admin/MemberAddEdit.vue';
@@ -78,6 +82,16 @@ export default new Router({
                     path: 'home_slider/update/:slider_id',
                     name: 'adminHomeSliderUpdate',
                     component: AdminHomeSliderUpdateEdit,
+                },
+                {
+                    path: 'head_img/list',
+                    name: 'adminHeadImgList',
+                    component: AdminHeadImgList,
+                },
+                {
+                    path: 'head_img/update/:head_img_id',
+                    name: 'adminHeadImgUpdate',
+                    component: AdminHeadImgUpdateEdit,
                 },
                 {
                     path: 'member/list/:page?',

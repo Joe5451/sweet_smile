@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ProductSubCategorySeeder::class,
             ProductSubCategoryAndProductSeeder::class,
             HomeSliderSeeder::class,
+            HeadImgSeeder::class,
             NewsSeeder::class,
             PagesSeeder::class,
         ]);

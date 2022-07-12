@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductCategoryController as AdminProductCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\HomeSliderController as AdminHomeSliderController;
+use App\Http\Controllers\Admin\HeadImgController as AdminHeadImgController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 
@@ -60,6 +61,10 @@ Route::prefix('admin')->group(function() {
     Route::get('/home_slider/{id}', [AdminHomeSliderController::class, 'getItem']);
     Route::put('/home_slider/{id}', [AdminHomeSliderController::class, 'updateItem']);
     Route::delete('/home_slider/{id}', [AdminHomeSliderController::class, 'deleteItem']);
+
+    Route::get('/head_img', [AdminHeadImgController::class, 'getItems']);
+    Route::get('/head_img/{id}', [AdminHeadImgController::class, 'getItem']);
+    Route::put('/head_img/{id}', [AdminHeadImgController::class, 'updateItem']);
 
     Route::get('/about', [AdminPageController::class, 'getAbout']);
     Route::put('/about', [AdminPageController::class, 'updateAbout']);

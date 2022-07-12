@@ -16,7 +16,10 @@ class HomeSliderSeeder extends Seeder
     {
         $demo_img = [
             'https://sweet-smile.s3.ap-northeast-1.amazonaws.com/img/1JKKgg0H2C7qZEyUX1CbcB4TsNmhgGCD7ZbaVkYn.jpg',
-            'https://sweet-smile.s3.ap-northeast-1.amazonaws.com/img/0TCQJPBmWMxCtYTJrkIhLEUoiqN7pLte3OdKivhE.jpg'
+            'https://sweet-smile.s3.ap-northeast-1.amazonaws.com/img/0TCQJPBmWMxCtYTJrkIhLEUoiqN7pLte3OdKivhE.jpg',
+            'img/banner3.jpg',
+            'img/banner4.jpg',
+            'img/banner5.jpg'
         ];
         
         
@@ -38,21 +41,13 @@ class HomeSliderSeeder extends Seeder
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
-                'slider_img' => $demo_img[0],
+                'slider_img' => $demo_img[2],
                 'link' => null,
                 'display' => 1,
                 'sequence' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ],
-            [
-                'slider_img' => $demo_img[1],
-                'link' => null,
-                'display' => 1,
-                'sequence' => 0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ],
+            ]
         ]);
     }
 }

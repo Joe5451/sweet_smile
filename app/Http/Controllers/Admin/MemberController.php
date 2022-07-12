@@ -125,7 +125,7 @@ class MemberController extends Controller
     }
 
     public function deleteMember($id, Request $request) {
-        $member = Member::where('member_id', $id)->delete();
+        Member::where('member_id', $id)->delete();
 
         return response()->json([
             'status' => 'success',

@@ -26,7 +26,9 @@
                                 管理
                             </router-link>
                             
-                            <a href="#" class="btn btn-sm btn-danger">刪除</a>
+                            <button class="btn btn-sm btn-danger" @click="confirmDelete(product.id)">
+                                刪除
+                            </button>
                         </td>
                     </tr>
                     
@@ -110,7 +112,7 @@
                     console.error("Error: ", error);
                 });
             },
-            confirmDeleteMember(product_id) {
+            confirmDelete(product_id) {
                 const vm = this;
 
                 Swal.fire({
@@ -121,11 +123,11 @@
                     confirmButtonText: '確定',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        vm.deleteMember(product_id);
+                        vm.deleteProduct(product_id);
                     } 
                 })
             },
-            async deleteMember(product_id) {
+            async deleteProduct(product_id) {
                 const vm = this;
 
                 vm.$store.commit('admin_setting/showLoading');

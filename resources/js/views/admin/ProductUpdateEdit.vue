@@ -63,6 +63,7 @@
             </div>
 
             <div class="d-flex justify-content-between py-3">
+                <button type="button" @click="confirmDelete(product_id)" class="btn btn-danger">刪除</button>
                 <button class="btn btn-primary">更新</button>
             </div>
         </form>
@@ -215,6 +216,55 @@
                             showConfirmButton: false,
                             willClose: () => {
                                 vm.$store.commit('admin_setting/updateContentComponentKey'); // 更新畫面
+                            },
+                        });
+                    } else if (response.data.status == 'fail') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: response.data.message,
+                            timer: 1500,
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    console.error("Error: ", error);
+                });
+            },
+            confirmDelete(product_id) {
+                const vm = this;
+
+                Swal.fire({
+                    icon: 'question',
+                    title: '確定刪除?',
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '確定',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        vm.deleteProduct(product_id);
+                    } 
+                })
+            },
+            async deleteProduct(product_id) {
+                const vm = this;
+
+                vm.$store.commit('admin_setting/showLoading');
+
+                await axios.delete('/admin/products/' + product_id)
+                .then(function (response) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    // console.log(response);
+
+                    if (response.data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '刪除成功',
+                            width: 300,
+                            timer: 1500,
+                            showConfirmButton: false,
+                            willClose: () => {
+                                vm.$router.push({name: 'adminProductList'});
                             },
                         });
                     } else if (response.data.status == 'fail') {

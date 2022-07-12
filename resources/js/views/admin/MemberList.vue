@@ -22,6 +22,7 @@
                             <button class="btn btn-sm btn-primary" @click="cur_member_id = member.member_id" data-bs-toggle="modal" data-bs-target="#memberUpdateModal">
                                 管理
                             </button>
+                            
                             <button class="btn btn-sm btn-danger" @click="confirmDeleteMember(member.member_id)">
                                 刪除
                             </button>

@@ -27,7 +27,7 @@
                                 管理
                             </router-link>
 
-                            <button class="btn btn-sm btn-danger">
+                            <button class="btn btn-sm btn-danger" @click="confirmDelete(new_data.id)">
                                 刪除
                             </button>
                         </td>
@@ -112,7 +112,7 @@
                     console.error("Error: ", error);
                 });
             },
-            confirmDeleteMember(new_id) {
+            confirmDelete(new_id) {
                 const vm = this;
 
                 Swal.fire({
@@ -123,11 +123,11 @@
                     confirmButtonText: '確定',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        vm.deleteMember(new_id);
+                        vm.deleteNews(new_id);
                     } 
                 })
             },
-            async deleteMember(new_id) {
+            async deleteNews(new_id) {
                 const vm = this;
 
                 vm.$store.commit('admin_setting/showLoading');

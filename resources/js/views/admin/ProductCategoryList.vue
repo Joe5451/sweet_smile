@@ -3,7 +3,7 @@
         <div class="admin_title">商品分類</div>
 
         <div class="mb-5 table-responsive custom_horizontal_scrollbar">
-            <table class="table table-bordered table-striped align-middle mb-0" style="min-width: 800px;">
+            <table class="table table-bordered table-striped align-middle mb-0" style="min-width: max-content;">
                 <tbody>
                     <tr class="text-center border-top">
                         <td width="60">項次</td>
@@ -39,7 +39,9 @@
                                 管理
                             </router-link>
 
-                            <a href="#" class="btn btn-sm btn-danger">刪除</a>
+                            <button class="btn btn-sm btn-danger" @click="confirmDelete(product_category.product_category_id)">
+                                刪除
+                            </button>
                         </td>
                     </tr>
 
@@ -118,6 +120,55 @@
                     vm.page_num += (vm.total%vm.limit != 0) ? 1 : 0;
                     
                     vm.$store.commit('admin_setting/hideLoading');
+                })
+                .catch(function(error) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    console.error("Error: ", error);
+                });
+            },
+            confirmDelete(id) {
+                const vm = this;
+
+                Swal.fire({
+                    icon: 'question',
+                    title: '確定刪除?',
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '確定',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        vm.deleteProductCategory(id);
+                    } 
+                })
+            },
+            async deleteProductCategory(id) {
+                const vm = this;
+
+                vm.$store.commit('admin_setting/showLoading');
+
+                await axios.delete('/admin/product_category/' + id)
+                .then(function (response) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    // console.log(response);
+
+                    if (response.data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '刪除成功',
+                            width: 300,
+                            timer: 1500,
+                            showConfirmButton: false,
+                            willClose: () => {
+                                vm.$store.commit('admin_setting/updateContentComponentKey'); // 更新畫面
+                            },
+                        });
+                    } else if (response.data.status == 'fail') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: response.data.message,
+                            timer: 1500,
+                        });
+                    }
                 })
                 .catch(function(error) {
                     vm.$store.commit('admin_setting/hideLoading');

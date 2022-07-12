@@ -196,12 +196,22 @@ class ProductCategoryController extends Controller
         
     }
 
-    // public function deleteMember($id, Request $request) {
-    //     $member = Product::where('member_id', $id)->delete();
+    public function deleteProductCategory($id, Request $request) {
+        $product_category = ProductCategory::find($id);
+        
+        $product_category->delete();
 
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => ''
-    //     ]);
-    // }
+        // 刪除子分類及子分類與商品關聯 table
+        $product_category->product_subcategories->each(function ($product_subcategory) {
+            $product_subcategory_id = $product_subcategory->product_subcategory_id;
+
+            $product_subcategory->delete();
+            ProductSubCategoryAndProduct::where('product_subcategory_id', $product_subcategory_id)->delete();
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'message' => ''
+        ]);
+    }
 }

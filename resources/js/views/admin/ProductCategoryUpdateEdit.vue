@@ -80,6 +80,7 @@
             </div>
             
             <div class="d-flex justify-content-between py-3">
+                <button type="button" @click="confirmDelete(product_category_id)" class="btn btn-danger">刪除</button>
                 <button class="btn btn-primary">更新</button>
             </div>
         </form>
@@ -366,6 +367,55 @@
             },
             deleteSubCategoryRow(index) {
                 this.product_subcategories.splice(index, 1);
+            },
+            confirmDelete(id) {
+                const vm = this;
+
+                Swal.fire({
+                    icon: 'question',
+                    title: '確定刪除?',
+                    showCancelButton: true,
+                    cancelButtonText: '取消',
+                    confirmButtonText: '確定',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        vm.deleteProductCategory(id);
+                    } 
+                })
+            },
+            async deleteProductCategory(id) {
+                const vm = this;
+
+                vm.$store.commit('admin_setting/showLoading');
+
+                await axios.delete('/admin/product_category/' + id)
+                .then(function (response) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    // console.log(response);
+
+                    if (response.data.status == 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '刪除成功',
+                            width: 300,
+                            timer: 1500,
+                            showConfirmButton: false,
+                            willClose: () => {
+                                vm.$router.push({name: 'adminProductCategoryList'});
+                            },
+                        });
+                    } else if (response.data.status == 'fail') {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: response.data.message,
+                            timer: 1500,
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    vm.$store.commit('admin_setting/hideLoading');
+                    console.error("Error: ", error);
+                });
             },
             alertInvalidMessage(element, invalid_message) {
                 element.addClass('is-invalid');

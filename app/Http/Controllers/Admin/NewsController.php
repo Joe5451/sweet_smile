@@ -10,7 +10,7 @@ use App\Models\News;
 
 class NewsController extends Controller
 {
-    public function add(Request $request) {
+    public function addItem(Request $request) {
         $file_url = null;
 
         if (!is_null($request->file('cover_img')) && $request->file('cover_img')->isValid()) {
@@ -52,7 +52,7 @@ class NewsController extends Controller
         }
     }
 
-    public function getNewsList(Request $request) {
+    public function getItems(Request $request) {
         $page = (int) $request->query('page', 1);
         $limit = (int) $request->query('limit', 15);
         $offset = ($page - 1) * $limit;
@@ -72,7 +72,7 @@ class NewsController extends Controller
         ]);
     }
 
-    public function getNews($id, Request $request) {
+    public function getItem($id, Request $request) {
         $new = News::find($id);
 
         return response()->json([
@@ -80,7 +80,7 @@ class NewsController extends Controller
         ]);
     }
 
-    public function updateNews($id, Request $request) {
+    public function updateItem($id, Request $request) {
         $data = $request->input();
         unset($data['_method']);
 
@@ -132,12 +132,12 @@ class NewsController extends Controller
         }
     }
 
-    // public function deleteMember($id, Request $request) {
-    //     $member = News::where('member_id', $id)->delete();
+    public function deleteItem($id, Request $request) {
+        News::find($id)->delete();
 
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => ''
-    //     ]);
-    // }
+        return response()->json([
+            'status' => 'success',
+            'message' => ''
+        ]);
+    }
 }

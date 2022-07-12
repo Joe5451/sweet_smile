@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Product;
+use App\Models\ProductSubCategoryAndProduct;
 
 class ProductController extends Controller
 {
@@ -134,12 +135,13 @@ class ProductController extends Controller
         }
     }
 
-    // public function deleteMember($id, Request $request) {
-    //     $member = Product::where('member_id', $id)->delete();
+    public function deleteProduct($id, Request $request) {
+       Product::find($id)->delete();
+       ProductSubCategoryAndProduct::where('product_id', $id)->delete(); // 子分類與商品關聯 table
 
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => ''
-    //     ]);
-    // }
+        return response()->json([
+            'status' => 'success',
+            'message' => ''
+        ]);
+    }
 }

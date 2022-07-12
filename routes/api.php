@@ -40,19 +40,19 @@ Route::prefix('admin')->group(function() {
     Route::get('/products', [AdminProductController::class, 'getProductList']);
     Route::get('/products/{id}', [AdminProductController::class, 'getProduct']);
     Route::put('/products/{id}', [AdminProductController::class, 'updateProduct']);
-    // Route::delete('/products/{id}', [AdminProductController::class, 'deleteProduct']);
+    Route::delete('/products/{id}', [AdminProductController::class, 'deleteProduct']);
 
     Route::post('/product_category', [AdminProductCategoryController::class, 'add']);
     Route::get('/product_category', [AdminProductCategoryController::class, 'getProductCategories']);
     Route::get('/product_category/{id}', [AdminProductCategoryController::class, 'getProductCategory']);
     Route::put('/product_category/{id}', [AdminProductCategoryController::class, 'updateProductCategory']);
-    
+    Route::delete('/product_category/{id}', [AdminProductCategoryController::class, 'deleteProductCategory']);
 
-    Route::post('/news', [AdminNewsController::class, 'add']);
-    Route::get('/news', [AdminNewsController::class, 'getNewsList']);
-    Route::get('/news/{id}', [AdminNewsController::class, 'getNews']);
-    Route::put('/news/{id}', [AdminNewsController::class, 'updateNews']);
-    // Route::delete('/news/{id}', [AdminNewsController::class, 'deleteNews']);
+    Route::post('/news', [AdminNewsController::class, 'addItem']);
+    Route::get('/news', [AdminNewsController::class, 'getItems']);
+    Route::get('/news/{id}', [AdminNewsController::class, 'getItem']);
+    Route::put('/news/{id}', [AdminNewsController::class, 'updateItem']);
+    Route::delete('/news/{id}', [AdminNewsController::class, 'deleteItem']);
 
     Route::get('/about', [AdminPageController::class, 'getAbout']);
     Route::put('/about', [AdminPageController::class, 'updateAbout']);

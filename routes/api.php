@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ProductCategoryController as AdminProductCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\HomeSliderController as AdminHomeSliderController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 
@@ -54,6 +55,12 @@ Route::prefix('admin')->group(function() {
     Route::put('/news/{id}', [AdminNewsController::class, 'updateItem']);
     Route::delete('/news/{id}', [AdminNewsController::class, 'deleteItem']);
 
+    Route::post('/home_slider', [AdminHomeSliderController::class, 'addItem']);
+    Route::get('/home_slider', [AdminHomeSliderController::class, 'getItems']);
+    Route::get('/home_slider/{id}', [AdminHomeSliderController::class, 'getItem']);
+    Route::put('/home_slider/{id}', [AdminHomeSliderController::class, 'updateItem']);
+    Route::delete('/home_slider/{id}', [AdminHomeSliderController::class, 'deleteItem']);
+
     Route::get('/about', [AdminPageController::class, 'getAbout']);
     Route::put('/about', [AdminPageController::class, 'updateAbout']);
 
@@ -62,8 +69,3 @@ Route::prefix('admin')->group(function() {
 
     Route::post('/upload_file', [AdminTestController::class, 'test'])->name('test');
 });
-
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });

@@ -4,7 +4,11 @@
         
         <nav class="admin_nav">
             <div class="admin_nav_item">
-                <a href="#" class="admin_nav_link">首頁</a>
+                <div class="admin_navi_dropdown_title">首頁 <i class="fas fa-angle-down"></i></div>
+                <div class="admin_navi_dropdown_content">
+                    <router-link class="admin_nav_sub_link" :to="{name: 'adminHomeSliderList'}">上方輪播列表</router-link>
+                    <router-link class="admin_nav_sub_link" :to="{name: 'adminHomeSliderAdd'}">上方輪播新增</router-link>
+                </div>
             </div>
             <div class="admin_nav_item">
                 <router-link class="admin_nav_link" :to="{name: 'adminAbout'}">關於我們</router-link>

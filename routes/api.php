@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 
 // 測試
-use App\Http\Controllers\Admin\TestController as AdminTestController;
+use App\Http\Controllers\JwtDemoController as JwtDemoController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -72,5 +72,6 @@ Route::prefix('admin')->group(function() {
     // ckeditor 上傳圖片 api
     Route::post('/editor/upload', [AdminEditorController::class, 'upload']);
 
-    Route::post('/upload_file', [AdminTestController::class, 'test'])->name('test');
+    // JWT demo api
+    Route::get('/jwt_demo', [JwtDemoController::class, 'jwt_demo']);
 });

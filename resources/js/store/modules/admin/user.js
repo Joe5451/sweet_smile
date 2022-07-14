@@ -7,19 +7,28 @@ export default {
     },
     actions: {
         login(context, {account, password}) {
-            axios.post('/admin/login').then(function (response) {
+            axios.post('/admin/login', {
+                account,
+                password
+            }).then(function (response) {
                 console.log(response);
+                
+                if (response.data.status == 'success') {
+                    Qmsg.success('登入成功', {
+                        onClose() {
+                            console.log('我懂了')
+                        }
+                    });
+                } else if (response.data.status == 'fail') {
+                    Qmsg.error(response.data.message);
+                }
             });
-
-            // axios.get('/admin/login').then(function (response) {
-            //     console.log(response);
-            // });
             
-            if (account == 'admin' && password == 'aaa') {
-                context.commit('setLoginState', 1);
-            } else {
-                context.commit('setLoginState', 0);
-            }
+            // if (account == 'admin' && password == 'aaa') {
+            //     context.commit('setLoginState', 1);
+            // } else {
+            //     context.commit('setLoginState', 0);
+            // }
         },
     },
     mutations: {

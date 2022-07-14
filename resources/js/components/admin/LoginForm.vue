@@ -26,7 +26,24 @@
                 let account = $('input[name=account]').val();
                 let password = $('input[name=password]').val();
 
-                await this.$store.dispatch('admin_user/login', {account, password});
+                // await this.$store.dispatch('admin_user/login', {account, password});
+
+                await axios.post('/admin/login', {
+                    account,
+                    password
+                }).then(function (response) {
+                    console.log(response);
+                    
+                    if (response.data.status == 'success') {
+                        Qmsg.success('登入成功', {
+                            onClose() {
+                                
+                            }
+                        });
+                    } else if (response.data.status == 'fail') {
+                        Qmsg.error(response.data.message);
+                    }
+                });
             }
         }
     }

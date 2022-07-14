@@ -17,7 +17,7 @@
 
 <script>
     export default {
-        name: 'AboutAddEdit',
+        name: 'AboutEdit',
         data() {
             return {
                 content: '',

@@ -28,6 +28,8 @@ export default {
         setToken(state, {access_token, expires_in}) {
             state.access_token = access_token;
             state.expires_in = expires_in;
+
+            this.commit('admin_setting/updateCkeditorConfigAuthorizationToken', access_token);
         }
     },
     getters: {

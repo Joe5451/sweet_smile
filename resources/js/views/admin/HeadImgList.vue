@@ -57,14 +57,14 @@
                     headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
-                    console.log(response);
+                    // console.log(response);
                     vm.head_imgs = response.data.head_imgs;
-                    vm.$store.commit('admin_setting/hideLoading');
                 })
                 .catch(function(error) {
-                    vm.$store.commit('admin_setting/hideLoading');
                     console.error("Error: ", error);
                 });
+
+                vm.$store.commit('admin_setting/hideLoading');
             }
         }
     }

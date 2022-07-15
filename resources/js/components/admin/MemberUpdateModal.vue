@@ -48,7 +48,7 @@
         watch: {
             memberId(new_member_id, old_member_id) {
                 this.name = this.mobile = this.account = this.password = '';
-                this.getMember(new_member_id);
+                // this.getMember(new_member_id);
             }
         },
         data() {
@@ -77,24 +77,37 @@
                 vm.account = vm.origin_member.account;
                 vm.mobile = vm.origin_member.mobile;
                 vm.password = vm.origin_member.password;
+            });
+
+            modal_element.addEventListener('show.bs.modal', function (event) {
+                vm.$store.commit('admin_setting/showLoading'); // 在 shown.bs.modal 執行 getMember() 關閉 loading
+                // vm.getMember(vm.memberId); // show.bs.modal 還無法使用 hide() 隱藏 modal，shown.bs.modal 才可以
+            })
+
+            modal_element.addEventListener('shown.bs.modal', function (event) {
+                vm.getMember(vm.memberId);
             })
         },
         methods: {
             async getMember(member_id) {
                 const vm = this;
 
-                vm.$store.commit('admin_setting/showLoading');
-
-                await axios.get('/admin/members/' + member_id)
+                await axios.get('/admin/members/' + member_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
-                    let member = response.data.member;
-
-                    vm.name = member.name;
-                    vm.account = member.account;
-                    vm.mobile = member.mobile;
-                    vm.origin_member.name = member.name;
-                    vm.origin_member.account = member.account;
-                    vm.origin_member.mobile = member.mobile;
+                    if (response.data.status == 'token_invalid') { // token 驗證失敗
+                        vm.modal.hide(); // 關閉 modal
+                    } else {
+                        let member = response.data.member;
+    
+                        vm.name = member.name;
+                        vm.account = member.account;
+                        vm.mobile = member.mobile;
+                        vm.origin_member.name = member.name;
+                        vm.origin_member.account = member.account;
+                        vm.origin_member.mobile = member.mobile;
+                    }
                     
                     vm.$store.commit('admin_setting/hideLoading');
                     // console.log(response);
@@ -104,7 +117,7 @@
                     console.error("Error: ", error);
                 });
             },
-            async checkForm() {
+            checkForm() {
                 $('input').removeClass('is-invalid');
                 $('input').next('.invalid-feedback').text('');
                 
@@ -138,10 +151,16 @@
                     name: this.name,
                     mobile: this.mobile,
                     password: this.password,
+                }, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
-                    vm.$store.commit('admin_setting/hideLoading');
                     // console.log(response);
+                    vm.$store.commit('admin_setting/hideLoading');
+
+                    if (response.data.status == 'token_invalid') {
+                        vm.modal.hide(); // 關閉 modal
+                    }
 
                     if (response.data.status == 'success') {
                         Swal.fire({

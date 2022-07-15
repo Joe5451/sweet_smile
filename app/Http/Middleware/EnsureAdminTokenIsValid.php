@@ -19,18 +19,17 @@ class EnsureAdminTokenIsValid
     {
         $token = $request->bearerToken();
 
-        if (is_null($token)) return $this->returnFailResponse();
+        if (is_null($token)) return $this->returnInvalidResponse();
 
         $admin_token = AdminToken::where('token', $token)->where('expires_in', '>', date('Y-m-d H:i:s'))->take(1)->get();
 
-        if (count($admin_token) == 0) return $this->returnFailResponse();
+        if (count($admin_token) == 0) return $this->returnInvalidResponse();
         else return $next($request);
     }
 
-    private function returnFailResponse() {
+    private function returnInvalidResponse() {
         return response()->json([
-            'status' => 'fail',
-            'message' => 'token 驗證失敗'
+            'status' => 'token_invalid',
         ]);
     }
 }

@@ -38,7 +38,9 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.get('/admin/about')
+                await axios.get('/admin/about', {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     // console.log(response);
                     vm.content = response.data.content;
@@ -56,8 +58,10 @@
 
                 vm.content = vm.editor.getData();
                     
-                axios.put('/admin/about?_method=PUT', {
+                axios.put('/admin/about?', {
                     content: vm.content,
+                }, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
                     vm.$store.commit('admin_setting/hideLoading');

@@ -93,7 +93,8 @@
                     params: { 
                         page: vm.page,
                         limit: vm.limit
-                    }
+                    },
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
                     vm.members = response.data.members;
@@ -130,7 +131,9 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.delete('/admin/members/' + member_id)
+                await axios.delete('/admin/members/' + member_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     vm.$store.commit('admin_setting/hideLoading');
                     // console.log(response);

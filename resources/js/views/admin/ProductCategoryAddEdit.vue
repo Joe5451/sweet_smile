@@ -281,6 +281,10 @@
                 
                 axios.post('/admin/product_category', {
                     data: json_data,
+                }, {
+                    headers: {
+                        'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token
+                    }
                 })
                 .then(function (response) {
                     vm.$store.commit('admin_setting/hideLoading');
@@ -321,7 +325,8 @@
                     params: { 
                         page: 1,
                         limit: null
-                    }
+                    },
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
                     // console.log(response);

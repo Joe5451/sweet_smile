@@ -135,7 +135,9 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.get('/admin/products/' + product_id)
+                await axios.get('/admin/products/' + product_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     let product = response.data.product;
 
@@ -201,7 +203,8 @@
                     content: vm.content,
                 }, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token
                     }
                 })
                 .then(function (response) {
@@ -251,7 +254,9 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.delete('/admin/products/' + product_id)
+                await axios.delete('/admin/products/' + product_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     vm.$store.commit('admin_setting/hideLoading');
                     // console.log(response);

@@ -7,10 +7,10 @@ export default {
         ckeditor_config: {
             simpleUpload: { // 圖片、檔案上傳設定
                 uploadUrl: 'http://127.0.0.1/sweet_smile/public/api/admin/editor/upload',
-                // withCredentials: true, // Enable the XMLHttpRequest.withCredentials property.
+                withCredentials: true, // Enable the XMLHttpRequest.withCredentials property.
                 headers: { // Headers sent along with the XMLHttpRequest to the upload server.
                     'X-CSRF-TOKEN': 'CSRF-Token',
-                    // Authorization: 'Bearer <JSON Web Token>'
+                    Authorization: '' // 'Bearer <JSON Web Token>'
                 }
             },
             link: { // 連結可設定開新視窗 (非 plugin)
@@ -45,6 +45,9 @@ export default {
         },
         hideLoading(state) {
             state.loading = false;
+        },
+        updateCkeditorConfigAuthorizationToken(state, token) {
+            state.ckeditor_config.simpleUpload.headers.Authorization = 'Bearer ' + token;
         },
         updateContentComponentKey(state) {
             const word = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz0123456789";

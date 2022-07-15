@@ -109,7 +109,8 @@
                     display: vm.display
                 }, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token
                     }
                 })
                 .then(function (response) {

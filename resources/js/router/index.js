@@ -11,10 +11,8 @@ import AdminWelcome from '../views/admin/Welcome.vue';
 import AdminHomeSliderList from '../views/admin/HomeSliderList.vue';
 import AdminHomeSliderAddEdit from '../views/admin/HomeSliderAddEdit.vue';
 import AdminHomeSliderUpdateEdit from '../views/admin/HomeSliderUpdateEdit.vue';
-
 import AdminHeadImgList from '../views/admin/HeadImgList.vue';
 import AdminHeadImgUpdateEdit from '../views/admin/HeadImgUpdateEdit.vue'
-
 import AdminAboutEdit from '../views/admin/AboutEdit.vue';
 import AdminMemberList from '../views/admin/MemberList.vue';
 import AdminMemberAddEdit from '../views/admin/MemberAddEdit.vue';
@@ -27,9 +25,6 @@ import AdminProductUpdateEdit from '../views/admin/ProductUpdateEdit.vue';
 import AdminNewsList from '../views/admin/NewsList.vue';
 import AdminNewsAddEdit from '../views/admin/NewsAddEdit.vue';
 import AdminNewsUpdateEdit from '../views/admin/NewsUpdateEdit.vue';
-
-// test
-import AdminUploadFileDemo from '../views/admin/UploadFileDemo.vue';
 
 Vue.use(Router);
 
@@ -146,13 +141,7 @@ export default new Router({
                     path: 'product/category_update/:product_category_id',
                     name: 'adminProductCategoryUpdate',
                     component: AdminProductCategoryUpdateEdit,
-                },
-                
-                {
-                    path: 'upload_file_demo',
-                    name: 'adminUploadFileDemo',
-                    component: AdminUploadFileDemo,
-                },
+                }
             ]
         },
     ],

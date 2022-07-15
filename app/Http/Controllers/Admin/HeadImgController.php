@@ -11,17 +11,10 @@ use App\Models\HeadImg;
 class HeadImgController extends Controller
 {
     public function getItems(Request $request) {
-        $all_header = $request->header();
-        $bearer_token = $request->bearerToken();
-
-        // access-control-allow-origin
-
         $head_imgs = HeadImg::select(['id', 'page_name', 'img'])->get();
         
         return response()->json([
             'head_imgs' => $head_imgs,
-            'all_header' => $all_header,
-            'token' => $bearer_token
         ]);
     }
 
@@ -29,6 +22,7 @@ class HeadImgController extends Controller
         $head_img = HeadImg::find($id);
 
         return response()->json([
+            'status' => 'success',
             'head_img' => $head_img
         ]);
     }

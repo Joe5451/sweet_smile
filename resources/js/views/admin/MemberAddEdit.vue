@@ -102,6 +102,8 @@
                         name: vm.name,
                         mobile: vm.mobile,
                         password: vm.password,
+                    }, {
+                        headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                     })
                     .then(function (response) {
                         vm.$store.commit('admin_setting/hideLoading');

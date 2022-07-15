@@ -70,13 +70,16 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.get('/admin/head_img/' + head_img_id)
+                await axios.get('/admin/head_img/' + head_img_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     // console.log(response);
-                    vm.page_name = response.data.head_img.page_name;
-                    vm.img_url = response.data.head_img.img;
-                    
-                    vm.$store.commit('admin_setting/hideLoading');
+                    if (response.data.status == 'success') {
+                        vm.page_name = response.data.head_img.page_name;
+                        vm.img_url = response.data.head_img.img;
+                        vm.$store.commit('admin_setting/hideLoading');
+                    }
                 })
                 .catch(function(error) {
                     vm.$store.commit('admin_setting/hideLoading');
@@ -118,7 +121,8 @@
                     is_img_update: vm.is_img_update,
                 }, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token
                     }
                 })
                 .then(function (response) {

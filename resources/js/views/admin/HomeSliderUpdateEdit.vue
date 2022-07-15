@@ -94,7 +94,9 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.get('/admin/home_slider/' + slider_id)
+                await axios.get('/admin/home_slider/' + slider_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     // console.log(response);
                     let slider = response.data.slider;
@@ -151,7 +153,8 @@
                     display: vm.display
                 }, {
                     headers: {
-                        'Content-Type': 'multipart/form-data'
+                        'Content-Type': 'multipart/form-data',
+                        'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token 
                     }
                 })
                 .then(function (response) {
@@ -201,7 +204,9 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.delete('/admin/home_slider/' + slider_id)
+                await axios.delete('/admin/home_slider/' + slider_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     vm.$store.commit('admin_setting/hideLoading');
                     // console.log(response);

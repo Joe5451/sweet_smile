@@ -2,16 +2,15 @@ require('./bootstrap');
 require('./component');
 require('./plugins/dropify');
 
-
 // 引入 bootstrap 並設為原域變數，使得可以使用 js script 控制諸如 modal 等元件開關
 const bootstrap =  require('bootstrap');
 window.bootstrap = bootstrap;
 
 // 訊息提示插件 https://github.com/snwjas/Message.js
-const Qmsg = require('./plugins/message.js');
-window.Qmsg = Qmsg();
+const qmsg = require('./plugins/message.js');
+window.Qmsg = qmsg();
 
-window.Qmsg.config({
+Qmsg.config({
     timeout: 1500
 })
 
@@ -33,6 +32,24 @@ const app = new Vue({
     store
 });
 
+// axios 攔截器 response 設定，在處理 then 或 catch 之前攔截
+axios.interceptors.response.use(function (res) {
+    console.log(res);
+    if (res.data.status == 'token_invalid') {
+        store.commit('admin_setting/showLoading');
+
+        Qmsg.error('請重新登入', {
+            onClose() {
+                router.push({name: 'adminLogin'});
+                // store.commit('admin_setting/hideLoading');
+            }
+        });
+    }
+
+    return res;
+});
+
+/*
 router.beforeEach(async (to, from, next) => {
     const requireAdminAuth = to.matched.some(record => record.meta.requireAdminAuth);
 
@@ -47,11 +64,8 @@ router.beforeEach(async (to, from, next) => {
             if (response.data.status == 'success') {
                 next();
             } else if (response.data.status == 'fail') {
-                store.commit('admin_setting/showLoading');
-
-                window.Qmsg.error('請重新登入', {
+                Qmsg.error('請重新登入', {
                     onClose() {
-                        store.commit('admin_setting/hideLoading');
                         next({name: 'adminLogin'});
                     }
                 });
@@ -61,3 +75,4 @@ router.beforeEach(async (to, from, next) => {
         next();
     }
 })
+*/

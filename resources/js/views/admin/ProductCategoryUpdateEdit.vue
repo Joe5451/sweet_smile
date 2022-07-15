@@ -294,6 +294,8 @@
                 
                 axios.post('/admin/product_category/' + vm.product_category_id + '?_method=PUT', {
                     data: json_data,
+                }, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
                     vm.$store.commit('admin_setting/hideLoading');
@@ -333,7 +335,8 @@
                     params: { 
                         page: 1,
                         limit: null
-                    }
+                    },
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
                     // console.log(response);
@@ -346,10 +349,11 @@
             async getProductCategory() {
                 const vm = this;
 
-                await axios.get('/admin/product_category/' + vm.product_category_id)
+                await axios.get('/admin/product_category/' + vm.product_category_id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     // console.log(response);
-
                     Object.assign(vm, response.data.product_category);
                 })
                 .catch(function(error) {
@@ -388,7 +392,9 @@
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.delete('/admin/product_category/' + id)
+                await axios.delete('/admin/product_category/' + id, {
+                    headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
+                })
                 .then(function (response) {
                     vm.$store.commit('admin_setting/hideLoading');
                     // console.log(response);

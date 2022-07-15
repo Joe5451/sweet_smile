@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 // 管理後台
 Route::prefix('admin')->group(function() {
     Route::post('/login', [AdminLoginController::class, 'login'])->name('admin.login');
-    Route::get('/login', [AdminLoginController::class, 'test']);
+    Route::post('/checkToken', [AdminLoginController::class, 'checkToken']);
 
     Route::post('/members', [AdminMemberController::class, 'add']);
     Route::get('/members', [AdminMemberController::class, 'getMemberList']);

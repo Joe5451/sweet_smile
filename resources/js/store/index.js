@@ -12,8 +12,8 @@ export default new Vuex.Store({
     plugins: [
         createPersistedState({
             paths: [ // 保存項目
-                'admin_user.admin_token',
-                'admin_user.login_state',
+                'admin_user.access_token',
+                'admin_user.expires_in',
                 'admin_setting.sidebar_show'
             ],
         }),

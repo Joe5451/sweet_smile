@@ -31,7 +31,6 @@ import AdminNewsUpdateEdit from '../views/admin/NewsUpdateEdit.vue';
 // test
 import AdminUploadFileDemo from '../views/admin/UploadFileDemo.vue';
 
-
 Vue.use(Router);
 
 export default new Router({
@@ -56,7 +55,7 @@ export default new Router({
             path: '/admin',
             name: 'admin',
             component: AdminDashboard,
-            meta: {},
+            meta: { requireAdminAuth: true},
             children: [
                 {
                     path: 'welcome',

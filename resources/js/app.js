@@ -11,6 +11,10 @@ window.bootstrap = bootstrap;
 const Qmsg = require('./plugins/message.js');
 window.Qmsg = Qmsg();
 
+window.Qmsg.config({
+    timeout: 1500
+})
+
 import jquery from 'jquery';
 import Swal from 'sweetalert2';
 
@@ -28,3 +32,32 @@ const app = new Vue({
     router,
     store
 });
+
+router.beforeEach(async (to, from, next) => {
+    const requireAdminAuth = to.matched.some(record => record.meta.requireAdminAuth);
+
+    if (requireAdminAuth) {
+        let token = store.state.admin_user.access_token;
+        
+        await axios.post('/admin/checkToken', {
+            token
+        }).then(function (response) {
+            console.log(response);
+            
+            if (response.data.status == 'success') {
+                next();
+            } else if (response.data.status == 'fail') {
+                store.commit('admin_setting/showLoading');
+
+                window.Qmsg.error('請重新登入', {
+                    onClose() {
+                        store.commit('admin_setting/hideLoading');
+                        next({name: 'adminLogin'});
+                    }
+                });
+            }
+        });
+    } else {
+        next();
+    }
+})

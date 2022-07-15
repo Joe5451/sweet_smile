@@ -42,7 +42,7 @@ router.beforeEach(async (to, from, next) => {
         await axios.post('/admin/checkToken', {
             token
         }).then(function (response) {
-            console.log(response);
+            // console.log(response);
             
             if (response.data.status == 'success') {
                 next();

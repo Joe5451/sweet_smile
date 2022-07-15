@@ -62,7 +62,7 @@ Route::prefix('admin')->group(function() {
     Route::put('/home_slider/{id}', [AdminHomeSliderController::class, 'updateItem']);
     Route::delete('/home_slider/{id}', [AdminHomeSliderController::class, 'deleteItem']);
 
-    Route::get('/head_img', [AdminHeadImgController::class, 'getItems']);
+    Route::middleware(['auth.admin_api'])->get('/head_img', [AdminHeadImgController::class, 'getItems']);
     Route::get('/head_img/{id}', [AdminHeadImgController::class, 'getItem']);
     Route::put('/head_img/{id}', [AdminHeadImgController::class, 'updateItem']);
 

@@ -34,14 +34,14 @@ const app = new Vue({
 
 // axios 攔截器 response 設定，在處理 then 或 catch 之前攔截
 axios.interceptors.response.use(function (res) {
-    console.log(res);
+    // console.log(res);
     if (res.data.status == 'token_invalid') {
         store.commit('admin_setting/showLoading');
 
         Qmsg.error('請重新登入', {
             onClose() {
                 router.push({name: 'adminLogin'});
-                // store.commit('admin_setting/hideLoading');
+                // store.commit('admin_setting/hideLoading'); 在 return res 後的 then 或 catch 會執行
             }
         });
     }

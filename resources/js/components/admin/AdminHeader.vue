@@ -4,7 +4,7 @@
             <i class="fas fa-angle-double-left"></i>
         </button>
 
-        <button class="btn admin_header_btn border-start ms-auto">
+        <button class="btn admin_header_btn border-start ms-auto" @click="logout($event)">
             <i class="fas fa-sign-out-alt"></i>
             登出
         </button>
@@ -25,6 +25,19 @@
                 // $('.admin_container').toggleClass('extend');
                 // $('.admin_sidebar').toggleClass('hidden');
                 // $('.admin_sidebar_close_mask').toggleClass('show');
+            },
+            async logout(e) {
+                $(e.target).prop('disabled', true);
+                
+                const vm = this;
+
+                await this.$store.dispatch('admin_user/logout');
+
+                Qmsg.success('已登出', {
+                    onClose() {
+                        vm.$router.push({name: 'adminLogin'});
+                    }
+                });
             }
         }
     }

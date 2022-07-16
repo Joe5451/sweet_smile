@@ -10,5 +10,30 @@
 <script>
     export default {
         name: 'Welcome',
+        mounted() {
+            this.checkToken();
+        },
+        methods: {
+            async checkToken() {
+                const vm = this;
+                let token = this.$store.state.admin_user.access_token;
+        
+                await axios.post('/admin/checkToken', {
+                    token
+                }).then(function (response) {
+                    // console.log(response);
+                    
+                    if (response.data.status == 'success') {
+                        // 
+                    } else {
+                        Qmsg.error('請重新登入', {
+                            onClose() {
+                                vm.$router.push({name: 'adminLogin'});
+                            }
+                        });
+                    }
+                });
+            }
+        }
     }
 </script>

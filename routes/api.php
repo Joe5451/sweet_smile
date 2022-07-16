@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 // 管理後台
 Route::prefix('admin')->group(function() {
     Route::post('/login', [AdminLoginController::class, 'login'])->name('admin.login');
+    Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
     Route::post('/checkToken', [AdminLoginController::class, 'checkToken']);
 
     Route::middleware(['auth.admin_api'])->group(function() {

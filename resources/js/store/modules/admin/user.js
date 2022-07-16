@@ -1,7 +1,7 @@
 export default {
     namespaced: true,
     state: {
-        user: null,
+        // user: null,
         access_token: null,
         expires_in: null,
     },
@@ -20,6 +20,16 @@ export default {
         //         }
         //     });
         // },
+        async logout(context) {
+            await axios.post('/admin/logout', {
+                token: context.state.access_token
+            })
+            // .then(async function (response) {
+            //     console.log(response);
+            // });
+
+            context.commit('setToken', {access_token: null, expires_in: null});
+        },
     },
     mutations: {
         setLoginState(state, login_state) {

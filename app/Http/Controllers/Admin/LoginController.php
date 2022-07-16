@@ -99,7 +99,35 @@ class LoginController extends Controller
         }
     }
 
-    public function createToken($payload)
+    public function logout(Request $request)
+    {
+        $data = $request->input();
+
+        $validator = Validator::make($data,
+        [
+            'token' => 'required|string',
+        ]);
+
+        if (!$validator->fails()) {
+            AdminToken::where('token', $data['token'])->delete();
+                
+            return response()->json([
+                'status' => 'success',
+                'message' => '',
+            ]);
+            
+        } else {
+            $error = $validator->messages();
+
+            return response()->json([
+                'status' => 'fail',
+                'message' => '',
+                'error' => $error
+            ]);
+        }
+    }
+
+    private function createToken($payload)
     {
         $jwt = JWT::encode($payload, $this->jwt_key, $this->jwt_algo);
 

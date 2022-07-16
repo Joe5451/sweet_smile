@@ -26,12 +26,6 @@ window.Vue = Vue;
 window.$ = jquery;
 window.Swal = Swal;
 
-const app = new Vue({
-    el: '#app',
-    router,
-    store
-});
-
 // axios 攔截器 response 設定，在處理 then 或 catch 之前攔截
 axios.interceptors.response.use(function (res) {
     // console.log(res);
@@ -47,6 +41,12 @@ axios.interceptors.response.use(function (res) {
     }
 
     return res;
+});
+
+const app = new Vue({
+    el: '#app',
+    router,
+    store
 });
 
 /*

@@ -7,7 +7,7 @@
         <div class="container mb-80px">
             <div class="row">
                 <div class="col-md-6" v-for="new_data in news" :key="new_data.id">
-                    <router-link class="news_list" :to="{name: 'news', params: { news_id: new_data.id }}">
+                    <router-link class="news_list" :to="{name: 'news', params: { news_id: new_data.id } }">
                         <div class="news_list_img_wrap">
                             <img :src="new_data.cover_img" class="news_list_img">
                         </div>
@@ -22,19 +22,19 @@
 
                 <ul class="pagination custom_pagination justify-content-center flex-wrap mb-4" v-if="total > 0">
                     <li class="page-item m-1" v-if="page != 1">
-                        <router-link class="page-link rounded" :to="{name: 'newsList', params: { page: page - 1 }}" aria-label="Previous">
+                        <router-link class="page-link rounded" :to="{name: 'newsList', params: { page: page - 1 } }" aria-label="Previous">
                             <i class="fas fa-angle-left"></i>
                         </router-link>
                     </li>
 
                     <li class="page-item m-1" :class="{ active: (cur_page_num == page) }" v-for="cur_page_num in page_num" :key="cur_page_num">
-                        <router-link class="page-link rounded" :to="{name: 'newsList', params: { page: cur_page_num }}">
+                        <router-link class="page-link rounded" :to="{name: 'newsList', params: { page: cur_page_num } }">
                             {{ cur_page_num }}
                         </router-link>
                     </li>
 
                     <li class="page-item m-1" v-if="page != page_num">
-                        <router-link class="page-link rounded" :to="{name: 'newsList', params: { page: page + 1 }}" aria-label="Next">
+                        <router-link class="page-link rounded" :to="{name: 'newsList', params: { page: page + 1 } }" aria-label="Next">
                             <i class="fas fa-angle-right"></i>
                         </router-link>
                     </li>

@@ -43,11 +43,19 @@ export default {
     computed: {
         head_img() {
             return this.$store.state.app.head_img.news;
+        },
+        news_id() {
+            return this.$route.params.news_id;
+        }
+    },
+    watch: {
+        news_id(new_id, old_id) {
+            this.getNews(new_id);
         }
     },
     data() {
         return {
-            news_id: this.$route.params.news_id,
+            // news_id: this.$route.params.news_id,
             news: null,
             // news: {
             //     cover_img: '',
@@ -59,16 +67,20 @@ export default {
         }
     },
     async mounted() {
+        this.$store.commit('app/setCurrentPage', 'news');
         await this.getNews(this.news_id);
+    },
+    destroyed() {
+        this.$store.commit('app/setCurrentPage', '');
     },
     methods: {
         async getNews(news_id) {
             const vm = this;
+            vm.news = null;
 
             await axios.get('/news/' + news_id)
             .then(function (response) {
                 // console.log(response);
-
                 vm.news = response.data.new;
             })
             .catch(function(error) {

@@ -7,7 +7,10 @@ import Home from '../views/frontend/Home.vue';
 import About from '../views/frontend/About.vue';
 import NewsList from '../views/frontend/NewsList.vue';
 import News from '../views/frontend/News.vue';
+import ProductList from '../views/frontend/ProductList.vue';
+// import Product from '../views/frontend/Product.vue';
 import Contact from '../views/frontend/Contact.vue';
+import MemberLogin from '../views/frontend/MemberLogin.vue';
 import Cart from '../views/frontend/Cart.vue';
 
 // admin views
@@ -66,9 +69,19 @@ export default new Router({
                     component: News,
                 },
                 {
+                    path: 'product/list/:subcategory_id/:page?',
+                    name: 'productList',
+                    component: ProductList,
+                },
+                {
                     path: '/contact',
                     name: 'contact',
                     component: Contact,
+                },
+                {
+                    path: 'member/login',
+                    name: 'memberLogin',
+                    component: MemberLogin,
                 },
                 {
                     path: '/cart',

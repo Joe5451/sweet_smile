@@ -35,6 +35,15 @@ class ProductCategory extends Model
         ->orderBy('product_subcategory_id', 'asc');
     }
 
+    public function enabled_product_subcategories()
+    {
+        return $this->hasMany(ProductSubCategory::class, 'product_category_id')
+        ->select(['product_subcategory_id', 'subcategory_display', 'subcategory_name', 'subcategory_sequence'])
+        ->where('subcategory_display', 1)
+        ->orderBy('subcategory_sequence', 'asc')
+        ->orderBy('product_subcategory_id', 'asc');
+    }
+
     // public function prices()
     // {
     //     if (!$this->_prices){

@@ -15,9 +15,9 @@
                 </router-link>
 
                 <div class="header_btn_group">
-                    <a href="member_data.php" class="header_btn">
+                    <router-link :to="{name: 'memberLogin'}" class="header_btn">
                         <i class="far fa-user"></i>
-                    </a>
+                    </router-link>
                     <router-link :to="{name: 'cart'}" class="header_btn">
                         <i class="fas fa-shopping-cart"></i>
                         <div class="header_btn_cart_qty">0</div>
@@ -32,57 +32,26 @@
             <router-link :to="{name: 'about'}" class="header_nav_link">
                 <span>關於我們</span>
             </router-link>
-            <router-link :to="{name: 'newsList'}" class="header_nav_link">
+            <router-link :to="{name: 'newsList'}" class="header_nav_link"
+                :class="{active: current_page == 'news'}">
                 <span>最新消息</span>
             </router-link>
-            <div class="header_nav_link">
+            <div class="header_nav_link"
+                :class="{active: current_page == 'shopping_mall'}">
                 <span>購物商城</span>
 
                 <ul class="header_nav_menu">
-                    <li>
-                        <span class="header_nav_menu_link">分類一</span>
+                    <li v-for="product_category in product_categories"
+                        :key="product_category.product_category_id">
+                        <span class="header_nav_menu_link">{{ product_category.category_name }}</span>
                         
                         <div class="header_nav_sub_menu_wrap">
                             <ul class="header_nav_sub_menu">
-                                <li>
-                                    <a href="product_list.php">子分類1</a>
-                                </li>
-                                <li>
-                                    <a href="product_list.php">子分類2</a>
-                                </li>
-                                <li>
-                                    <a href="product_list.php">子分類3</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="header_nav_menu_link">分類二</span>
-
-                        <div class="header_nav_sub_menu_wrap">
-                            <ul class="header_nav_sub_menu">
-                                <li>
-                                    <a href="product_list.php">子分類4</a>
-                                </li>
-                                <li>
-                                    <a href="product_list.php">子分類5</a>
-                                </li>
-                                <li>
-                                    <a href="product_list.php">子分類6</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li>
-                        <span class="header_nav_menu_link">分類三</span>
-
-                        <div class="header_nav_sub_menu_wrap">
-                            <ul class="header_nav_sub_menu">
-                                <li>
-                                    <a href="product_list.php">子分類7</a>
-                                </li>
-                                <li>
-                                    <a href="product_list.php">子分類8</a>
+                                <li v-for="product_subcategory in product_category.enabled_product_subcategories"
+                                :key="product_subcategory.product_subcategory_id">
+                                    <router-link :to="{ name: 'productList', params: {subcategory_id: product_subcategory.product_subcategory_id} }">
+                                        {{ product_subcategory.subcategory_name }}
+                                    </router-link>
                                 </li>
                             </ul>
                         </div>
@@ -102,36 +71,28 @@
             <router-link :to="{name: 'about'}" class="header_nav_link_mobile">
                 <span>關於我們</span>
             </router-link>
-            <router-link :to="{name: 'newsList'}" class="header_nav_link_mobile">
+            <router-link :to="{name: 'newsList'}" class="header_nav_link_mobile"
+                :class="{active: current_page == 'news'}">
                 <span>最新消息</span>
             </router-link>
             <div class="header_nav_link_mobile">
                 <span class="header_nav_dropdown_title">購物商城 <i class="fas fa-angle-down"></i></span>
 
                 <div class="header_nav_dropdown_content">
-                    <div class="header_nav_sub_dropdown">
-                        <div class="header_nav_sub_dropdown_title">分類一 <i class="fas fa-angle-down"></i></div>
-                        <div class="header_nav_sub_dropdown_content">
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類1</a>
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類2</a>
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類3</a>
+                    <div class="header_nav_sub_dropdown"
+                        v-for="product_category in product_categories"
+                        :key="product_category.product_category_id">
+                        <div class="header_nav_sub_dropdown_title" @click="showProductSubcategoryMenu">
+                            {{ product_category.category_name }}
+                            <i class="fas fa-angle-down"></i>
                         </div>
-                    </div>
-
-                    <div class="header_nav_sub_dropdown">
-                        <div class="header_nav_sub_dropdown_title">分類二 <i class="fas fa-angle-down"></i></div>
                         <div class="header_nav_sub_dropdown_content">
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類4</a>
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類5</a>
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類6</a>
-                        </div>
-                    </div>
-
-                    <div class="header_nav_sub_dropdown">
-                        <div class="header_nav_sub_dropdown_title">分類三 <i class="fas fa-angle-down"></i></div>
-                        <div class="header_nav_sub_dropdown_content">
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類7</a>
-                            <a href="product_list.php" class="header_nav_sub_dropdown_link">子分類8</a>
+                            <router-link class="header_nav_sub_dropdown_link"
+                                :to="{ name: 'productList', params: {subcategory_id: product_subcategory.product_subcategory_id} }"
+                                v-for="product_subcategory in product_category.enabled_product_subcategories"
+                                :key="product_subcategory.product_subcategory_id">
+                                {{ product_subcategory.subcategory_name }}
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -145,6 +106,29 @@
 
 <script>
     export default {
+        computed: {
+            product_categories() {
+                return this.$store.state.app.product_categories;
+            },
+            current_page() {
+                return this.$store.state.app.current_page;
+            }
+        },
+        methods: {
+            showProductSubcategoryMenu(e) {
+                console.log(e);
+                const dispatch_element = $(e.target);
+                const parent_element = dispatch_element.parent('.header_nav_sub_dropdown');
+                
+                if (parent_element.hasClass('active')) {
+                    parent_element.removeClass('active');
+                    dispatch_element.next('.header_nav_sub_dropdown_content').stop().slideUp();
+                } else {
+                    parent_element.addClass('active');
+                    dispatch_element.next('.header_nav_sub_dropdown_content').stop().slideDown();
+                }
+            }
+        },
         mounted() {
             $('.header_menu_btn').click(function() {
                 $(this).toggleClass('active');
@@ -165,17 +149,17 @@
                 }
             });
 
-            $('.header_nav_sub_dropdown_title').click(function() {
-                let parent_element = $(this).parent('.header_nav_sub_dropdown');
+            // $('.header_nav_sub_dropdown_title').click(function() {
+            //     let parent_element = $(this).parent('.header_nav_sub_dropdown');
                 
-                if (parent_element.hasClass('active')) {
-                    parent_element.removeClass('active');
-                    $(this).next('.header_nav_sub_dropdown_content').stop().slideUp();
-                } else {
-                    parent_element.addClass('active');
-                    $(this).next('.header_nav_sub_dropdown_content').stop().slideDown();
-                }
-            });
+            //     if (parent_element.hasClass('active')) {
+            //         parent_element.removeClass('active');
+            //         $(this).next('.header_nav_sub_dropdown_content').stop().slideUp();
+            //     } else {
+            //         parent_element.addClass('active');
+            //         $(this).next('.header_nav_sub_dropdown_content').stop().slideDown();
+            //     }
+            // });
         }
     }
 </script>

@@ -10,6 +10,8 @@ export default {
         },
         home_slider: [],
         about_content: '',
+        product_categories: [],
+        current_page: ''
     },
     actions: {
         async getData(context) {
@@ -21,10 +23,10 @@ export default {
             .catch(function(error) {
                 console.error("Error: ", error);
             });
-        },
+        }
     },
     mutations: {
-        setData(state, {head_img, about_content, home_slider}) {
+        setData(state, {head_img, about_content, home_slider, product_categories}) {
             head_img.forEach(item => {
                 switch (item.page_name)
                 {
@@ -49,6 +51,10 @@ export default {
 
             state.home_slider = home_slider;
             state.about_content = about_content;
+            state.product_categories = product_categories;
+        },
+        setCurrentPage(state, page_name) {
+            state.current_page = page_name;
         }
     }
 }

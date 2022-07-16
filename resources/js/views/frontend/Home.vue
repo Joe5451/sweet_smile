@@ -274,7 +274,7 @@
                     }
                 })
                 .then(function (response) {
-                    console.log(response);
+                    // console.log(response);
                     vm.news = response.data.news;
                 })
                 .catch(function(error) {

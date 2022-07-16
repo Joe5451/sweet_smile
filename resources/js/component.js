@@ -4,7 +4,9 @@ import Vue from 'vue';
 import { GridLoader } from '@saeris/vue-spinners' // loading-spinner
 
 // frontend components
-import MainHeader from './components/MainHeader.vue';
+import MainHeader from './components/frontend/MainHeader.vue';
+import MainFooter from './components/frontend/MainFooter.vue';
+import TopBtn from './components/frontend/TopBtn.vue';
 
 // admin components
 import AdminLoginForm from './components/admin/LoginForm.vue';
@@ -16,6 +18,8 @@ import AdminMemberUpdateModal from './components/admin/MemberUpdateModal.vue';
 
 // regist global frontend components
 Vue.component('main-header', MainHeader);
+Vue.component('main-footer', MainFooter);
+Vue.component('top-button', TopBtn);
 
 // regist global admin components
 Vue.component('admin-login-form', AdminLoginForm);

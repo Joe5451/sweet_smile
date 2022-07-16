@@ -2,7 +2,12 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 // frontend views
+import App from '../views/frontend/App.vue';
 import Home from '../views/frontend/Home.vue';
+import About from '../views/frontend/About.vue';
+import NewsList from '../views/frontend/NewsList.vue';
+import Contact from '../views/frontend/Contact.vue';
+import Cart from '../views/frontend/Cart.vue';
 
 // admin views
 import AdminLogin from '../views/admin/Login.vue';
@@ -37,8 +42,34 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: Home,
+            component: App,
+            children: [
+                {
+                    path: '/',
+                    name: 'home',
+                    component: Home,
+                },
+                {
+                    path: '/about',
+                    name: 'about',
+                    component: About,
+                },
+                {
+                    path: '/news',
+                    name: 'newsList',
+                    component: NewsList,
+                },
+                {
+                    path: '/contact',
+                    name: 'contact',
+                    component: Contact,
+                },
+                {
+                    path: '/cart',
+                    name: 'cart',
+                    component: Cart,
+                },
+            ]
         },
         {
             path: '/admin/login',

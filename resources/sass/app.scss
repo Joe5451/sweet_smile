@@ -11,7 +11,8 @@
 @import 'reset';
 
 // 前台
-@import 'style';
+@import 'frontend/layout';
+@import 'frontend/page';
 
 // 後台
 @import 'admin';
@@ -24,6 +25,9 @@
 
 // ckeditor 插件
 @import 'ckeditor';
+
+// 前台 ckeditor content style
+@import 'ck-content';
 
 // message 插件
 @import 'message';

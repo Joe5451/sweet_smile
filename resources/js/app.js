@@ -16,6 +16,8 @@ Qmsg.config({
 
 import jquery from 'jquery';
 import Swal from 'sweetalert2';
+import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle';
 
 // vue
 import Vue from 'vue';
@@ -25,6 +27,7 @@ import store from './store';
 window.Vue = Vue;
 window.$ = jquery;
 window.Swal = Swal;
+window.Swiper = Swiper;
 
 // axios 攔截器 response 設定，在處理 then 或 catch 之前攔截
 axios.interceptors.response.use(function (res) {
@@ -47,6 +50,12 @@ const app = new Vue({
     el: '#app',
     router,
     store
+});
+
+router.beforeEach(async (to, from, next) => {
+    $('.header_nav_mobile').hide();
+    $('.header_menu_btn').removeClass('active');
+    next();
 });
 
 /*

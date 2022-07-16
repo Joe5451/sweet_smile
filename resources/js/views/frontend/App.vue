@@ -11,9 +11,9 @@
 </template>
 
 <script>
-export default({
-    mounted() {
-        
+export default {
+    async mounted() {
+        await this.$store.dispatch('app/getData');
     },
-})
+}
 </script>

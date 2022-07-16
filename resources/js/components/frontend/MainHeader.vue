@@ -96,7 +96,7 @@
         </nav>
 
         <nav class="header_nav_mobile">
-            <router-link :to="{name: 'home'}" class="header_nav_link_mobile">
+            <router-link :to="{name: 'home'}" exact class="header_nav_link_mobile">
                 <span>首頁</span>
             </router-link>
             <router-link :to="{name: 'about'}" class="header_nav_link_mobile">

@@ -19,22 +19,32 @@ class NewsSeeder extends Seeder
         <h2>Bilingual Personality Disorder</h2><figure class="image image-style-side"><img src="https://c.cksource.com/a/1/img/docs/sample-image-bilingual-personality-disorder.jpg"><figcaption>One language, one person.</figcaption></figure><p>This may be the first time you hear about this made-up disorder but it actually isn’t so far from the truth. Even the studies that were conducted almost half a century show that <strong>the language you speak has more effects on you than you realise</strong>.</p><p>One of the very first experiments conducted on this topic dates back to 1964. <a href="https://www.researchgate.net/publication/9440038_Language_and_TAT_content_in_bilinguals">In the experiment</a> designed by linguist Ervin-Tripp who is an authority expert in psycholinguistic and sociolinguistic studies, adults who are bilingual in English in French were showed series of pictures and were asked to create 3-minute stories. In the end participants emphasized drastically different dynamics for stories in English and French.</p><p>Another ground-breaking experiment which included bilingual Japanese women married to American men in San Francisco were asked to complete sentences. The goal of the experiment was to investigate whether or not human feelings and thoughts are expressed differently in <strong>different language mindsets</strong>. Here is a sample from the the experiment:</p><figure class="table"><table><thead><tr><th>&nbsp;</th><th>English</th><th>Japanese</th></tr></thead><tbody><tr><td>Real friends should</td><td>Be very frank</td><td>Help each other</td></tr><tr><td>I will probably become</td><td>A teacher</td><td>A housewife</td></tr><tr><td>When there is a conflict with family</td><td>I do what I want</td><td>It's a time of great unhappiness</td></tr></tbody></table></figure><p>More recent <a href="https://books.google.pl/books?id=1LMhWGHGkRUC">studies</a> show, the language a person speaks affects their cognition, behaviour, emotions and hence <strong>their personality</strong>. This shouldn’t come as a surprise <a href="https://en.wikipedia.org/wiki/Lateralization_of_brain_function">since we already know</a> that different regions of the brain become more active depending on the person’s activity at hand. Since structure, information and especially <strong>the culture</strong> of languages varies substantially and the language a person speaks is an essential element of daily life.</p>
 Content;
 
-        // $fill_data = [];
+        $test_imgs = [
+            'img/banner1.jpg',
+            'img/banner2.jpg',
+            'img/banner3.jpg',
+            'img/banner4.jpg',
+            'img/banner5.jpg',
+        ];
 
-        // for ($i = 1; $i <= 30; $i++) {
-        //     $current_number = str_pad($i, 2, '0', STR_PAD_LEFT);
+        $fill_data = [];
+
+        for ($i = 1; $i <= 30; $i++) {
+            $current_number = str_pad($i, 2, '0', STR_PAD_LEFT);
             
-        //     $fill_data[] = [
-        //         'title' => '歡慶開幕日~',
-        //         'cover_img' => $test_img,
-        //         'date' => date('Y-m-d', strtotime('-' . (30 - $i) . 'day')),
-        //         'summary' => '要想清楚，特級巧克力蛋糕，到底是一種怎麽樣的存在。',
-        //         'content' => '要想清楚，特級巧克力蛋糕，到底是一種怎麽樣的存在。一般來講，我們都必須務必慎重的考慮考慮。諸葛亮告訴我們，靜以修身，儉以養德，非淡泊無以明志，非寧靜無以致遠。這句話語雖然很短，但令我浮想聯翩。特級巧克力蛋糕的發生，到底需要如何做到，不特級巧克力蛋糕的發生，又會如何產生。特級巧克力蛋糕，到底應該如何實現。',
-        //         'display' => 1,
-        //         'created_at' => date('Y-m-d H:i:s'),
-        //         'updated_at' => date('Y-m-d H:i:s')
-        //     ];
-        // }
+            $fill_data[] = [
+                'title' => '特級巧克力蛋糕，到底是一種怎麽樣的存在~',
+                'cover_img' => $test_imgs[$i%5],
+                'date' => date('Y-m-d', strtotime('-' . (35 - $i) . 'day')),
+                'summary' => '要想清楚，特級巧克力蛋糕，到底是一種怎麽樣的存在。',
+                'content' => '要想清楚，特級巧克力蛋糕，到底是一種怎麽樣的存在。一般來講，我們都必須務必慎重的考慮考慮。諸葛亮告訴我們，靜以修身，儉以養德，非淡泊無以明志，非寧靜無以致遠。這句話語雖然很短，但令我浮想聯翩。特級巧克力蛋糕的發生，到底需要如何做到，不特級巧克力蛋糕的發生，又會如何產生。特級巧克力蛋糕，到底應該如何實現。',
+                'display' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+        }
+
+        DB::table('news')->insert($fill_data);
         
         DB::table('news')->insert([
             [
@@ -86,7 +96,7 @@ Content;
                 'display' => 0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ],
+            ]
         ]);
     }
 }

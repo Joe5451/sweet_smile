@@ -2,19 +2,9 @@
     <div>
         <div class="home_swiper swiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a href="#" class="home_swiper_link">
-                        <img src="img/banner2.jpg" class="home_swiper_img">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#" class="home_swiper_link">
-                        <img src="img/banner3.jpg" class="home_swiper_img">
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="#" class="home_swiper_link">
-                        <img src="img/banner1.jpg" class="home_swiper_img">
+                <div class="swiper-slide" v-for="slider in sliders" :key="slider.id">
+                    <a :href="slider.link" class="home_swiper_link">
+                        <img :src="slider.slider_img" class="home_swiper_img">
                     </a>
                 </div>
             </div>
@@ -158,54 +148,15 @@
                 <div class="home_section_title">最新消息</div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6" v-for="new_data in news" :key="new_data.id">
                         <a href="news_content.php" class="news_list">
                             <div class="news_list_img_wrap">
-                                <img src="img/banner1.jpg" class="news_list_img">
+                                <img :src="new_data.cover_img" class="news_list_img">
                             </div>
                             <div class="news_list_content">
-                                <div class="news_list_title">歡慶開店上線，運費優惠 $50歡慶開店上線，運費優惠 $50歡慶開店上線，運費優惠 $50</div>
-                                <div class="news_list_date">2022/06/30</div>
-                                <div class="news_list_summary">我們堅持健康、無添加選用上等材料、新鮮製作給客人最好的體驗我們堅持健康、無添加選用上等材料、新鮮製作給客人最好的體驗我們堅持健康、無添加選用上等材料、新鮮製作給客人最好的體驗</div>
-                                <div class="news_list_more">繼續閱讀</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="news_content.php" class="news_list">
-                            <div class="news_list_img_wrap">
-                                <img src="img/banner1.jpg" class="news_list_img">
-                            </div>
-                            <div class="news_list_content">
-                                <div class="news_list_title">歡慶開店上線，運費優惠 $50</div>
-                                <div class="news_list_date">2022/06/30</div>
-                                <div class="news_list_summary">我們堅持健康、無添加選用上等材料、新鮮製作給客人最好的體驗</div>
-                                <div class="news_list_more">繼續閱讀</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="news_content.php" class="news_list">
-                            <div class="news_list_img_wrap">
-                                <img src="img/banner1.jpg" class="news_list_img">
-                            </div>
-                            <div class="news_list_content">
-                                <div class="news_list_title">歡慶開店上線，運費優惠 $50</div>
-                                <div class="news_list_date">2022/06/30</div>
-                                <div class="news_list_summary">我們堅持健康、無添加選用上等材料、新鮮製作給客人最好的體驗</div>
-                                <div class="news_list_more">繼續閱讀</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="news_content.php" class="news_list">
-                            <div class="news_list_img_wrap">
-                                <img src="img/banner1.jpg" class="news_list_img">
-                            </div>
-                            <div class="news_list_content">
-                                <div class="news_list_title">歡慶開店上線，運費優惠 $50</div>
-                                <div class="news_list_date">2022/06/30</div>
-                                <div class="news_list_summary">我們堅持健康、無添加選用上等材料、新鮮製作給客人最好的體驗</div>
+                                <div class="news_list_title">{{ new_data.title }}</div>
+                                <div class="news_list_date">{{ new_data.date }}</div>
+                                <div class="news_list_summary">{{ new_data.summary }}</div>
                                 <div class="news_list_more">繼續閱讀</div>
                             </div>
                         </a>
@@ -248,8 +199,31 @@
 <script>
     export default {
         name: 'Home',
+        computed: {
+            sliders() {
+                return this.$store.state.app.home_slider;
+            }
+        },
+        data() {
+            return {
+                home_swiper: null,
+                product_swiper: null,
+                news: []
+            }
+        },
+        updated() {
+            const vm = this;
+
+            // sliders 為空陣列時執行 new Swiper()，在有元素後 loop 不會如執行，只有在有元素時 (updated) 設定 loop
+            vm.home_swiper.loopCreate();
+            vm.product_swiper.loopCreate();
+        },
         mounted() {
-            const home_swiper = new Swiper('.home_swiper', {
+            const vm = this;
+
+            vm.getNews();
+
+            vm.home_swiper =  new Swiper('.home_swiper', {
                 loop: true,
                 pagination: {
                     el: '.home_swiper_pagination',
@@ -263,7 +237,7 @@
                 },
             });
 
-            const home_product_swiper = new Swiper('.home_product_swiper', {
+            vm.product_swiper = new Swiper('.home_product_swiper', {
                 loop: true,
                 slidesPerView: 4,
                 slidesPerGroup: 2,
@@ -286,6 +260,27 @@
                     },
                 }
             });
+        },
+        methods: {
+            async getNews() {
+                const vm = this;
+
+                vm.$store.commit('admin_setting/showLoading');
+
+                await axios.get('/news', {
+                    params: { 
+                        page: 1,
+                        limit: 4
+                    }
+                })
+                .then(function (response) {
+                    console.log(response);
+                    vm.news = response.data.news;
+                })
+                .catch(function(error) {
+                    console.error("Error: ", error);
+                });
+            },
         }
     }
 </script>

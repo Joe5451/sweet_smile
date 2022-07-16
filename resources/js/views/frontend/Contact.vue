@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="page_banner">
+        <div class="page_banner" :style="{'backgroundImage': 'url(' + head_img + ')'}">
             <div class="page_banner_title">聯絡我們</div>
         </div>
 
@@ -81,8 +81,10 @@
 
 <script>
 export default({
-    mounted() {
-        
-    },
+    computed: {
+        head_img() {
+            return this.$store.state.app.head_img.contact;
+        }
+    }
 })
 </script>

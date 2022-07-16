@@ -11,6 +11,10 @@ use App\Http\Controllers\Admin\HeadImgController as AdminHeadImgController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 
+// 前台
+use App\Http\Controllers\Frontend\WebController as WebController;
+use App\Http\Controllers\Frontend\NewsController as NewsController;
+
 // 測試
 use App\Http\Controllers\JwtDemoController as JwtDemoController;
 
@@ -73,8 +77,16 @@ Route::prefix('admin')->group(function() {
     
         // ckeditor 上傳圖片 api
         Route::post('/editor/upload', [AdminEditorController::class, 'upload']);
-    });
+    });    
 
     // JWT demo api
     Route::get('/jwt_demo', [JwtDemoController::class, 'jwt_demo']);
 });
+
+
+
+// 前台
+Route::get('/web_data', [WebController::class, 'getData']);
+Route::get('/news', [NewsController::class, 'getItems']);
+
+

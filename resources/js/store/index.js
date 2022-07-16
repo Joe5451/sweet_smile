@@ -2,9 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate' // 使 vuex 持久化，將資料存在 localStorage
 
-// modules
+// 後台 modules
 import admin_user from './modules/admin/user'
 import admin_setting from './modules/admin/setting'
+
+// 前台 modules
+import app from './modules/frontend/app'
+import news from './modules/frontend/news'
 
 Vue.use(Vuex);
 
@@ -20,7 +24,9 @@ export default new Vuex.Store({
     ],
     modules: {
         admin_user,
-        admin_setting
+        admin_setting,
+        app,
+        news,
     },
     state: {
         

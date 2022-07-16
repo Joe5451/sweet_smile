@@ -55,7 +55,7 @@ export default new Router({
                     component: About,
                 },
                 {
-                    path: '/news',
+                    path: '/news/list/:page?',
                     name: 'newsList',
                     component: NewsList,
                 },

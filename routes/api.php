@@ -83,10 +83,10 @@ Route::prefix('admin')->group(function() {
     Route::get('/jwt_demo', [JwtDemoController::class, 'jwt_demo']);
 });
 
-
-
 // 前台
 Route::get('/web_data', [WebController::class, 'getData']);
 Route::get('/news', [NewsController::class, 'getItems']);
+Route::get('/news/{id}', [NewsController::class, 'getItem']);
+
 
 

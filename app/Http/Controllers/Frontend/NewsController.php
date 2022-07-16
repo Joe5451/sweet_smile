@@ -32,7 +32,7 @@ class NewsController extends Controller
     }
 
     public function getItem($id, Request $request) {
-        $new = News::find($id);
+        $new = News::where('display', 1)->find($id);
 
         return response()->json([
             'new' => $new

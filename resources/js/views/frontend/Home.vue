@@ -149,17 +149,17 @@
 
                 <div class="row">
                     <div class="col-md-6" v-for="new_data in news" :key="new_data.id">
-                        <a href="news_content.php" class="news_list">
+                        <router-link class="news_list" :to="{name: 'news', params: { news_id: new_data.id }}">
                             <div class="news_list_img_wrap">
                                 <img :src="new_data.cover_img" class="news_list_img">
                             </div>
                             <div class="news_list_content">
                                 <div class="news_list_title">{{ new_data.title }}</div>
-                                <div class="news_list_date">{{ new_data.date }}</div>
+                                <div class="news_list_date">{{ new_data.date.replace(/-/g, '/') }}</div>
                                 <div class="news_list_summary">{{ new_data.summary }}</div>
                                 <div class="news_list_more">繼續閱讀</div>
                             </div>
-                        </a>
+                        </router-link>
                     </div>
                 </div>
 

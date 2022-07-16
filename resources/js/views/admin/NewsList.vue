@@ -105,7 +105,7 @@
                     vm.page_num += (vm.total%vm.limit != 0) ? 1 : 0;
                     
                     vm.$store.commit('admin_setting/hideLoading');
-                    console.log(response);
+                    // console.log(response);
                 })
                 .catch(function(error) {
                     vm.$store.commit('admin_setting/hideLoading');

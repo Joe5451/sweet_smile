@@ -6,6 +6,7 @@ import App from '../views/frontend/App.vue';
 import Home from '../views/frontend/Home.vue';
 import About from '../views/frontend/About.vue';
 import NewsList from '../views/frontend/NewsList.vue';
+import News from '../views/frontend/News.vue';
 import Contact from '../views/frontend/Contact.vue';
 import Cart from '../views/frontend/Cart.vue';
 
@@ -58,6 +59,11 @@ export default new Router({
                     path: '/news/list/:page?',
                     name: 'newsList',
                     component: NewsList,
+                },
+                {
+                    path: 'news/:news_id',
+                    name: 'news',
+                    component: News,
                 },
                 {
                     path: '/contact',

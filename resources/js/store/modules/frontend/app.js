@@ -1,6 +1,7 @@
 export default {
     namespaced: true,
     state: {
+        loading: false, // loading-spinner 狀態
         head_img: { // 上方大圖
             about: '',
             news: '',
@@ -8,7 +9,6 @@ export default {
             shopping_mall: '',
             member: ''
         },
-        home_slider: [],
         about_content: '',
         product_categories: [],
         current_page: ''
@@ -16,9 +16,21 @@ export default {
     actions: {
         async getData(context) {
             await axios.get('/web_data')
-            .then(async function (response) {
-                console.log(response);
+            .then(function (response) {
+                // console.log(response);
                 context.commit('setData', response.data);
+            })
+            .catch(function(error) {
+                console.error("Error: ", error);
+            });
+        },
+        getProductCategories(context) {
+            context.state.product_categories = [];
+
+            axios.get('/product_categories')
+            .then(function (response) {
+                // console.log(response);
+                context.state.product_categories = response.data.product_categories;
             })
             .catch(function(error) {
                 console.error("Error: ", error);
@@ -49,12 +61,18 @@ export default {
                 }
             });
 
-            state.home_slider = home_slider;
             state.about_content = about_content;
-            state.product_categories = product_categories;
+            // state.home_slider = home_slider;
+            // state.product_categories = product_categories;
         },
         setCurrentPage(state, page_name) {
             state.current_page = page_name;
+        },
+        showLoading(state) {
+            state.loading = true;
+        },
+        hideLoading(state) {
+            state.loading = false;
         }
     }
 }

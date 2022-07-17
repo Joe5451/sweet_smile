@@ -19,6 +19,10 @@
                         <input type="password" class="form-control" placeholder="請輸入您的密碼">
                     </div>
 
+                    <div class="d-flex justify-content-end mt-3 fw-bold">
+                        <a href="member_signup.php">註冊新會員</a>
+                    </div>
+
                     <div class="d-flex justify-content-center mt-5">
                         <button type="button" class="submit_btn fw-bold">登入</button>
                     </div>

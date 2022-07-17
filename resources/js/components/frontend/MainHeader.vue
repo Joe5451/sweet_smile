@@ -2,7 +2,7 @@
     <header id="main_header">
         <div class="header_above">
             <div class="container-lg header_above_inner_container">
-                <div class="header_menu_btn">
+                <div class="header_menu_btn" @click="showHeaderMobileMenu">
                     <svg class="ham hamRotate" viewBox="0 0 100 100" width="50">
                         <path class="line top" d="m 70,33 h -40 c 0,0 -8.5,-0.149796 -8.5,8.5 0,8.649796 8.5,8.5 8.5,8.5 h 20 v -20" />
                         <path class="line middle" d="m 70,50 h -40" />
@@ -41,7 +41,11 @@
                 <span>購物商城</span>
 
                 <ul class="header_nav_menu">
-                    <li v-for="product_category in product_categories"
+                    <div class="d-flex justify-content-center align-items-center p-3 ps-4 rounded-3" style="background: rgba(255, 255, 255, 0.8);" v-if="product_categories.length == 0">
+                        <data-loader :loading="true" :color="'#BDBDBD'" :height="10"></data-loader>
+                    </div>
+                    
+                    <li v-else v-for="product_category in product_categories"
                         :key="product_category.product_category_id">
                         <span class="header_nav_menu_link">{{ product_category.category_name }}</span>
                         
@@ -76,10 +80,14 @@
                 <span>最新消息</span>
             </router-link>
             <div class="header_nav_link_mobile">
-                <span class="header_nav_dropdown_title">購物商城 <i class="fas fa-angle-down"></i></span>
+                <span class="header_nav_dropdown_title" @click="showProductCategoryMenu">購物商城 <i class="fas fa-angle-down"></i></span>
 
                 <div class="header_nav_dropdown_content">
-                    <div class="header_nav_sub_dropdown"
+                    <div class="d-flex justify-content-center align-items-center p-3" v-if="product_categories.length == 0">
+                        <data-loader :loading="true" :color="'#BDBDBD'" :height="10"></data-loader>
+                    </div>
+                    
+                    <div class="header_nav_sub_dropdown" v-else
                         v-for="product_category in product_categories"
                         :key="product_category.product_category_id">
                         <div class="header_nav_sub_dropdown_title" @click="showProductSubcategoryMenu">
@@ -116,8 +124,7 @@
         },
         methods: {
             showProductSubcategoryMenu(e) {
-                console.log(e);
-                const dispatch_element = $(e.target);
+                const dispatch_element = $(e.currentTarget);
                 const parent_element = dispatch_element.parent('.header_nav_sub_dropdown');
                 
                 if (parent_element.hasClass('active')) {
@@ -127,39 +134,28 @@
                     parent_element.addClass('active');
                     dispatch_element.next('.header_nav_sub_dropdown_content').stop().slideDown();
                 }
+            },
+            showHeaderMobileMenu(e) {
+                const dispatch_element = $(e.currentTarget);
+
+                dispatch_element.toggleClass('active');
+                $('.header_nav_mobile').stop().slideToggle(function() {$(this).css('height', 'inherit')});
+            },
+            showProductCategoryMenu(e) {
+                const dispatch_element = $(e.currentTarget);
+                const parent_element = dispatch_element.parent('.header_nav_link_mobile');
+
+                if (parent_element.hasClass('active')) {
+                    parent_element.removeClass('active');
+                    dispatch_element.next('.header_nav_dropdown_content').stop().slideUp(function() {$(this).css('height', 'inherit')});
+                } else {
+                    parent_element.addClass('active');
+                    dispatch_element.next('.header_nav_dropdown_content').stop().slideDown(function() {$(this).css('height', 'inherit')});
+                }
             }
         },
         mounted() {
-            $('.header_menu_btn').click(function() {
-                $(this).toggleClass('active');
-                $('.header_nav_mobile').stop().slideToggle(function() {$(this).css('height', 'inherit')});
-            });
             
-            $('.header_nav_dropdown_title').click(function() {
-                let parent_element = $(this).parent('.header_nav_link_mobile');
-                
-                if (parent_element.hasClass('active')) {
-                    parent_element.removeClass('active');
-                    $(this).next('.header_nav_dropdown_content').stop().slideUp(function() {$(this).css('height', 'inherit')});
-                    // $(this).next('.header_nav_dropdown_content').stop().slideUp();
-                } else {
-                    parent_element.addClass('active');
-                    $(this).next('.header_nav_dropdown_content').stop().slideDown(function() {$(this).css('height', 'inherit')});
-                    // $(this).next('.header_nav_dropdown_content').stop().slideDown();
-                }
-            });
-
-            // $('.header_nav_sub_dropdown_title').click(function() {
-            //     let parent_element = $(this).parent('.header_nav_sub_dropdown');
-                
-            //     if (parent_element.hasClass('active')) {
-            //         parent_element.removeClass('active');
-            //         $(this).next('.header_nav_sub_dropdown_content').stop().slideUp();
-            //     } else {
-            //         parent_element.addClass('active');
-            //         $(this).next('.header_nav_sub_dropdown_content').stop().slideDown();
-            //     }
-            // });
         }
     }
 </script>

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 // npm components
-import { GridLoader } from '@saeris/vue-spinners' // loading-spinner
+import { GridLoader, SyncLoader, FadeLoader } from '@saeris/vue-spinners' // loading-spinner，https://vue-spinners.saeris.io/
 
 // frontend components
 import MainHeader from './components/frontend/MainHeader.vue';
@@ -31,3 +31,5 @@ Vue.component('admin-member-update-modal', AdminMemberUpdateModal);
 
 // regist global npm components
 Vue.component('admin-loader', GridLoader);
+Vue.component('frontend-loader', SyncLoader);
+Vue.component('data-loader', FadeLoader);

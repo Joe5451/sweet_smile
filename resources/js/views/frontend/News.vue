@@ -68,7 +68,11 @@ export default {
     },
     async mounted() {
         this.$store.commit('app/setCurrentPage', 'news');
+        this.$store.commit('app/showLoading');
+        
         await this.getNews(this.news_id);
+        
+        this.$store.commit('app/hideLoading');
     },
     destroyed() {
         this.$store.commit('app/setCurrentPage', '');

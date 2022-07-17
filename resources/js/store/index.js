@@ -8,7 +8,9 @@ import admin_setting from './modules/admin/setting'
 
 // 前台 modules
 import app from './modules/frontend/app'
+import home from './modules/frontend/home'
 import news from './modules/frontend/news'
+import product from './modules/frontend/product'
 
 Vue.use(Vuex);
 
@@ -26,7 +28,9 @@ export default new Vuex.Store({
         admin_user,
         admin_setting,
         app,
+        home,
         news,
+        product
     },
     state: {
         

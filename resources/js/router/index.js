@@ -8,7 +8,7 @@ import About from '../views/frontend/About.vue';
 import NewsList from '../views/frontend/NewsList.vue';
 import News from '../views/frontend/News.vue';
 import ProductList from '../views/frontend/ProductList.vue';
-// import Product from '../views/frontend/Product.vue';
+import Product from '../views/frontend/Product.vue';
 import Contact from '../views/frontend/Contact.vue';
 import MemberLogin from '../views/frontend/MemberLogin.vue';
 import Cart from '../views/frontend/Cart.vue';
@@ -47,6 +47,7 @@ export default new Router({
         {
             path: '/',
             component: App,
+            name: 'frontend',
             children: [
                 {
                     path: '/',
@@ -72,6 +73,11 @@ export default new Router({
                     path: 'product/list/:subcategory_id/:page?',
                     name: 'productList',
                     component: ProductList,
+                },
+                {
+                    path: 'product/:product_id',
+                    name: 'product',
+                    component: Product,
                 },
                 {
                     path: '/contact',

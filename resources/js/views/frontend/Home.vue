@@ -201,14 +201,16 @@
         name: 'Home',
         computed: {
             sliders() {
-                return this.$store.state.app.home_slider;
+                return this.$store.state.home.home_slider;
+            },
+            news() {
+                return this.$store.state.home.news;
             }
         },
         data() {
             return {
                 home_swiper: null,
                 product_swiper: null,
-                news: []
             }
         },
         updated() {
@@ -221,7 +223,8 @@
         mounted() {
             const vm = this;
 
-            vm.getNews();
+            vm.$store.dispatch('home/getHomeSlider');
+            vm.$store.dispatch('home/getHomeNews');
 
             vm.home_swiper =  new Swiper('.home_swiper', {
                 loop: true,
@@ -262,25 +265,7 @@
             });
         },
         methods: {
-            async getNews() {
-                const vm = this;
-
-                vm.$store.commit('admin_setting/showLoading');
-
-                await axios.get('/news', {
-                    params: { 
-                        page: 1,
-                        limit: 4
-                    }
-                })
-                .then(function (response) {
-                    // console.log(response);
-                    vm.news = response.data.news;
-                })
-                .catch(function(error) {
-                    console.error("Error: ", error);
-                });
-            },
+            
         }
     }
 </script>

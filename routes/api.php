@@ -12,8 +12,11 @@ use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 
 // 前台
+use App\Http\Controllers\Frontend\HomeSliderController as HomeSliderController;
+
 use App\Http\Controllers\Frontend\WebController as WebController;
 use App\Http\Controllers\Frontend\NewsController as NewsController;
+use App\Http\Controllers\Frontend\ProductController as ProductController;
 
 // 測試
 use App\Http\Controllers\JwtDemoController as JwtDemoController;
@@ -85,8 +88,16 @@ Route::prefix('admin')->group(function() {
 
 // 前台
 Route::get('/web_data', [WebController::class, 'getData']);
+
+Route::get('/home_sliders', [HomeSliderController::class, 'getItems']);
+
 Route::get('/news', [NewsController::class, 'getItems']);
 Route::get('/news/{id}', [NewsController::class, 'getItem']);
+
+Route::get('/product_categories', [ProductController::class, 'getCategories']);
+Route::get('/subcategory_products/{subcategory_id}', [ProductController::class, 'getSubcategoryProducts']);
+
+Route::get('/products/{id}', [ProductController::class, 'getItem']);
 
 
 

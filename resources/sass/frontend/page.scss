@@ -102,8 +102,11 @@
     border-color: #d2b4a1;
 }
 
+.custom_pagination a:focus {
+    color: #d2b4a1;
+}
+
 .custom_pagination a:hover,
-.custom_pagination a:focus,
 .custom_pagination .page-item.active a {
     background-color: #d2b4a1;
     color: #fff;

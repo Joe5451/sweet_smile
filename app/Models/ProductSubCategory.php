@@ -38,7 +38,7 @@ class ProductSubCategory extends Model
     public function enabled_subcategory_products()
     {
         return $this->belongsToMany(Product::class, 'product_subcategory_and_product', 'product_subcategory_id', 'product_id')
-        ->select('product_id', 'product_name', 'product_sequence')
+        ->select('product_id', 'product_name', 'product_cover_img', 'original_price', 'price', 'product_sequence')
         ->where('display', 1)
         ->orderBy('product_subcategory_and_product.product_sequence', 'asc');
     }

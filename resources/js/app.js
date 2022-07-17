@@ -53,10 +53,19 @@ const app = new Vue({
 });
 
 router.beforeEach(async (to, from, next) => {
-    $('.header_nav_mobile').hide();
-    $('.header_menu_btn').removeClass('active');
+    const frontend_route = to.matched.some(record => (record.name == 'frontend'));
+
+    if (frontend_route) {
+        $('.header_nav_mobile').hide();
+        $('.header_menu_btn').removeClass('active');
+        
+        store.dispatch('app/getProductCategories');
+    }
+    
     next();
 });
+
+
 
 /*
 router.beforeEach(async (to, from, next) => {

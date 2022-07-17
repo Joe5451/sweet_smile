@@ -16,7 +16,6 @@
                     <span v-if="!isLoading">登入</span>
                     <span v-else><i class="fas fa-spinner rotate-center"></i></span>
                 </button>
-                <!-- <input type="submit" value="登入" class="btn btn-primary w-100"> -->
             </div>
         </form>
     </div>

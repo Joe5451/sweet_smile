@@ -5,7 +5,22 @@
         </div>
 
         <div class="container mb-80px">
-            <div class="row">
+            <div class="row" v-if="is_loading">
+                <div class="col-md-6" v-for="index in 6" :key="index">
+                    <div class="news_list news_load_list border-0">
+                        <div class="news_list_img_wrap">
+                            <div class="news_list_img flash w-100"></div>
+                        </div>
+                        <div class="news_list_content w-100">
+                            <div class="news_list_title flash w-100" style="height: 25px;"></div>
+                            <div class="news_list_date flash w-100" style="height: 20px;"></div>
+                            <div class="news_list_summary overflow-hidden flash w-100 mb-0"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" v-else>
                 <div class="col-md-6" v-for="new_data in news" :key="new_data.id">
                     <router-link class="news_list" :to="{name: 'news', params: { news_id: new_data.id } }">
                         <div class="news_list_img_wrap">
@@ -39,8 +54,8 @@
                         </router-link>
                     </li>
                 </ul>
-                
             </div>
+            
         </div>
     </div>
 </template>
@@ -64,6 +79,7 @@ export default {
     },
     data() {
         return {
+            is_loading: true,
             news: [],
             total: 0,
             limit: 12,
@@ -77,6 +93,8 @@ export default {
         async getNews() {
             const vm = this;
 
+            vm.is_loading = true;
+
             await axios.get('/news', {
                 params: { 
                     page: vm.page,
@@ -84,7 +102,7 @@ export default {
                 }
             })
             .then(function (response) {
-                console.log(response);
+                // console.log(response);
 
                 vm.news = response.data.news;
                 vm.total = response.data.total;
@@ -94,6 +112,8 @@ export default {
             .catch(function(error) {
                 console.error("Error: ", error);
             });
+
+            vm.is_loading = false;
         },
     }
 }

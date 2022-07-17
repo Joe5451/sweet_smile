@@ -12,6 +12,9 @@ import Product from '../views/frontend/Product.vue';
 import Contact from '../views/frontend/Contact.vue';
 import MemberLogin from '../views/frontend/MemberLogin.vue';
 import MemberSignup from '../views/frontend/MemberSignup.vue';
+import Member from '../views/frontend/Member.vue';
+import MemberData from '../views/frontend/MemberData.vue';
+// import MemberOrder from '../views/frontend/MemberOrder.vue';
 import Cart from '../views/frontend/Cart.vue';
 
 // admin views
@@ -94,6 +97,68 @@ export default new Router({
                     path: 'member/login',
                     name: 'memberLogin',
                     component: MemberLogin,
+                    beforeEnter: (to, from, next) => {
+                        const token = getCookie('member_token');
+
+                        if (token == '') {
+                            next();
+                        } else {
+                            axios.post('/members/checkToken', {
+                                token
+                            }).then(function (response) {
+                                if (response.data.status == 'success') {
+                                    next({ name: 'memberData'});
+                                } else if (response.data.status == 'fail') {
+                                    next();
+                                }
+                            });
+                        }
+
+                    }
+                },
+                {
+                    path: 'member',
+                    component: Member,
+                    beforeEnter: (to, from, next) => {
+                        const token = getCookie('member_token');
+
+                        if (token == '') {
+                            next({name: 'memberLogin'});
+
+                            Swal.fire({
+                                icon: 'info',
+                                title: '請登入會員',
+                                timer: 1500,
+                                width: 300,
+                                showConfirmButton: false,
+                            });
+                        } else {
+                            axios.post('/members/checkToken', {
+                                token
+                            }).then(function (response) {
+                                if (response.data.status == 'success') {
+                                    next();
+                                } else if (response.data.status == 'fail') {
+                                    next({name: 'memberLogin'});
+
+                                    Swal.fire({
+                                        icon: 'info',
+                                        title: '請登入會員',
+                                        timer: 1500,
+                                        width: 300,
+                                        showConfirmButton: false,
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    children: [
+                        {
+                            path: 'data',
+                            name: 'memberData',
+                            component: MemberData
+                        },
+                    ]
                 },
                 {
                     path: '/cart',

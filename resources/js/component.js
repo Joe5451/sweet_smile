@@ -7,6 +7,7 @@ import { GridLoader, SyncLoader, FadeLoader } from '@saeris/vue-spinners' // loa
 import MainHeader from './components/frontend/MainHeader.vue';
 import MainFooter from './components/frontend/MainFooter.vue';
 import TopBtn from './components/frontend/TopBtn.vue';
+import MemberSidebar from './components/frontend/MemberSidebar.vue';
 
 // admin components
 import AdminLoginForm from './components/admin/LoginForm.vue';
@@ -20,6 +21,7 @@ import AdminMemberUpdateModal from './components/admin/MemberUpdateModal.vue';
 Vue.component('main-header', MainHeader);
 Vue.component('main-footer', MainFooter);
 Vue.component('top-button', TopBtn);
+Vue.component('member-sidebar', MemberSidebar);
 
 // regist global admin components
 Vue.component('admin-login-form', AdminLoginForm);

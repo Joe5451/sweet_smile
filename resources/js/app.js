@@ -1,6 +1,7 @@
 require('./bootstrap');
 require('./component');
 require('./plugins/dropify');
+require('./cookie_functions');
 
 // 引入 bootstrap 並設為原域變數，使得可以使用 js script 控制諸如 modal 等元件開關
 const bootstrap =  require('bootstrap');

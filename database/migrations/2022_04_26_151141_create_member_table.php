@@ -24,8 +24,8 @@ class CreateMemberTable extends Migration
             $table->string('mobile', 20)->nullable()->comment('手機');
             $table->tinyInteger('state')->default(1)->comment('狀態 (0:停權, 1:正常)');
             $table->mediumText('remark')->nullable()->comment('管理員備註');
-            $table->string('token', 100)->nullable()->comment('登入 token');
-            $table->dateTime('token_expired_at')->nullable()->comment('token 到期時間');
+            $table->string('token', 255)->nullable()->comment('登入 token');
+            $table->dateTime('token_expires_in')->nullable()->comment('token 到期時間');
             $table->timestamps(); // 建立 created_at 和 updated_at
         });
     }

@@ -11,6 +11,7 @@ import app from './modules/frontend/app'
 import home from './modules/frontend/home'
 import news from './modules/frontend/news'
 import product from './modules/frontend/product'
+import member from './modules/frontend/member'
 
 Vue.use(Vuex);
 
@@ -30,7 +31,8 @@ export default new Vuex.Store({
         app,
         home,
         news,
-        product
+        product,
+        member
     },
     state: {
         

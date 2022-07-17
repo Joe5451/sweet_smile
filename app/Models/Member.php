@@ -33,6 +33,6 @@ class Member extends Model
         'state',
         'remark',
         'token',
-        'token_expired_at',
+        'token_expires_in',
     ];
 }

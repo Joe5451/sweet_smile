@@ -100,6 +100,15 @@ Route::get('/subcategory_products/{subcategory_id}', [ProductController::class, 
 Route::get('/products/{id}', [ProductController::class, 'getItem']);
 
 Route::post('/members', [MemberController::class, 'add']);
+Route::post('/login', [MemberController::class, 'login']);
+Route::get('/members', [MemberController::class, 'getItem']);
+Route::post('/members/checkToken', [MemberController::class, 'checkToken']);
+
+Route::middleware(['auth.member_api'])->group(function() {
+    Route::put('/members', [MemberController::class, 'updateItem']);
+
+});
+
 
 
 

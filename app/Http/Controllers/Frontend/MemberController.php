@@ -7,8 +7,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Member;
 
+// JWT
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 class MemberController extends Controller
 {
+    var $jwt_key = '';
+    var $jwt_algo = 'HS256';
+
+    public function __construct()
+    {
+        $this->jwt_key = env('ADMIN_JWT_SECRET');
+    }
+
     public function add(Request $request) {
         $data = $request->input();
 
@@ -48,34 +60,119 @@ class MemberController extends Controller
         }
     }
 
-    public function getMember($id, Request $request) {
-        $member = Member::select(['member_id', 'name', 'email', 'mobile', 'created_at'])
-        ->find($id);
-
-        return response()->json([
-            'member' => $member
-        ]);
-    }
-
-    public function updateMember($id, Request $request) {
+    public function login(Request $request)
+    {
         $data = $request->input();
 
-        $existMember = Member::where('email', $data['email'])
-        ->where('member_id', '!=', $id)
-        ->take(1)->get();
+        $validator = Validator::make($data,
+        [
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
 
-        if (count($existMember) > 0) {
+        if (!$validator->fails()) {
+            $member = Member::where('email', $data['email'])
+            ->where('password', md5($data['password']))
+            ->take(1)
+            ->get();
+
+            if (count($member) == 0) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => '帳號密碼錯誤'
+                ]);
+            }
+            
+            $expires_in = date('Y-m-d H:i:s', strtotime('+1day'));
+
+            $payload = [
+                'member_id' => $member[0]->member_id,
+                'expires_in' => $expires_in
+            ];
+
+            $token = $this->createToken($payload);
+
+            Member::where('member_id', $member[0]->member_id)
+            ->update([
+                'token' => $token,
+                'token_expires_in' => $expires_in
+            ]);
+                
+            return response()->json([
+                'status' => 'success',
+                'access_token' => $token,
+                'expires_in' => $expires_in
+            ]);
+        } else {
+            $error = $validator->messages();
+
             return response()->json([
                 'status' => 'fail',
-                'message' => '帳號已存在，請重新設置'
+                'message' => '登入失敗',
+                'error' => $error
             ]);
         }
+    }
+
+    public function getItem(Request $request) {
+        $token = $request->query('token', null);
+
+        $member = Member::select(['member_id', 'name', 'email', 'mobile'])
+        ->where('token', $token)
+        ->take(1)
+        ->get();
+
+        if (count($member) == 0) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => ''
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'member' => $member[0]
+            ]);
+        }
+    }
+
+    public function checkToken(Request $request) {
+        $token = $request->input('token');
+
+        if (is_null($token)) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => '無 token',
+            ]);
+        }
+
+        $member = Member::where('token', $token)->take(1)->get();
+
+        if (count($member) == 0) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'token 不存在',
+            ]);
+        } else if ($member[0]->token_expires_in < date('Y-m-d H:i:s')) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => 'token 已過期',
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'message' => '',
+            ]);
+        }
+    }
+
+    public function updateItem(Request $request) {
+        $token = $request->bearerToken();
+        $data = $request->input();
 
         $validator = Validator::make($data,
         [
             'name' => 'required|string',
             'mobile' => 'nullable|string',
-            'email' => 'required|string',
             'password' => 'nullable|string',
         ]);
 
@@ -85,8 +182,12 @@ class MemberController extends Controller
                 $data['password'] = md5($data['password']);
             else
                 unset($data['password']);
+
+            $decoded = JWT::decode($token, new Key($this->jwt_key, $this->jwt_algo));
+
+            $member_id = $decoded->member_id;
                 
-            Member::where('member_id', $id)->update($data);
+            Member::where('member_id', $member_id)->update($data);
 
             return response()->json([
                 'status' => 'success',
@@ -98,5 +199,12 @@ class MemberController extends Controller
                 'message' => '資料缺少或格式錯誤，請重新嘗試'
             ]);
         }
+    }
+
+    private function createToken($payload)
+    {
+        $jwt = JWT::encode($payload, $this->jwt_key, $this->jwt_algo);
+
+        return $jwt;
     }
 }

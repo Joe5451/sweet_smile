@@ -8,15 +8,17 @@
             <div class="border rounded-3 py-5 px-3">
                 <div class="page_title">登入會員</div>
 
-                <form action="" class="mx-auto px-3" style="max-width: 400px;">
+                <form @submit.prevent="checkForm" class="mx-auto px-3" style="max-width: 400px;">
                     <div class="mb-4">
                         <label class="form-label fw-bold">帳號 (Email)</label>
-                        <input type="text" class="form-control" placeholder="請輸入您的 Email">
+                        <input type="email" name="email" v-model="email" class="form-control" placeholder="請輸入您的 Email">
+                        <div class="invalid-feedback"></div>
                     </div>
             
                     <div class="mb-4">
                         <label class="form-label fw-bold">密碼</label>
-                        <input type="password" class="form-control" placeholder="請輸入您的密碼">
+                        <input type="password" name="password" v-model="password" class="form-control" placeholder="請輸入您的密碼">
+                        <div class="invalid-feedback"></div>
                     </div>
 
                     <div class="d-flex justify-content-end mt-3 fw-bold">
@@ -24,7 +26,10 @@
                     </div>
 
                     <div class="d-flex justify-content-center mt-5">
-                        <button type="button" class="submit_btn fw-bold">登入</button>
+                        <button class="submit_btn fw-bold" :disabled="is_loading">
+                            <span v-if="is_loading"><i class="fas fa-spinner rotate-center"></i></span>
+                            <span v-else>登入</span>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -37,6 +42,72 @@ export default {
     computed: {
         head_img() {
             return this.$store.state.app.head_img.member;
+        }
+    },
+    data() {
+        return {
+            email: '',
+            password: '',
+            is_loading: false
+        }
+    },
+    methods: {
+        checkForm() {
+            const vm = this;
+
+            $('input').removeClass('is-invalid');
+            $('input').next('.invalid-feedback').text('');
+            
+            if (this.email == '')
+                this.alertMessage($('input[name=email]'), '請輸入帳號 (Email)');
+            else if (this.password == '')
+                this.alertMessage($('input[name=password]'), '請輸入密碼');
+            else {
+                this.login();
+            }
+        },
+        async login() {
+            const vm = this;
+
+            vm.is_loading = true;
+
+            await axios.post('/login', {
+                email: vm.email,
+                password: vm.password
+            })
+            .then(function (response) {
+                console.log(response);
+
+                if (response.data.status == 'success') {
+                    setCookie('member_token', response.data.access_token, 1);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '登入成功',
+                        width: 300,
+                        timer: 1500,
+                        showConfirmButton: false,
+                        willClose: () => {
+                            vm.$router.push({name: 'memberData'});
+                        },
+                    });
+                } else if (response.data.status == 'fail') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: response.data.message,
+                        timer: 1500,
+                    });
+                }
+            })
+            .catch(function(error) {
+                console.error("Error: ", error);
+            });
+
+            vm.is_loading = false;
+        },
+        alertMessage(element, invalid_message) {
+            element.addClass('is-invalid');
+            element.next('.invalid-feedback').text(invalid_message);
         }
     }
 }

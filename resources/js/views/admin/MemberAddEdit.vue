@@ -11,9 +11,9 @@
             </div>
             
             <div class="mb-4">
-                <label class="form-label">帳號*</label>
-                <input type="text" name="account" v-model="account" class="form-control">
-                <!-- <input type="text" name="account" v-model="account" @focusout="checkData($event, account)" class="form-control" required> -->
+                <label class="form-label">帳號 (Email)*</label>
+                <input type="text" name="email" v-model="email" class="form-control">
+                <!-- <input type="text" name="email" v-model="email" @focusout="checkData($event, email)" class="form-control" required> -->
                 <div class="invalid-feedback"></div>
             </div>
 
@@ -52,13 +52,13 @@
             return {
                 name: '',
                 mobile: '',
-                account: '',
+                email: '',
                 password: '',
                 confirm_password: '',
                 // field_ch: {
                 //     name: '姓名',
                 //     mobile: '手機',
-                //     account: '帳號',
+                //     email: '帳號',
                 //     password: '密碼',
                 //     confirm_password: '確認密碼',
                 // }
@@ -86,8 +86,8 @@
                 
                 if (this.name == '')
                     this.alertInvalidMessage($('input[name=name]'), '請輸入姓名');
-                else if (this.account == '')
-                    this.alertInvalidMessage($('input[name=account]'), '請輸入帳號');
+                else if (this.email == '')
+                    this.alertInvalidMessage($('input[name=email]'), '請輸入帳號 (Email)');
                 else if (this.password == '')
                     this.alertInvalidMessage($('input[name=password]'), '請輸入密碼');
                 else if (this.confirm_password == '')
@@ -98,7 +98,7 @@
                     vm.$store.commit('admin_setting/showLoading');
                     
                     await axios.post('/admin/members', {
-                        account: vm.account,
+                        email: vm.email,
                         name: vm.name,
                         mobile: vm.mobile,
                         password: vm.password,

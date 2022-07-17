@@ -11,6 +11,7 @@ import ProductList from '../views/frontend/ProductList.vue';
 import Product from '../views/frontend/Product.vue';
 import Contact from '../views/frontend/Contact.vue';
 import MemberLogin from '../views/frontend/MemberLogin.vue';
+import MemberSignup from '../views/frontend/MemberSignup.vue';
 import Cart from '../views/frontend/Cart.vue';
 
 // admin views
@@ -83,6 +84,11 @@ export default new Router({
                     path: '/contact',
                     name: 'contact',
                     component: Contact,
+                },
+                {
+                    path: 'member/signup',
+                    name: 'memberSignup',
+                    component: MemberSignup,
                 },
                 {
                     path: 'member/login',

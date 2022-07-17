@@ -15,8 +15,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label">帳號*</label>
-                            <input type="text" name="account" v-model="account" class="form-control">
+                            <label class="form-label">帳號 (Email)*</label>
+                            <input type="text" name="email" v-model="email" class="form-control">
                             <div class="invalid-feedback"></div>
                         </div>
 
@@ -47,7 +47,7 @@
         props: ['memberId', 'modalId'],
         watch: {
             memberId(new_member_id, old_member_id) {
-                this.name = this.mobile = this.account = this.password = '';
+                this.name = this.mobile = this.email = this.password = '';
                 // this.getMember(new_member_id);
             }
         },
@@ -55,12 +55,12 @@
             return {
                 name: '',
                 mobile: '',
-                account: '',
+                email: '',
                 password: '',
                 origin_member: {
                     name: '',
                     mobile: '',
-                    account: '',
+                    email: '',
                     password: '',
                 },
                 modal: null,
@@ -74,7 +74,7 @@
 
             modal_element.addEventListener('hide.bs.modal', function (event) {
                 vm.name = vm.origin_member.name;
-                vm.account = vm.origin_member.account;
+                vm.email = vm.origin_member.email;
                 vm.mobile = vm.origin_member.mobile;
                 vm.password = vm.origin_member.password;
             });
@@ -102,10 +102,10 @@
                         let member = response.data.member;
     
                         vm.name = member.name;
-                        vm.account = member.account;
+                        vm.email = member.email;
                         vm.mobile = member.mobile;
                         vm.origin_member.name = member.name;
-                        vm.origin_member.account = member.account;
+                        vm.origin_member.email = member.email;
                         vm.origin_member.mobile = member.mobile;
                     }
                     
@@ -123,8 +123,8 @@
                 
                 if (this.name == '')
                     this.alertInvalidMessage($('input[name=name]'), '請輸入姓名');
-                else if (this.account == '')
-                    this.alertInvalidMessage($('input[name=account]'), '請輸入帳號');
+                else if (this.email == '')
+                    this.alertInvalidMessage($('input[name=email]'), '請輸入帳號 (Email)');
                 else
                     this.updateMember();
             },
@@ -147,7 +147,7 @@
                 vm.$store.commit('admin_setting/showLoading');
                     
                 await axios.put('/admin/members/' + this.memberId, {
-                    account: this.account,
+                    email: this.email,
                     name: this.name,
                     mobile: this.mobile,
                     password: this.password,

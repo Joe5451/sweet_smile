@@ -17,7 +17,7 @@
                         <td class="text-end">{{ index + start_index }}</td>
                         <td>{{ member.created_at }}</td>
                         <td>{{ member.name }}</td>
-                        <td>{{ member.account }}</td>
+                        <td>{{ member.email }}</td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-primary" @click="cur_member_id = member.member_id" data-bs-toggle="modal" data-bs-target="#memberUpdateModal">
                                 管理

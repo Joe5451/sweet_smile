@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end mt-3 fw-bold">
-                        <a href="member_signup.php">註冊新會員</a>
+                        <router-link :to="{ name: 'memberSignup' }">註冊新會員</router-link>
                     </div>
 
                     <div class="d-flex justify-content-center mt-5">

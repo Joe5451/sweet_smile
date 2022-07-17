@@ -28,7 +28,7 @@ class Member extends Model
         'member_id',
         'name',
         'mobile',
-        'account',
+        'email',
         'password',
         'state',
         'remark',

@@ -22,7 +22,7 @@ class MemberSeeder extends Seeder
             $current_number = str_pad($i, 2, '0', STR_PAD_LEFT);
             
             $fill_data[] = [
-                'account' => 'test' . $current_number,
+                'email' => 'test' . $current_number,
                 'name' => '測試員' . $current_number,
                 'mobile' => '09123456' . $current_number,
                 'password' => md5('aaa'),

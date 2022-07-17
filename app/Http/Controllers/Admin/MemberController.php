@@ -12,7 +12,7 @@ class MemberController extends Controller
     public function add(Request $request) {
         $data = $request->input();
 
-        $existMember = Member::where('account', $data['account'])->take(1)->get();
+        $existMember = Member::where('email', $data['email'])->take(1)->get();
 
         if (count($existMember) > 0) {
             return response()->json([
@@ -25,7 +25,7 @@ class MemberController extends Controller
         [
             'name' => 'required|string',
             'mobile' => 'nullable|string',
-            'account' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
@@ -52,7 +52,7 @@ class MemberController extends Controller
 
         $members = Member::orderBy('created_at', 'desc')
         ->orderBy('member_id', 'desc')
-        ->select(['member_id', 'name', 'account', 'created_at'])
+        ->select(['member_id', 'name', 'email', 'created_at'])
         ->offset($offset)
         ->limit($limit)
         ->get();
@@ -60,7 +60,7 @@ class MemberController extends Controller
         $total = Member::count();
 
         // $members = Member::orderBy('created_at', 'desc')
-        // ->select(['member_id', 'name', 'account', 'created_at'])
+        // ->select(['member_id', 'name', 'email', 'created_at'])
         // ->paginate($limit)
         // ->withQueryString(); // widthQueryString() 必需接在 paginate，表示其他的查詢參數也會保留在連結中
 
@@ -73,7 +73,7 @@ class MemberController extends Controller
     }
 
     public function getMember($id, Request $request) {
-        $member = Member::select(['member_id', 'name', 'account', 'mobile', 'created_at'])
+        $member = Member::select(['member_id', 'name', 'email', 'mobile', 'created_at'])
         ->find($id);
 
         return response()->json([
@@ -84,7 +84,7 @@ class MemberController extends Controller
     public function updateMember($id, Request $request) {
         $data = $request->input();
 
-        $existMember = Member::where('account', $data['account'])
+        $existMember = Member::where('email', $data['email'])
         ->where('member_id', '!=', $id)
         ->take(1)->get();
 
@@ -99,7 +99,7 @@ class MemberController extends Controller
         [
             'name' => 'required|string',
             'mobile' => 'nullable|string',
-            'account' => 'required|string',
+            'email' => 'required|string',
             'password' => 'nullable|string',
         ]);
 

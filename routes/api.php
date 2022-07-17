@@ -12,9 +12,10 @@ use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 
 // 前台
-use App\Http\Controllers\Frontend\HomeSliderController as HomeSliderController;
-
 use App\Http\Controllers\Frontend\WebController as WebController;
+use App\Http\Controllers\Frontend\HomeSliderController as HomeSliderController;
+use App\Http\Controllers\Frontend\MemberController as MemberController;
+
 use App\Http\Controllers\Frontend\NewsController as NewsController;
 use App\Http\Controllers\Frontend\ProductController as ProductController;
 
@@ -96,8 +97,10 @@ Route::get('/news/{id}', [NewsController::class, 'getItem']);
 
 Route::get('/product_categories', [ProductController::class, 'getCategories']);
 Route::get('/subcategory_products/{subcategory_id}', [ProductController::class, 'getSubcategoryProducts']);
-
 Route::get('/products/{id}', [ProductController::class, 'getItem']);
+
+Route::post('/members', [MemberController::class, 'add']);
+
 
 
 

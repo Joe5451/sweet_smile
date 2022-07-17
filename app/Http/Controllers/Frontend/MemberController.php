@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -12,15 +12,6 @@ class MemberController extends Controller
     public function add(Request $request) {
         $data = $request->input();
 
-        $existMember = Member::where('email', $data['email'])->take(1)->get();
-
-        if (count($existMember) > 0) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => '帳號已存在，請重新設置'
-            ]);
-        }
-
         $validator = Validator::make($data,
         [
             'name' => 'required|string',
@@ -30,6 +21,15 @@ class MemberController extends Controller
         ]);
 
         if (!$validator->fails()) {
+            $existMember = Member::where('email', $data['email'])->take(1)->get();
+
+            if (count($existMember) > 0) {
+                return response()->json([
+                    'status' => 'fail',
+                    'message' => '帳號已存在，請重新設置'
+                ]);
+            }
+            
             $data['password'] = md5($data['password']);
             Member::create($data);
 
@@ -46,33 +46,6 @@ class MemberController extends Controller
                 'error' => $error
             ]);
         }
-    }
-
-    public function getMemberList(Request $request) {
-        $page = (int) $request->query('page', 1);
-        $limit = (int) $request->query('limit', 15);
-        $offset = ($page - 1) * $limit;
-
-        $members = Member::orderBy('created_at', 'desc')
-        ->orderBy('member_id', 'desc')
-        ->select(['member_id', 'name', 'email', 'created_at'])
-        ->offset($offset)
-        ->limit($limit)
-        ->get();
-
-        $total = Member::count();
-
-        // $members = Member::orderBy('created_at', 'desc')
-        // ->select(['member_id', 'name', 'email', 'created_at'])
-        // ->paginate($limit)
-        // ->withQueryString(); // widthQueryString() 必需接在 paginate，表示其他的查詢參數也會保留在連結中
-
-        // return response()->json($members);
-        
-        return response()->json([
-            'members' => $members,
-            'total' => $total,
-        ]);
     }
 
     public function getMember($id, Request $request) {
@@ -102,7 +75,7 @@ class MemberController extends Controller
         [
             'name' => 'required|string',
             'mobile' => 'nullable|string',
-            'email' => 'required|email',
+            'email' => 'required|string',
             'password' => 'nullable|string',
         ]);
 
@@ -125,14 +98,5 @@ class MemberController extends Controller
                 'message' => '資料缺少或格式錯誤，請重新嘗試'
             ]);
         }
-    }
-
-    public function deleteMember($id, Request $request) {
-        Member::where('member_id', $id)->delete();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => ''
-        ]);
     }
 }

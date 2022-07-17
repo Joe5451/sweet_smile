@@ -12,8 +12,8 @@
             
             <div class="mb-4">
                 <label class="form-label">帳號 (Email)*</label>
-                <input type="text" name="email" v-model="email" class="form-control">
-                <!-- <input type="text" name="email" v-model="email" @focusout="checkData($event, email)" class="form-control" required> -->
+                <input type="email" name="email" v-model="email" class="form-control">
+                <!-- <input type="email" name="email" v-model="email" @focusout="checkData($event, email)" class="form-control" required> -->
                 <div class="invalid-feedback"></div>
             </div>
 

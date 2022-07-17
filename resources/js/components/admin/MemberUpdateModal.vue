@@ -16,7 +16,7 @@
 
                         <div class="mb-4">
                             <label class="form-label">帳號 (Email)*</label>
-                            <input type="text" name="email" v-model="email" class="form-control">
+                            <input type="email" name="email" v-model="email" class="form-control">
                             <div class="invalid-feedback"></div>
                         </div>
 

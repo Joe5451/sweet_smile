@@ -1,3 +1,5 @@
+import router from '../../../router'
+
 export default {
     namespaced: true,
     state: {
@@ -34,6 +36,20 @@ export default {
             })
             .catch(function(error) {
                 console.error("Error: ", error);
+            });
+        },
+        alertMessage(context, {icon, title, path}) {
+            Swal.fire({
+                icon,
+                title,
+                width: 300,
+                timer: 1500,
+                showConfirmButton: false,
+                willClose: () => {
+                    if (path !== undefined) {
+                        router.push(path);
+                    }
+                }
             });
         }
     },

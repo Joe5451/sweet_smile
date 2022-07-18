@@ -12,6 +12,7 @@ import home from './modules/frontend/home'
 import news from './modules/frontend/news'
 import product from './modules/frontend/product'
 import member from './modules/frontend/member'
+import cart from './modules/frontend/cart'
 
 Vue.use(Vuex);
 
@@ -32,7 +33,8 @@ export default new Vuex.Store({
         home,
         news,
         product,
-        member
+        member,
+        cart
     },
     state: {
         

@@ -29,7 +29,7 @@ class EnsureAdminTokenIsValid
 
     private function returnInvalidResponse() {
         return response()->json([
-            'status' => 'token_invalid',
+            'status' => 'admin_token_invalid',
         ]);
     }
 }

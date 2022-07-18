@@ -24,7 +24,7 @@ export default {
             });
         },
         getMember(context) {
-            let token = getCookie('member_token');
+            const token = getCookie('member_token');
 
             context.commit('setMember', null);
             

@@ -19,6 +19,7 @@ import jquery from 'jquery';
 import Swal from 'sweetalert2';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
+import CityAndTown from './taiwan_city_and_town';
 
 // vue
 import Vue from 'vue';
@@ -29,11 +30,12 @@ window.Vue = Vue;
 window.$ = jquery;
 window.Swal = Swal;
 window.Swiper = Swiper;
+window.CityAndTown = CityAndTown;
 
 // axios 攔截器 response 設定，在處理 then 或 catch 之前攔截
 axios.interceptors.response.use(function (res) {
     // console.log(res);
-    if (res.data.status == 'token_invalid') {
+    if (res.data.status == 'admin_token_invalid') {
         store.commit('admin_setting/showLoading');
 
         Qmsg.error('請重新登入', {

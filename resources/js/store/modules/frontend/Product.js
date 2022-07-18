@@ -9,7 +9,7 @@ export default {
 
             axios.get('/products/' + product_id)
             .then(function (response) {
-                console.log(response);
+                // console.log(response);
                 context.state.current_product = response.data.product;
             })
             .catch(function(error) {

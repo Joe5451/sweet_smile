@@ -30,7 +30,7 @@ class ProductCategoryController extends Controller
             'subcategories.*.subcategory_sequence' => 'required|int',
             'subcategories.*.subcategory_products' => 'array', // 允許空陣列
             // 綁定商品驗證
-            'subcategories.*.subcategory_products.*.product_id' => 'required|alpha_num',
+            'subcategories.*.subcategory_products.*.product_id' => 'required|numeric',
             'subcategories.*.subcategory_products.*.product_name' => 'required|string',
             'subcategories.*.subcategory_products.*.product_sequence' => 'required|int',
         ]);
@@ -140,7 +140,7 @@ class ProductCategoryController extends Controller
             'subcategories.*.subcategory_sequence' => 'required|int',
             'subcategories.*.subcategory_products' => 'array', // 允許空陣列
             // 綁定商品驗證
-            'subcategories.*.subcategory_products.*.product_id' => 'required|alpha_num',
+            'subcategories.*.subcategory_products.*.product_id' => 'required|numeric',
             'subcategories.*.subcategory_products.*.product_name' => 'required|string',
             'subcategories.*.subcategory_products.*.product_sequence' => 'required|int',
         ]);

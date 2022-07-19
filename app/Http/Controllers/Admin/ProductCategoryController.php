@@ -24,7 +24,7 @@ class ProductCategoryController extends Controller
             'category_display' => 'required|int',
             'category_sequence' => 'required|int',
             'subcategories' => 'array',
-            // 巢狀陣列，如果為物件陣列則為 subcategories.subcategory_name
+            // 巢狀陣列 subcategories['subcategory_name']
             'subcategories.*.subcategory_name' => 'required|string',
             'subcategories.*.subcategory_display' => 'required|int',
             'subcategories.*.subcategory_sequence' => 'required|int',

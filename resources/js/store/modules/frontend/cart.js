@@ -8,15 +8,17 @@ export default {
         member: null
     },
     actions: {
-        getMember(context) {
+        async getMember(context) {
             const token = getCookie('member_token');
 
             if (token == '') {
                 context.state.member = null;
                 return;
             }
+
+            context.state.member = null;
             
-            axios.get('/members', {
+            await axios.get('/members', {
                 params: {
                     token
                 }
@@ -270,6 +272,41 @@ export default {
                 let cart = context.state.cart;
                 setCookie('cart', JSON.stringify(cart), 365);
             }
+        },
+        async createOrder(context, {payment_info, is_member}) {
+            const vm = this;
+            const token = getCookie('member_token');
+            let cart = [];
+            
+            if (is_member && token == '') {
+                vm.dispatch('app/alertMessage', {icon: 'info', title: '登入逾時，請重新登入', path: {name: 'memberLogin'}});
+                return;
+            }
+
+            if (!is_member) {
+                let cart_cookie = getCookie('cart');
+                cart = (cart_cookie == '') ? [] : JSON.parse(cart_cookie);
+            }
+
+            await axios.post('/orders', {
+                ...payment_info,
+                is_member,
+                cart
+            }, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            })
+            .then(function (response) {
+                console.log(response);
+
+                // if (response.data.status == 'token_invalid') {
+                //     setCookie('member_token', '', 0); // 刪除 token
+
+                //     vm.dispatch('app/alertMessage', {icon: 'info', title: '登入逾時，請重新登入', path: {name: 'memberLogin'}});
+                // }
+            })
+            .catch(function(error) {
+                console.error("Error: ", error);
+            });
         }
     },
     mutations: {

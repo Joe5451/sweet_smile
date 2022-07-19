@@ -186,7 +186,13 @@
             </div>
 
             <div class="d-flex justify-content-center mt-4">
-                <a href="product_list.php" class="home_intro_btn">
+                <router-link v-if="first_product_subcategory_id !== null" class="home_intro_btn"
+                :to="{name: 'productList', params: {subcategory_id: first_product_subcategory_id} }">
+                    <img src="img/cake.png" class="home_intro_btn_img">
+                    <span>前往購買</span>
+                </router-link>
+
+                <a v-else class="home_intro_btn">
                     <img src="img/cake.png" class="home_intro_btn_img">
                     <span>前往購買</span>
                 </a>
@@ -205,6 +211,16 @@
             },
             news() {
                 return this.$store.state.home.news;
+            },
+            product_categories() {
+                return this.$store.state.app.product_categories;
+            },
+            first_product_subcategory_id() {
+                if (this.product_categories.length > 0 && this.product_categories[0].enabled_product_subcategories.length > 0) {
+                    return this.product_categories[0].enabled_product_subcategories[0].product_subcategory_id;
+                } else {
+                    return null;
+                }
             }
         },
         data() {

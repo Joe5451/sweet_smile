@@ -7,7 +7,7 @@
         <div class="container mb-80px">
             <div class="row">
                 <div class="col-lg-3">
-                    <nav class="product_nav d-none d-lg-block">
+                    <nav class="product_nav">
                         <div class="d-flex justify-content-center align-items-center p-3" v-if="product_categories.length == 0">
                             <data-loader :loading="true" :color="'#BDBDBD'" :height="10"></data-loader>
                         </div>

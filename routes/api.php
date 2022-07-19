@@ -19,6 +19,7 @@ use App\Http\Controllers\Frontend\MemberController as MemberController;
 use App\Http\Controllers\Frontend\NewsController as NewsController;
 use App\Http\Controllers\Frontend\ProductController as ProductController;
 use App\Http\Controllers\Frontend\CartController as CartController;
+use App\Http\Controllers\Frontend\OrderController as OrderController;
 
 // 測試
 use App\Http\Controllers\JwtDemoController as JwtDemoController;
@@ -104,6 +105,9 @@ Route::post('/members', [MemberController::class, 'add']);
 Route::post('/login', [MemberController::class, 'login']);
 Route::get('/members', [MemberController::class, 'getItem']);
 Route::post('/members/checkToken', [MemberController::class, 'checkToken']);
+
+Route::post('/orders', [OrderController::class, 'add']);
+
 
 Route::middleware(['auth.member_api'])->group(function() {
     Route::put('/members', [MemberController::class, 'updateItem']);

@@ -10,23 +10,16 @@ use App\Models\Cart;
 use App\Models\Product;
 
 // JWT
+use App\Http\Controllers\Frontend\JwtConfig as JwtConfig;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 class CartController extends Controller
 {
-    var $jwt_key = '';
-    var $jwt_algo = 'HS256';
-
-    public function __construct()
-    {
-        $this->jwt_key = env('ADMIN_JWT_SECRET');
-    }
-
     public function add(Request $request) {
         $token = $request->bearerToken();
 
-        $decoded = JWT::decode($token, new Key($this->jwt_key, $this->jwt_algo));
+        $decoded = JWT::decode($token, new Key(JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO));
 
         $member_id = $decoded->member_id;
         
@@ -87,7 +80,7 @@ class CartController extends Controller
     public function getItems(Request $request) {
         $token = $request->bearerToken();
 
-        $decoded = JWT::decode($token, new Key($this->jwt_key, $this->jwt_algo));
+        $decoded = JWT::decode($token, new Key(JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO));
 
         $member_id = $decoded->member_id;
 
@@ -102,7 +95,7 @@ class CartController extends Controller
     public function deleteItem($id, Request $request) {
         $token = $request->bearerToken();
 
-        $decoded = JWT::decode($token, new Key($this->jwt_key, $this->jwt_algo));
+        $decoded = JWT::decode($token, new Key(JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO));
 
         $member_id = $decoded->member_id;
 
@@ -117,8 +110,7 @@ class CartController extends Controller
     public function updateItem($id, Request $request) {
         $token = $request->bearerToken();
 
-        // $decoded = JWT::decode($token, new Key($this->jwt_key, $this->jwt_algo));
-        $decoded = JWT::decode($token, new Key(env('ADMIN_JWT_SECRET'), $this->jwt_algo));
+        $decoded = JWT::decode($token, new Key(JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO));
 
         $member_id = $decoded->member_id;
 

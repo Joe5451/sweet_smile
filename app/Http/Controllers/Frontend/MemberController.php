@@ -8,19 +8,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Member;
 
 // JWT
+use App\Http\Controllers\Frontend\JwtConfig as JwtConfig;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 class MemberController extends Controller
 {
-    var $jwt_key = '';
-    var $jwt_algo = 'HS256';
-
-    public function __construct()
-    {
-        $this->jwt_key = env('ADMIN_JWT_SECRET');
-    }
-
     public function add(Request $request) {
         $data = $request->input();
 
@@ -183,7 +176,7 @@ class MemberController extends Controller
             else
                 unset($data['password']);
 
-            $decoded = JWT::decode($token, new Key($this->jwt_key, $this->jwt_algo));
+            $decoded = JWT::decode($token, new Key(JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO));
 
             $member_id = $decoded->member_id;
                 
@@ -203,7 +196,7 @@ class MemberController extends Controller
 
     private function createToken($payload)
     {
-        $jwt = JWT::encode($payload, $this->jwt_key, $this->jwt_algo);
+        $jwt = JWT::encode($payload, JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO);
 
         return $jwt;
     }

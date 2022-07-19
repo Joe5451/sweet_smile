@@ -8,6 +8,7 @@ import MainHeader from './components/frontend/MainHeader.vue';
 import MainFooter from './components/frontend/MainFooter.vue';
 import TopBtn from './components/frontend/TopBtn.vue';
 import MemberSidebar from './components/frontend/MemberSidebar.vue';
+import CartNoProduct from './components/frontend/CartNoProduct.vue';
 
 // admin components
 import AdminLoginForm from './components/admin/LoginForm.vue';
@@ -22,6 +23,7 @@ Vue.component('main-header', MainHeader);
 Vue.component('main-footer', MainFooter);
 Vue.component('top-button', TopBtn);
 Vue.component('member-sidebar', MemberSidebar);
+Vue.component('cart-no-product', CartNoProduct);
 
 // regist global admin components
 Vue.component('admin-login-form', AdminLoginForm);

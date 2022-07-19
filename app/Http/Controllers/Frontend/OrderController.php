@@ -48,6 +48,7 @@ class OrderController extends Controller
         if (!$validator->fails()) {
             $is_member = $data['is_member'];
             $carts = $data['cart'];
+            $member_id = null;
 
             unset($data['is_member']);
             unset($data['cart']);
@@ -89,15 +90,10 @@ class OrderController extends Controller
                 ->find($cart->product_id);
 
                 if (is_null($product)) {
-                    $delete_product_name[] = $cart->product_name;
-                    
-                    if ($is_member) {
-                        Cart::find($cart->id)->delete();
-                    } else {
-                        unset($carts[$index]);
-                    }
-
+                    if ($is_member) Cart::find($cart->id)->delete();
                     $check_product_pass = false;
+                    $delete_product_name[] = $cart->product_name;
+                    unset($carts[$index]);
                 }
             }
 
@@ -105,8 +101,7 @@ class OrderController extends Controller
                 return response()->json([
                     'status' => 'product_update',
                     'message' => '「' . implode('、', $delete_product_name) . '」商品資料更新，請重新確認內容後再訂購',
-                    // 非會員更新後購物車內容
-                    'update_cart' => $is_member ? [] : $carts
+                    'update_cart' => $carts
                 ]);
             }
 
@@ -132,6 +127,8 @@ class OrderController extends Controller
                     'qty' => $cart->qty
                 ]);
             }
+
+            if ($is_member) Cart::where('member_id', $member_id)->delete();
 
             return response()->json([
                 'status' => 'success',

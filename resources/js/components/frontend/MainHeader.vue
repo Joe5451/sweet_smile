@@ -20,7 +20,7 @@
                     </router-link>
                     <router-link :to="{name: 'cart'}" class="header_btn">
                         <i class="fas fa-shopping-cart"></i>
-                        <div class="header_btn_cart_qty">0</div>
+                        <div class="header_btn_cart_qty">{{ cart_qty }}</div>
                     </router-link>
                 </div>
             </div>
@@ -120,6 +120,9 @@
             },
             current_page() {
                 return this.$store.state.app.current_page;
+            },
+            cart_qty() {
+                return this.$store.state.cart.cart_qty;
             }
         },
         methods: {

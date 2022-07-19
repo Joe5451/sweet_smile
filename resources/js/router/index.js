@@ -54,7 +54,7 @@ export default new Router({
             component: App,
             name: 'frontend',
             beforeEnter: async (to, from, next) => {
-                await store.dispatch('member/checkMemberLogin');
+                await store.dispatch('member/initMember');
                 next();
             },
             children: [
@@ -103,13 +103,13 @@ export default new Router({
                     name: 'memberLogin',
                     component: MemberLogin,
                     beforeEnter: (to, from, next) => {
-                        // let login_state = store.state.member.login_state;
-                        let token = getCookie('member_token');
+                        let login_state = store.state.member.login_state;
+                        // let token = getCookie('member_token');
                         let expires_in_cookie = getCookie('token_expires_in');
                         let expires_in = new Date(expires_in_cookie);
                         let now = new Date();
 
-                        if (token == '' || expires_in.getTime() < now.getTime()) {
+                        if (login_state != 1 || expires_in.getTime() < now.getTime()) {
                             next();
                         } else {
                             next({name: 'memberData'});
@@ -120,13 +120,13 @@ export default new Router({
                     path: 'member',
                     component: Member,
                     beforeEnter: (to, from, next) => {
-                        // let login_state = store.state.member.login_state;
-                        let token = getCookie('member_token');
+                        let login_state = store.state.member.login_state;
+                        // let token = getCookie('member_token');
                         let expires_in_cookie = getCookie('token_expires_in');
                         let expires_in = new Date(expires_in_cookie);
                         let now = new Date();
 
-                        if (token == '' || expires_in_cookie == '' || expires_in.getTime() < now.getTime()) {
+                        if (login_state != 1 || expires_in_cookie == '' || expires_in.getTime() < now.getTime()) {
                             console.warn('會員驗證不通過')
                             store.dispatch('member/clearMemberData', 0);
                             next({name: 'memberLogin'});

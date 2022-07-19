@@ -23,13 +23,7 @@ export default {
         async logout() {
             const vm = this;
 
-            await vm.$store.dispatch('member/clearMemberData');
-
-            vm.$store.dispatch('app/alertMessage', {
-                icon: 'success',
-                title: '登出成功',
-                path: {name: 'memberLogin'}
-            });
+            await vm.$store.dispatch('member/logout');
         }
     }
 }

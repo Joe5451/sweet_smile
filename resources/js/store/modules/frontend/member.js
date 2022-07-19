@@ -7,7 +7,7 @@ export default {
         member: null,
     },
     actions: {
-        async checkMemberLogin(context) {
+        async initMember(context) { // 會員初始化
             console.warn('檢查是否登入會員');
             const vm = this;
             const token = getCookie('member_token');
@@ -32,6 +32,8 @@ export default {
                         context.commit('setLoginState', 1);
                         context.commit('setMemberToken', token);
                         context.commit('setTokenExpiresIn', expires_in_cookie);
+
+                        vm.dispatch('cart/getCart');
                     } else if (response.data.status == 'fail') {
                         context.dispatch('clearMemberData');
                     }
@@ -61,6 +63,7 @@ export default {
                     context.state.token_expires_in = data.expires_in;
                     context.state.login_state = 1;
 
+                    vm.dispatch('cart/getCart');
                     vm.dispatch('app/alertMessage', {
                         icon: 'success',
                         title: '登入成功',
@@ -129,6 +132,14 @@ export default {
 
             setCookie('member_token', '', 0);
             setCookie('token_expires_in', '', 0);
+        },
+        async logout(context) {
+            const vm = this;
+
+            context.dispatch('clearMemberData');
+            vm.dispatch('cart/clearCart');
+            vm.dispatch('cart/updateCartQty');
+            vm.dispatch('app/alertMessage', {icon: 'success',title: '登出成功',path: {name: 'memberLogin'}});
         }
     },
     mutations: {

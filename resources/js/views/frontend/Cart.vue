@@ -274,7 +274,7 @@ export default {
             return this.subtotal + this.fare;
         },
         member() {
-            return this.$store.state.cart.member;
+            return this.$store.state.member.member;
         },
         receiver_same_buyer_address() {
             let postcode = this.payment_info.town.split('#$#')[0];
@@ -300,7 +300,7 @@ export default {
     data() {
         return {
             cart_loading: true,
-            member_loading: true,
+            member_loading: false,
             order_loading: false,
             updateQtyTimeout: [],
             payment_info: {
@@ -325,15 +325,20 @@ export default {
     },
     mounted() {
         this.getCart();
-        this.getMember();
+
+        if (this.member !== null) {
+            this.payment_info.email = this.member.email;
+            this.payment_info.name = this.member.name;
+            this.payment_info.phone = this.member.mobile;
+        }
+        
+        // this.getMember();
     },
     methods: {
         async getCart() {
-            const vm = this;
-
-            vm.cart_loading = true;
+            this.cart_loading = true;
             await this.$store.dispatch('cart/getCart');
-            vm.cart_loading = false;
+            this.cart_loading = false;
         },
         async getMember() {
             const vm = this;
@@ -465,7 +470,7 @@ export default {
                 this.createOrder();
             } else {
                 $([document.documentElement, document.body]).animate({
-                    scrollTop: $('.is-invalid').offset().top - 100
+                    scrollTop: $('.is-invalid').offset().top - 160
                 }, 800, 'swing');
             }
         },

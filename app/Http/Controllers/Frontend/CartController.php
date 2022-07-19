@@ -84,7 +84,9 @@ class CartController extends Controller
 
         $member_id = $decoded->member_id;
 
-        $cart = Cart::where('member_id', $member_id)->get();
+        $cart = Cart::where('member_id', $member_id)
+        ->select('id', 'product_id', 'product_name', 'price', 'img', 'qty')
+        ->get();
 
         return response()->json([
             'status' => 'success',

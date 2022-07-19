@@ -1,5 +1,3 @@
-import router from '../../../router';
-
 export default {
     namespaced: true,
     state: {
@@ -101,7 +99,6 @@ export default {
                 }
 
                 context.state.cart = cart;
-                if (context.state.cart.length == 0) vm.dispatch('app/alertMessage', {title: '購物車無商品'});
             } else {
                 // 會員
                 await axios.get('/cart', {

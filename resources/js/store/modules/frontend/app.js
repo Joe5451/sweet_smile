@@ -1,4 +1,3 @@
-import { data } from 'jquery';
 import router from '../../../router'
 
 export default {

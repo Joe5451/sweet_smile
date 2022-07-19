@@ -106,16 +106,12 @@ export default {
                 headers: { 'Authorization': 'Bearer ' + token }
             })
             .then(function (response) {
-                console.log(response);
+                // console.log(response);
                 let data = response.data;
                 
                 if (data.status == 'success') {
                     context.state.member = data.member;
-                    
-                    vm.dispatch('app/alertMessage', {
-                        icon: 'success',
-                        title: '更新成功'
-                    });
+                    vm.dispatch('app/alertMessage', {icon: 'success',title: '更新成功'});
                 } else if (data.status == 'fail') {
                     vm.dispatch('app/alertMessage', {title: data.message});
                 }

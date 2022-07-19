@@ -187,9 +187,15 @@ class MemberController extends Controller
                 
             Member::where('member_id', $member_id)->update($data);
 
+            $member = Member::select(['name', 'email', 'mobile'])
+            ->where('member_id', $member_id)
+            ->take(1)
+            ->get();
+
             return response()->json([
                 'status' => 'success',
-                'message' => ''
+                'message' => '',
+                'member' => $member[0]
             ]);
         } else {
             return response()->json([

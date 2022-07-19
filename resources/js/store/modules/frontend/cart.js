@@ -298,11 +298,21 @@ export default {
             .then(function (response) {
                 console.log(response);
 
-                // if (response.data.status == 'token_invalid') {
-                //     setCookie('member_token', '', 0); // 刪除 token
+                if (response.data.status == 'success') {
+                    alert('訂單建立成功!');
+                }
+                else if (response.data.status == 'product_update') {
+                    setCookie('cart', JSON.stringify(response.data.update_cart), 365);
+                    vm.dispatch('app/alertMessage', {icon: 'info', title: response.data.message});
+                }
+                else if (response.data.status == 'fail') {
+                    vm.dispatch('app/alertMessage', {icon: 'info', title: response.data.message});
+                }
+                else if (response.data.status == 'token_invalid') {
+                    setCookie('member_token', '', 0); // 刪除 token
 
-                //     vm.dispatch('app/alertMessage', {icon: 'info', title: '登入逾時，請重新登入', path: {name: 'memberLogin'}});
-                // }
+                    vm.dispatch('app/alertMessage', {icon: 'info', title: '登入逾時，請重新登入', path: {name: 'memberLogin'}});
+                }
             })
             .catch(function(error) {
                 console.error("Error: ", error);

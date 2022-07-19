@@ -103,10 +103,10 @@ class OrderController extends Controller
 
             if (!$check_product_pass) {
                 return response()->json([
-                    'status' => 'fail',
+                    'status' => 'product_update',
                     'message' => '「' . implode('、', $delete_product_name) . '」商品資料更新，請重新確認內容後再訂購',
                     // 非會員更新後購物車內容
-                    'none_member_cart' => $is_member ? [] : $carts
+                    'update_cart' => $is_member ? [] : $carts
                 ]);
             }
 

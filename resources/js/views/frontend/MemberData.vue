@@ -88,10 +88,13 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('member/getMember');
-    },
-    destroyed() {
-        this.$store.commit('member/setMember', null);
+        if (this.member !== null) {
+            this.name = this.member.name;
+            this.email = this.member.email;
+            this.mobile = this.member.mobile;
+        }
+
+        // this.$store.dispatch('member/getMember');
     },
     methods: {
         checkForm() {
@@ -112,39 +115,45 @@ export default {
 
             vm.is_loading = true;
 
-            await axios.put('/members', {
-                name: this.name,
-                mobile: this.mobile,
-                password: this.password,
-            }, {
-                headers: { 'Authorization': 'Bearer ' + token }
-            })
-            .then(function (response) {
-                console.log(response);
-
-                if (response.data.status == 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: '更新成功',
-                        width: 300,
-                        timer: 1500,
-                        showConfirmButton: false,
-                        willClose: () => {
-                            vm.$store.dispatch('member/getMember');
-                        },
-                    });
-                } else if (response.data.status == 'fail') {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: response.data.message,
-                        timer: 1500,
-                    });
-                }
-            })
-            .catch(function(error) {
-                console.error("Error: ", error);
-                vm.$store.dispatch('member/getMember');
+            await vm.dispatch('member/updateMember', {
+                name: vm.name,
+                mobile: vm.mobile,
+                password: vm.password,
             });
+
+            // await axios.put('/members', {
+            //     name: this.name,
+            //     mobile: this.mobile,
+            //     password: this.password,
+            // }, {
+            //     headers: { 'Authorization': 'Bearer ' + token }
+            // })
+            // .then(function (response) {
+            //     console.log(response);
+
+            //     if (response.data.status == 'success') {
+            //         Swal.fire({
+            //             icon: 'success',
+            //             title: '更新成功',
+            //             width: 300,
+            //             timer: 1500,
+            //             showConfirmButton: false,
+            //             willClose: () => {
+            //                 vm.$store.dispatch('member/getMember');
+            //             },
+            //         });
+            //     } else if (response.data.status == 'fail') {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: response.data.message,
+            //             timer: 1500,
+            //         });
+            //     }
+            // })
+            // .catch(function(error) {
+            //     console.error("Error: ", error);
+            //     vm.$store.dispatch('member/getMember');
+            // });
 
             vm.is_loading = false;
         },

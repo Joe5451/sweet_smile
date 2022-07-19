@@ -66,6 +66,7 @@ class MemberController extends Controller
         if (!$validator->fails()) {
             $member = Member::where('email', $data['email'])
             ->where('password', md5($data['password']))
+            ->select('member_id', 'email', 'name', 'mobile')
             ->take(1)
             ->get();
 
@@ -75,17 +76,20 @@ class MemberController extends Controller
                     'message' => '帳號密碼錯誤'
                 ]);
             }
+
+            $member_id = $member[0]->member_id;
+            unset($member[0]->member_id);
             
             $expires_in = date('Y-m-d H:i:s', strtotime('+1day'));
 
             $payload = [
-                'member_id' => $member[0]->member_id,
+                'member_id' => $member_id,
                 'expires_in' => $expires_in
             ];
 
             $token = $this->createToken($payload);
 
-            Member::where('member_id', $member[0]->member_id)
+            Member::where('member_id', $member_id)
             ->update([
                 'token' => $token,
                 'token_expires_in' => $expires_in
@@ -94,14 +98,15 @@ class MemberController extends Controller
             return response()->json([
                 'status' => 'success',
                 'access_token' => $token,
-                'expires_in' => $expires_in
+                'expires_in' => $expires_in,
+                'member' => $member[0]
             ]);
         } else {
             $error = $validator->messages();
 
             return response()->json([
                 'status' => 'fail',
-                'message' => '登入失敗',
+                'message' => '請輸入帳號密碼',
                 'error' => $error
             ]);
         }
@@ -110,7 +115,7 @@ class MemberController extends Controller
     public function getItem(Request $request) {
         $token = $request->query('token', null);
 
-        $member = Member::select(['member_id', 'name', 'email', 'mobile'])
+        $member = Member::select(['name', 'email', 'mobile'])
         ->where('token', $token)
         ->take(1)
         ->get();

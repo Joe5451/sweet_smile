@@ -25,10 +25,13 @@ export default {
     async mounted() {
         this.$store.commit('app/showLoading');
 
-            this.$store.dispatch('app/getData');
-            this.$store.dispatch('app/getProductCategories');
+        this.$store.dispatch('app/getData');
+        this.$store.dispatch('app/getProductCategories');
 
         this.$store.commit('app/hideLoading');
     },
+    methods: {
+        
+    }
 }
 </script>

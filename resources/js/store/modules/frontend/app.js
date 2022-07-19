@@ -1,3 +1,4 @@
+import { data } from 'jquery';
 import router from '../../../router'
 
 export default {
@@ -38,7 +39,11 @@ export default {
                 console.error("Error: ", error);
             });
         },
-        alertMessage(context, {icon, title, path}) {
+        alertMessage(context, data) {
+            let icon = data.hasOwnProperty('icon') ? data.icon : 'info';
+            let title = data.hasOwnProperty('title') ? data.title : '';
+            let path = data.hasOwnProperty('path') ? data.path : undefined;
+
             Swal.fire({
                 icon,
                 title,

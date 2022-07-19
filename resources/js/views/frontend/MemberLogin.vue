@@ -70,40 +70,42 @@ export default {
             const vm = this;
 
             vm.is_loading = true;
-
-            await axios.post('/login', {
-                email: vm.email,
-                password: vm.password
-            })
-            .then(function (response) {
-                console.log(response);
-
-                if (response.data.status == 'success') {
-                    setCookie('member_token', response.data.access_token, 1);
-
-                    Swal.fire({
-                        icon: 'success',
-                        title: '登入成功',
-                        width: 300,
-                        timer: 1500,
-                        showConfirmButton: false,
-                        willClose: () => {
-                            vm.$router.push({name: 'memberData'});
-                        },
-                    });
-                } else if (response.data.status == 'fail') {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: response.data.message,
-                        timer: 1500,
-                    });
-                }
-            })
-            .catch(function(error) {
-                console.error("Error: ", error);
-            });
-
+            await vm.$store.dispatch('member/login', {email: this.email, password: this.password});
             vm.is_loading = false;
+
+            // await axios.post('/login', {
+            //     email: vm.email,
+            //     password: vm.password
+            // })
+            // .then(function (response) {
+            //     console.log(response);
+
+            //     if (response.data.status == 'success') {
+            //         setCookie('member_token', response.data.access_token, 1);
+
+            //         Swal.fire({
+            //             icon: 'success',
+            //             title: '登入成功',
+            //             width: 300,
+            //             timer: 1500,
+            //             showConfirmButton: false,
+            //             willClose: () => {
+            //                 vm.$router.push({name: 'memberData'});
+            //             },
+            //         });
+            //     } else if (response.data.status == 'fail') {
+            //         Swal.fire({
+            //             icon: 'warning',
+            //             title: response.data.message,
+            //             timer: 1500,
+            //         });
+            //     }
+            // })
+            // .catch(function(error) {
+            //     console.error("Error: ", error);
+            // });
+
+            // vm.is_loading = false;
         },
         alertMessage(element, invalid_message) {
             element.addClass('is-invalid');

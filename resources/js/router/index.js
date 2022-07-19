@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '../store';
 
 // frontend views
 import App from '../views/frontend/App.vue';
@@ -52,6 +53,10 @@ export default new Router({
             path: '/',
             component: App,
             name: 'frontend',
+            beforeEnter: async (to, from, next) => {
+                await store.dispatch('member/checkMemberLogin');
+                next();
+            },
             children: [
                 {
                     path: '/',
@@ -98,58 +103,36 @@ export default new Router({
                     name: 'memberLogin',
                     component: MemberLogin,
                     beforeEnter: (to, from, next) => {
-                        const token = getCookie('member_token');
+                        // let login_state = store.state.member.login_state;
+                        let token = getCookie('member_token');
+                        let expires_in_cookie = getCookie('token_expires_in');
+                        let expires_in = new Date(expires_in_cookie);
+                        let now = new Date();
 
-                        if (token == '') {
+                        if (token == '' || expires_in.getTime() < now.getTime()) {
                             next();
                         } else {
-                            axios.post('/members/checkToken', {
-                                token
-                            }).then(function (response) {
-                                if (response.data.status == 'success') {
-                                    next({ name: 'memberData'});
-                                } else if (response.data.status == 'fail') {
-                                    next();
-                                }
-                            });
+                            next({name: 'memberData'});
                         }
-
                     }
                 },
                 {
                     path: 'member',
                     component: Member,
                     beforeEnter: (to, from, next) => {
-                        const token = getCookie('member_token');
+                        // let login_state = store.state.member.login_state;
+                        let token = getCookie('member_token');
+                        let expires_in_cookie = getCookie('token_expires_in');
+                        let expires_in = new Date(expires_in_cookie);
+                        let now = new Date();
 
-                        if (token == '') {
+                        if (token == '' || expires_in_cookie == '' || expires_in.getTime() < now.getTime()) {
+                            console.warn('會員驗證不通過')
+                            store.dispatch('member/clearMemberData', 0);
                             next({name: 'memberLogin'});
-
-                            Swal.fire({
-                                icon: 'info',
-                                title: '請登入會員',
-                                timer: 1500,
-                                width: 300,
-                                showConfirmButton: false,
-                            });
+                            store.dispatch('app/alertMessage', {title: '請登入會員'});
                         } else {
-                            axios.post('/members/checkToken', {
-                                token
-                            }).then(function (response) {
-                                if (response.data.status == 'success') {
-                                    next();
-                                } else if (response.data.status == 'fail') {
-                                    next({name: 'memberLogin'});
-
-                                    Swal.fire({
-                                        icon: 'info',
-                                        title: '請登入會員',
-                                        timer: 1500,
-                                        width: 300,
-                                        showConfirmButton: false,
-                                    });
-                                }
-                            });
+                            next();
                         }
                     },
                     children: [

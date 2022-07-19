@@ -20,20 +20,15 @@
 <script>
 export default {
     methods: {
-        logout() {
+        async logout() {
             const vm = this;
 
-            setCookie('member_token', '', 0);
+            await vm.$store.dispatch('member/clearMemberData');
 
-            Swal.fire({
+            vm.$store.dispatch('app/alertMessage', {
                 icon: 'success',
                 title: '登出成功',
-                width: 300,
-                timer: 1500,
-                showConfirmButton: false,
-                willClose: () => {
-                    vm.$router.push({name: 'memberLogin'});
-                },
+                path: {name: 'memberLogin'}
             });
         }
     }

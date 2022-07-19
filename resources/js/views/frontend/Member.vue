@@ -6,7 +6,7 @@
 
 export default {
     mounted() {
-        this.checkToken();
+        // this.checkToken();
     },
     methods: {
         checkToken() {

@@ -39,6 +39,9 @@
                     <router-link class="admin_nav_sub_link" :to="{name: 'adminProductCategoryAdd'}">商品分類新增</router-link>
                 </div>
             </div>
+            <div class="admin_nav_item">
+                <router-link class="admin_nav_link" :to="{name: 'adminHeadImgList'}">訂單管理</router-link>
+            </div>
         </nav>
     </div>
 </template>

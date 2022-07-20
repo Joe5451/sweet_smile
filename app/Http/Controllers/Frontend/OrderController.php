@@ -82,7 +82,7 @@ class OrderController extends Controller
             $total = 0; // 總金額
             
             foreach ($carts as $index => $cart) {
-                $subtotal += $cart->price;
+                $subtotal += $cart->price * $cart->qty;
                 
                 $product = Product::where('product_name', $cart->product_name)
                 ->where('price', $cart->price)

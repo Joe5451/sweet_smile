@@ -99,7 +99,7 @@
                             <div class="p-4 mb-4 payment_info_data">
                                 <p>姓名：{{ order.name }}</p>
                                 <p>聯絡電話：{{ order.phone }}</p>
-                                <p>收件人地址：{{buyer_address}}</p>
+                                <p>地址：{{buyer_address}}</p>
                             </div>
 
                             <div class="payment_info_title">收件人資訊</div>
@@ -107,7 +107,7 @@
                             <div class="p-4 mb-4 payment_info_data">
                                 <p>姓名：{{ order.receiver_name }}</p>
                                 <p>聯絡電話：{{ order.receiver_phone }}</p>
-                                <p>收件人地址：{{ receiver_address }}</p>
+                                <p>地址：{{ receiver_address }}</p>
                             </div>
 
                             <div class="payment_info_title">備註</div>

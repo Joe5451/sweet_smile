@@ -34,44 +34,35 @@ class OrderController extends Controller
         ]);
     }
 
-    public function getOrder($id, Request $request) {
-        $order = Order::select(['order_id', 'name', 'email', 'mobile', 'created_at'])
-        ->find($id);
+    public function getItem($id, Request $request) {
+        $order = Order::find($id);
+
+        if (is_null($order)) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => '查無訂單'
+            ]);
+        }
+
+        $order->datetime = date('Y-m-d H:i:s', strtotime($order->created_at));
+        $order->order_items;
 
         return response()->json([
+            'status' => 'success',
             'order' => $order
         ]);
     }
 
-    public function updateOrder($id, Request $request) {
+    public function updateItem($id, Request $request) {
         $data = $request->input();
-
-        $existOrder = Order::where('email', $data['email'])
-        ->where('order_id', '!=', $id)
-        ->take(1)->get();
-
-        if (count($existOrder) > 0) {
-            return response()->json([
-                'status' => 'fail',
-                'message' => '帳號已存在，請重新設置'
-            ]);
-        }
 
         $validator = Validator::make($data,
         [
-            'name' => 'required|string',
-            'mobile' => 'nullable|string',
-            'email' => 'required|email',
-            'password' => 'nullable|string',
+            'order_state' => 'required|numeric',
+            'order_remark' => 'nullable|string',
         ]);
 
         if (!$validator->fails()) {
-            // 密碼非空白更改
-            if (!is_null($data['password']))
-                $data['password'] = md5($data['password']);
-            else
-                unset($data['password']);
-                
             Order::where('order_id', $id)->update($data);
 
             return response()->json([
@@ -81,7 +72,8 @@ class OrderController extends Controller
         } else {
             return response()->json([
                 'status' => 'fail',
-                'message' => '資料缺少或格式錯誤，請重新嘗試'
+                'message' => '資料缺少或格式錯誤，請重新嘗試',
+                'error' => $validator->messages()
             ]);
         }
     }

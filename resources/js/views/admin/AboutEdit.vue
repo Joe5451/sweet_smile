@@ -58,7 +58,7 @@
 
                 vm.content = vm.editor.getData();
                     
-                axios.put('/admin/about?', {
+                axios.put('/admin/about', {
                     content: vm.content,
                 }, {
                     headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }

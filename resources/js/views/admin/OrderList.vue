@@ -9,9 +9,9 @@
                         <td width="60">項次</td>
                         <td>建立時間</td>
                         <td width="100">訂單編號</td>
-                        <td width="100" class="text-center">類型</td>
+                        <td class="text-center">類型</td>
                         <td>聯絡 Email</td>
-                        <td width="160">收件人</td>
+                        <td width="120">收件人</td>
                         <td class="text-center">訂單金額</td>
                         <td width="100" class="text-center">訂單狀態</td>
                         <td width="120">操作</td>
@@ -28,11 +28,12 @@
                         <td>{{ order.email }}</td>
                         <td>{{ order.receiver_name }}</td>
                         <td class="text-end">${{ order.total }}</td>
-                        <td class="text-center">{{ order.order_state }}</td>
+                        <td class="text-center" :class="get_order_state_color(order.order_state)">{{ order.order_state }}</td>
                         <td class="text-center">
-                            <button class="btn btn-sm btn-primary">
+                            <router-link :to="{ name: 'adminOrderUpdate', params: {order_id: order.order_id} }"
+                            class="btn btn-sm btn-primary">
                                 管理
-                            </button>
+                            </router-link>
                             
                             <button class="btn btn-sm btn-danger" @click="confirmDeleteOrder(order.order_id)">
                                 刪除
@@ -110,7 +111,7 @@
                     headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
-                    console.log(response);
+                    // console.log(response);
                     vm.orders = response.data.orders;
                     vm.total = response.data.total;
                 })
@@ -119,6 +120,14 @@
                 });
 
                 vm.$store.commit('admin_setting/hideLoading');
+            },
+            get_order_state_color(order_state) {
+                if (order_state == '未處理') return { 'text-danger': true };
+                else if (order_state == '處理中') return { 'text-primary': true };
+                else if (order_state == '已寄出') return { 'text-success': true };
+                else if (order_state == '退貨') return { 'text-warning': true };
+                else if (order_state == '取消訂單') return { 'text-black-50': true };
+                else return { 'text-black': true };
             },
             confirmDeleteOrder(order_id) {
                 const vm = this;

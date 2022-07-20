@@ -82,8 +82,8 @@ Route::prefix('admin')->group(function() {
         Route::put('/about', [AdminPageController::class, 'updateAbout']);
 
         Route::get('/orders', [AdminOrderController::class, 'getItems']);
-        // Route::get('/orders/{id}', [AdminOrderController::class, 'getItem']);
-        // Route::put('/orders/{id}', [AdminOrderController::class, 'updateItem']);
+        Route::get('/orders/{id}', [AdminOrderController::class, 'getItem']);
+        Route::put('/orders/{id}', [AdminOrderController::class, 'updateItem']);
 
         // ckeditor 上傳圖片 api
         Route::post('/editor/upload', [AdminEditorController::class, 'upload']);

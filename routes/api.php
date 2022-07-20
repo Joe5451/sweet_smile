@@ -84,6 +84,7 @@ Route::prefix('admin')->group(function() {
         Route::get('/orders', [AdminOrderController::class, 'getItems']);
         Route::get('/orders/{id}', [AdminOrderController::class, 'getItem']);
         Route::put('/orders/{id}', [AdminOrderController::class, 'updateItem']);
+        Route::delete('/orders/{id}', [AdminOrderController::class, 'deleteItem']);
 
         // ckeditor 上傳圖片 api
         Route::post('/editor/upload', [AdminEditorController::class, 'upload']);

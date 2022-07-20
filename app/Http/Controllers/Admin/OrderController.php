@@ -78,7 +78,7 @@ class OrderController extends Controller
         }
     }
 
-    public function deleteOrder($id, Request $request) {
+    public function deleteItem($id, Request $request) {
         Order::where('order_id', $id)->delete();
 
         return response()->json([

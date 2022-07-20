@@ -4,10 +4,10 @@ export default {
         current_product: null
     },
     actions: {
-        getProduct(context, product_id) {
+        async getProduct(context, product_id) {
             context.state.product = null;
 
-            axios.get('/products/' + product_id)
+            await axios.get('/products/' + product_id)
             .then(function (response) {
                 // console.log(response);
                 context.state.current_product = response.data.product;
@@ -16,7 +16,9 @@ export default {
                 console.error("Error: ", error);
             });
         },
-        
+        initProduct(context) {
+            context.state.current_product = null;
+        }
     },
     mutations: {
         

@@ -4,7 +4,12 @@
             <div class="page_banner_title">購物商城</div>
         </div>
 
-        <div class="container mb-80px" v-if="product !== null">
+        <div class="d-flex justify-content-center align-items-center flex-column" style="height:400px;" v-if="loading || product === null">
+            <i class="fas fa-spinner rotate-center text-black" style="font-size:40px"></i>
+            <span class="mt-3">Loading</span>
+        </div>
+
+        <div class="container mb-80px" v-else>
             <div class="row">
                 <div class="col-lg-6">
                     <img :src="product.product_cover_img" class="product_img mx-auto d-block">
@@ -29,11 +34,14 @@
                     </div>
 
                     <div class="d-flex">
-                        <button class="me-1 product_btn add_cart" @click="addCart" :disabled="add_cart_loading">
+                        <button class="me-1 product_btn add_cart" @click="addCart(false)" :disabled="add_cart_loading">
                             <span v-if="add_cart_loading"><i class="fas fa-spinner rotate-center"></i></span>
                             <span v-else>加入購物車</span>
                         </button>
-                        <button class="ms-1 product_btn buy_now">立即購買</button>
+                        <button class="ms-1 product_btn buy_now" @click="addCart(true)" :disabled="checkout_loading">
+                            <span v-if="checkout_loading"><i class="fas fa-spinner rotate-center"></i></span>
+                            <span v-else>立即購買</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -62,10 +70,17 @@ export default {
             qty: 1,
             product_id: this.$route.params.product_id,
             add_cart_loading: false,
+            checkout_loading: false,
+            loading: true
         }
     },
-    mounted() {
-        this.$store.dispatch('product/getProduct', this.product_id);
+    async mounted() {
+        this.loading = true;
+        await this.$store.dispatch('product/getProduct', this.product_id);
+        this.loading = false;
+    },
+    destroyed() {
+        this.$store.dispatch('product/initProduct');
     },
     methods: {
         checkQty(e) {
@@ -98,12 +113,16 @@ export default {
                 this.alertInfo('info', '數量不得高於 1000');
             }
         },
-        async addCart() {
+        async addCart(is_checkout) {
             const vm = this;
 
-            vm.add_cart_loading = true;
-            await this.$store.dispatch('cart/addProduct', { product: this.product, qty: this.qty });
-            vm.add_cart_loading = false;
+            if (is_checkout) vm.checkout_loading = true;
+            else vm.add_cart_loading = true;
+            
+            await this.$store.dispatch('cart/addProduct', { product: this.product, qty: this.qty, is_checkout });
+
+            if (is_checkout) vm.checkout_loading = false;
+            else vm.add_cart_loading = false;
         },
         alertInfo(icon, title) {
             Swal.fire({

@@ -7,7 +7,7 @@ export default {
         member: null
     },
     actions: {
-        async addProduct(context, { product, qty } ) {
+        async addProduct(context, { product, qty, is_checkout } ) {
             const vm = this;
             const token = vm.state.member.member_token;
 
@@ -67,7 +67,8 @@ export default {
                 if (!product_existed) cart.push(add_product);
     
                 setCookie('cart', JSON.stringify(cart), 365);
-                vm.dispatch('app/alertMessage', {icon: 'success', title: '已加入購物車'});
+                if (is_checkout) vm.dispatch('app/alertMessage', {icon: 'success', title: '已加入購物車', path: {name: 'cart'}});
+                else vm.dispatch('app/alertMessage', {icon: 'success', title: '已加入購物車'});
                 context.dispatch('updateCartQty');
             }
         },

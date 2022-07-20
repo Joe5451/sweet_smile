@@ -143,6 +143,63 @@ class OrderController extends Controller
         }
     }
 
+    public function getItems(Request $request) {
+        $token = $request->bearerToken();
+        $decoded = JWT::decode($token, new Key(JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO));
+        $member_id = $decoded->member_id;
+        
+        $page = (int) $request->query('page', 1);
+        $limit = (int) $request->query('limit', 15);
+        $offset = ($page - 1) * $limit;
+        
+        $orders = Order::where('member_id', $member_id)
+        ->orderBy('created_at', 'desc')
+        ->select(['order_id', 'order_number', 'total', 'order_state', 'created_at'])
+        ->offset($offset)
+        ->limit($limit)
+        ->get();
+
+        $orders->each(function($order) {
+            $order->order_state = Order::order_states[$order->order_state];
+            $order->datetime = date('Y-m-d H:i:s', strtotime($order->created_at));
+            unset($order->created_at);
+        });
+
+        $total = Order::where('member_id', $member_id)->count();
+        
+        return response()->json([
+            'status' => 'success',
+            'orders' => $orders,
+            'total' => $total
+        ]);
+    }
+
+    public function getItem($id, Request $request) {
+        $token = $request->bearerToken();
+        $decoded = JWT::decode($token, new Key(JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO));
+        $member_id = $decoded->member_id;
+
+        $order = Order::where('member_id', $member_id)->find($id);
+
+        if (is_null($order)) {
+            return response()->json([
+                'status' => 'fail',
+                'message' => '查無訂單資料'
+            ]);
+        } else {
+            $order->order_items;
+            $order->order_state = Order::order_states[$order->order_state];
+            $order->datetime = date('Y-m-d H:i:s', strtotime($order->created_at));
+            unset($order->updated_at);
+            unset($order->created_at);
+
+            return response()->json([
+                'status' => 'success',
+                'order' => $order
+            ]);
+        }
+    }
+
     // 產生訂單編號 = 兩個隨機大寫英文字母 + 五個隨機數字
     private function getOrderNumber() {
     	$order_number = '';

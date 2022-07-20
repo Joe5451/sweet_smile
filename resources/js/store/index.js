@@ -13,6 +13,7 @@ import news from './modules/frontend/news'
 import product from './modules/frontend/product'
 import member from './modules/frontend/member'
 import cart from './modules/frontend/cart'
+import order from './modules/frontend/order'
 
 Vue.use(Vuex);
 
@@ -34,7 +35,8 @@ export default new Vuex.Store({
         news,
         product,
         member,
-        cart
+        cart,
+        order
     },
     state: {
         

@@ -100,6 +100,9 @@ export default {
         },
         page() {
             return (this.$route.params.page === undefined) ? 1 : this.$route.params.page;
+        },
+        page_num() {
+            return Math.ceil(this.total / this.limit);
         }
     },
     watch: {
@@ -116,8 +119,7 @@ export default {
             subcategory_name: '',
             products: [],
             total: 0,
-            limit: 15,
-            page_num: 0
+            limit: 15
         }
     },
     destroyed() {
@@ -158,13 +160,9 @@ export default {
             })
             .then(function (response) {
                 // console.log(response);
-                let data = response.data;
-
-                vm.subcategory_name = data.subcategory_name;
-                vm.products = data.products;
-                vm.total = data.total;
-                vm.page_num = parseInt(vm.total / vm.limit);
-                vm.page_num += (vm.total%vm.limit != 0) ? 1 : 0;
+                vm.subcategory_name = response.data.subcategory_name;
+                vm.products = response.data.products;
+                vm.total = response.data.total;
             })
             .catch(function(error) {
                 console.error("Error: ", error);

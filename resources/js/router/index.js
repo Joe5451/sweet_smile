@@ -15,7 +15,8 @@ import MemberLogin from '../views/frontend/MemberLogin.vue';
 import MemberSignup from '../views/frontend/MemberSignup.vue';
 import Member from '../views/frontend/Member.vue';
 import MemberData from '../views/frontend/MemberData.vue';
-// import MemberOrder from '../views/frontend/MemberOrder.vue';
+import MemberOrderList from '../views/frontend/MemberOrderList.vue';
+import MemberOrder from '../views/frontend/MemberOrder.vue';
 import Cart from '../views/frontend/Cart.vue';
 
 // admin views
@@ -141,6 +142,16 @@ export default new Router({
                             name: 'memberData',
                             component: MemberData
                         },
+                        {
+                            path: 'order/list/:page?',
+                            name: 'memberOrderList',
+                            component: MemberOrderList
+                        },
+                        {
+                            path: 'order/:order_id',
+                            name: 'memberOrder',
+                            component: MemberOrder
+                        }
                     ]
                 },
                 {

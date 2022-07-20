@@ -7,8 +7,7 @@
                 <router-link :to="{ name: 'memberData' }" class="member_nav_link">會員資料</router-link>
             </div>
             <div class="member_nav_item">
-                <!-- <router-link :to="{ name: 'memberOrder' }" class="member_nav_link">訂單紀錄</router-link> -->
-                <a href="member_order.php" class="member_nav_link">訂單紀錄</a>
+                <router-link :to="{ name: 'memberOrderList' }" class="member_nav_link" :class="{ active: $store.state.order.is_order_page }">訂單紀錄</router-link>
             </div>
             <div class="member_nav_item">
                 <a @click="logout" class="member_nav_link" style="cursor:pointer;">會員登出</a>

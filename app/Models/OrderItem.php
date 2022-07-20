@@ -19,6 +19,6 @@ class OrderItem extends Model
         'product_id',
         'product_img',
         'price',
-        'amount',
+        'qty',
     ];
 }

@@ -69,11 +69,13 @@ export default {
         page() {
             let new_page = this.$route.params.page;
             return (new_page === undefined) ? 1 : new_page;
+        },
+        page_num() {
+            return Math.ceil(this.total / this.limit);
         }
     },
     watch: {
         page(new_page, old_page) {
-            // console.log(old_page);
             this.getNews();
         }
     },
@@ -82,8 +84,7 @@ export default {
             is_loading: true,
             news: [],
             total: 0,
-            limit: 12,
-            page_num: 0
+            limit: 12
         }
     },
     mounted() {
@@ -103,11 +104,8 @@ export default {
             })
             .then(function (response) {
                 // console.log(response);
-
                 vm.news = response.data.news;
                 vm.total = response.data.total;
-                vm.page_num = parseInt(vm.total / vm.limit);
-                vm.page_num += (vm.total%vm.limit != 0) ? 1 : 0;
             })
             .catch(function(error) {
                 console.error("Error: ", error);

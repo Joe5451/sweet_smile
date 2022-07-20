@@ -12,6 +12,10 @@ class Order extends Model
     protected $table = 'orders';
     protected $primaryKey = 'order_id';
 
+    // protected $casts = [
+    //     'created_at' => 'datetime:Y-m-d H:i:s',
+    // ];
+
     const order_states = [
         0 => '未處理',
         1 => '處理中',
@@ -44,6 +48,7 @@ class Order extends Model
     ];
 
     public function order_items() {
-        return $this->hasMany('App\Models\OrderItem', 'order_id', 'order_id');
+        return $this->hasMany('App\Models\OrderItem', 'order_id', 'order_id')
+        ->select('price', 'product_img', 'product_name', 'qty');
     }
 }

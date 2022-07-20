@@ -108,13 +108,14 @@ Route::post('/members/checkToken', [MemberController::class, 'checkToken']);
 
 Route::post('/orders', [OrderController::class, 'add']);
 
-
 Route::middleware(['auth.member_api'])->group(function() {
     Route::put('/members', [MemberController::class, 'updateItem']);
     Route::post('/cart/add', [CartController::class, 'add']);
     Route::get('/cart', [CartController::class, 'getItems']);
     Route::delete('/cart/{id}', [CartController::class, 'deleteItem']);
     Route::put('/cart/{id}', [CartController::class, 'updateItem']);
+    Route::get('/orders', [OrderController::class, 'getItems']);
+    Route::get('/orders/{id}', [OrderController::class, 'getItem']);
 });
 
 

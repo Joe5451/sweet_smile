@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\HeadImgController as AdminHeadImgController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+// use App\Http\Controllers\Admin\ContactController as AdminContactController;
 
 // 前台
 use App\Http\Controllers\Frontend\WebController as WebController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Frontend\NewsController as NewsController;
 use App\Http\Controllers\Frontend\ProductController as ProductController;
 use App\Http\Controllers\Frontend\CartController as CartController;
 use App\Http\Controllers\Frontend\OrderController as OrderController;
+use App\Http\Controllers\Frontend\ContactController as ContactController;
 
 // 測試
 use App\Http\Controllers\JwtDemoController as JwtDemoController;
@@ -110,6 +112,8 @@ Route::post('/members', [MemberController::class, 'add']);
 Route::post('/login', [MemberController::class, 'login']);
 Route::get('/members', [MemberController::class, 'getItem']);
 Route::post('/members/checkToken', [MemberController::class, 'checkToken']);
+
+Route::post('/contact', [ContactController::class, 'add']);
 
 Route::post('/orders', [OrderController::class, 'add']);
 

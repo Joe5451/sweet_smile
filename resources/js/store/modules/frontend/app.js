@@ -43,18 +43,35 @@ export default {
             let title = data.hasOwnProperty('title') ? data.title : '';
             let path = data.hasOwnProperty('path') ? data.path : undefined;
 
-            Swal.fire({
-                icon,
-                title,
-                width: 300,
-                timer: 1500,
-                showConfirmButton: false,
-                willClose: () => {
-                    if (path !== undefined) {
-                        router.push(path);
+            if (icon == 'info') {
+                Swal.fire({
+                    icon,
+                    iconHtml: '<img style="width:80px;" src="img/logo_b.svg">',
+                    customClass: { icon: 'border-0' },
+                    title,
+                    width: 300,
+                    timer: 1500,
+                    showConfirmButton: false,
+                    willClose: () => {
+                        if (path !== undefined) {
+                            router.push(path);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                Swal.fire({
+                    icon,
+                    title,
+                    width: 300,
+                    timer: 1500,
+                    showConfirmButton: false,
+                    willClose: () => {
+                        if (path !== undefined) {
+                            router.push(path);
+                        }
+                    }
+                });
+            }
         }
     },
     mutations: {

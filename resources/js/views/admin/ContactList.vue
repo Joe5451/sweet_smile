@@ -1,29 +1,30 @@
 <template>
     <div>
-        <div class="admin_title">會員列表</div>
+        <div class="admin_title">聯絡我們列表</div>
 
         <div class="mb-5 table-responsive custom_horizontal_scrollbar">
             <table class="table table-bordered table-striped align-middle mb-0" style="min-width: 800px;">
                 <tbody>
                     <tr class="border-top">
                         <td width="60">項次</td>
-                        <td width="200">加入時間</td>
-                        <td width="160">姓名</td>
-                        <td>帳號</td>
+                        <td width="200">發送時間</td>
+                        <td width="100">姓名</td>
+                        <td>Email</td>
+                        <td width="80">狀態</td>
                         <td width="120">操作</td>
                     </tr>
 
-                    <tr v-for="(member, index) in members" :key="member.member_id">
+                    <tr v-for="(contact, index) in contacts" :key="contact.id">
                         <td class="text-end">{{ index + start_index }}</td>
-                        <td>{{ member.created_at }}</td>
-                        <td>{{ member.name }}</td>
-                        <td>{{ member.email }}</td>
+                        <td>{{ contact.created_at }}</td>
+                        <td>{{ contact.name }}</td>
+                        <td style="word-break: break-all;">{{ contact.email }}</td>
+                        <td>{{ contact.state }}</td>
                         <td class="text-center">
-                            <button class="btn btn-sm btn-primary" @click="cur_member_id = member.member_id" data-bs-toggle="modal" data-bs-target="#memberUpdateModal">
+                            <router-link to="{ name: 'adminContact', params: {contact_id: contact.id} }" class="btn btn-sm btn-primary">
                                 管理
-                            </button>
-                            
-                            <button class="btn btn-sm btn-danger" @click="confirmDeleteMember(member.member_id)">
+                            </router-link>
+                            <button class="btn btn-sm btn-danger" @click="confirmDeleteContact(contact.contact_id)">
                                 刪除
                             </button>
                         </td>
@@ -34,31 +35,29 @@
 
         <ul class="pagination flex-wrap justify-content-center mb-4" v-if="total > 0">
             <li class="page-item mx-1 my-1" v-if="page != 1">
-                <router-link class="page-link rounded" :to="{name: 'adminMemberList', params: { page: page - 1 }}" aria-label="Previous">
+                <router-link class="page-link rounded" :to="{ name: 'adminContactList', params: { page: page - 1 } }" aria-label="Previous">
                     上一頁
                 </router-link>
             </li>
 
             <li class="page-item mx-1 my-1" :class="{ active: (cur_page_num == page) }" v-for="cur_page_num in page_num" :key="cur_page_num">
-                <router-link class="page-link rounded" :to="{name: 'adminMemberList', params: { page: cur_page_num }}">
+                <router-link class="page-link rounded" :to="{ name: 'adminContactList', params: { page: cur_page_num } }">
                     {{ cur_page_num }}
                 </router-link>
             </li>
 
             <li class="page-item mx-1 my-1" v-if="page != page_num">
-                <router-link class="page-link rounded" :to="{name: 'adminMemberList', params: { page: page + 1 }}" aria-label="Next">
+                <router-link class="page-link rounded" :to="{ name: 'adminContactList', params: { page: page + 1 } }" aria-label="Next">
                     下一頁
                 </router-link>
             </li>
         </ul>
-
-        <admin-member-update-modal id="memberUpdateModal" :modal-id="'memberUpdateModal'" :member-id="cur_member_id"></admin-member-update-modal>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'MemberList',
+        name: 'ContactList',
         computed: {
             page() {
                 let new_page = this.$route.params.page;
@@ -73,27 +72,26 @@
         },
         watch: {
             page(new_page, old_page) {
-                this.getMembers();
+                this.getContacts();
             }
         },
         data() {
             return {
-                members: [],
+                contacts: [],
                 total: 0,
-                limit: 15,
-                cur_member_id: ''
+                limit: 15
             }
         },
         mounted() {
-            this.getMembers();
+            this.getContacts();
         },
         methods: {
-            async getMembers() {
+            async getContacts() {
                 const vm = this;
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.get('/admin/members', {
+                await axios.get('/admin/contact', {
                     params: { 
                         page: vm.page,
                         limit: vm.limit
@@ -102,7 +100,7 @@
                 })
                 .then(function (response) {
                     // console.log(response);
-                    vm.members = response.data.members;
+                    vm.contacts = response.data.contacts;
                     vm.total = response.data.total;
                 })
                 .catch(function(error) {
@@ -111,7 +109,7 @@
 
                 vm.$store.commit('admin_setting/hideLoading');
             },
-            confirmDeleteMember(member_id) {
+            confirmDeleteContact(contact_id) {
                 const vm = this;
 
                 Swal.fire({
@@ -122,16 +120,16 @@
                     confirmButtonText: '確定',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        vm.deleteMember(member_id);
+                        vm.deleteContact(contact_id);
                     } 
                 })
             },
-            async deleteMember(member_id) {
+            async deleteContact(contact_id) {
                 const vm = this;
 
                 vm.$store.commit('admin_setting/showLoading');
 
-                await axios.delete('/admin/members/' + member_id, {
+                await axios.delete('/admin/contact/' + contact_id, {
                     headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {

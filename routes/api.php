@@ -11,7 +11,7 @@ use App\Http\Controllers\Admin\HeadImgController as AdminHeadImgController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-// use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 
 // 前台
 use App\Http\Controllers\Frontend\WebController as WebController;
@@ -87,6 +87,11 @@ Route::prefix('admin')->group(function() {
         Route::get('/orders/{id}', [AdminOrderController::class, 'getItem']);
         Route::put('/orders/{id}', [AdminOrderController::class, 'updateItem']);
         Route::delete('/orders/{id}', [AdminOrderController::class, 'deleteItem']);
+
+        Route::get('/contact', [AdminContactController::class, 'getItems']);
+        Route::get('/contact/{id}', [AdminContactController::class, 'getItem']);
+        Route::put('/contact/{id}', [AdminContactController::class, 'updateItem']);
+        Route::delete('/contact/{id}', [AdminContactController::class, 'deleteItem']);
 
         // ckeditor 上傳圖片 api
         Route::post('/editor/upload', [AdminEditorController::class, 'upload']);

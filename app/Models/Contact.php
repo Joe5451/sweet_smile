@@ -12,6 +12,10 @@ class Contact extends Model
     protected $table = 'contact';
     // public $timestamps = false; // 不存在 created_at 和 updated_at
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
     const PENDING = '未處理';
     const PROCESSING = '處理中';
     const SOLVED = '已處理';
@@ -28,5 +32,7 @@ class Contact extends Model
         'email',
         'phone',
         'content',
+        'remark',
+        'state'
     ];
 }

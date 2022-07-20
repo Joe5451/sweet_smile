@@ -42,6 +42,8 @@ import AdminNewsAddEdit from '../views/admin/NewsAddEdit.vue';
 import AdminNewsUpdateEdit from '../views/admin/NewsUpdateEdit.vue';
 import AdminOrderList from '../views/admin/OrderList.vue';
 import AdminOrderUpdateEdit from '../views/admin/OrderUpdateEdit.vue';
+import AdminContactList from '../views/admin/ContactList.vue';
+// import AdminContactUpdateEdit from '../views/admin/ContactUpdateEdit.vue';
 
 Vue.use(Router);
 
@@ -274,7 +276,17 @@ export default new Router({
                     path: 'order/update/:order_id',
                     name: 'adminOrderUpdate',
                     component: AdminOrderUpdateEdit,
-                }
+                },
+                {
+                    path: 'contact/list/:page?',
+                    name: 'adminContactList',
+                    component: AdminContactList,
+                },
+                // {
+                //     path: 'contact/update/:contact_id',
+                //     name: 'adminContactUpdate',
+                //     component: AdminContactUpdateEdit,
+                // }
             ]
         },
     ],

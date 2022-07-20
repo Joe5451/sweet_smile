@@ -40,6 +40,8 @@ import AdminProductUpdateEdit from '../views/admin/ProductUpdateEdit.vue';
 import AdminNewsList from '../views/admin/NewsList.vue';
 import AdminNewsAddEdit from '../views/admin/NewsAddEdit.vue';
 import AdminNewsUpdateEdit from '../views/admin/NewsUpdateEdit.vue';
+import AdminOrderList from '../views/admin/OrderList.vue';
+// import AdminOrderUpdateEdit from '../views/admin/OrderUpdateEdit.vue';
 
 Vue.use(Router);
 
@@ -262,7 +264,17 @@ export default new Router({
                     path: 'product/category_update/:product_category_id',
                     name: 'adminProductCategoryUpdate',
                     component: AdminProductCategoryUpdateEdit,
-                }
+                },
+                {
+                    path: 'order/list/:page?',
+                    name: 'adminOrderList',
+                    component: AdminOrderList,
+                },
+                // {
+                //     path: 'order/update/:order_id',
+                //     name: 'adminOrderUpdate',
+                //     component: AdminOrderUpdateEdit,
+                // }
             ]
         },
     ],

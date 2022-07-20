@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="admin_nav_item">
-                <router-link class="admin_nav_link" :to="{name: 'adminHeadImgList'}">訂單管理</router-link>
+                <router-link class="admin_nav_link" :to="{name: 'adminOrderList'}">訂單管理</router-link>
             </div>
         </nav>
     </div>

@@ -10,12 +10,12 @@ use App\Http\Controllers\Admin\HomeSliderController as AdminHomeSliderController
 use App\Http\Controllers\Admin\HeadImgController as AdminHeadImgController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\EditorController as AdminEditorController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 // 前台
 use App\Http\Controllers\Frontend\WebController as WebController;
 use App\Http\Controllers\Frontend\HomeSliderController as HomeSliderController;
 use App\Http\Controllers\Frontend\MemberController as MemberController;
-
 use App\Http\Controllers\Frontend\NewsController as NewsController;
 use App\Http\Controllers\Frontend\ProductController as ProductController;
 use App\Http\Controllers\Frontend\CartController as CartController;
@@ -80,7 +80,11 @@ Route::prefix('admin')->group(function() {
     
         Route::get('/about', [AdminPageController::class, 'getAbout']);
         Route::put('/about', [AdminPageController::class, 'updateAbout']);
-    
+
+        Route::get('/orders', [AdminOrderController::class, 'getItems']);
+        // Route::get('/orders/{id}', [AdminOrderController::class, 'getItem']);
+        // Route::put('/orders/{id}', [AdminOrderController::class, 'updateItem']);
+
         // ckeditor 上傳圖片 api
         Route::post('/editor/upload', [AdminEditorController::class, 'upload']);
     });    

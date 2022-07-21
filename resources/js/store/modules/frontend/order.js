@@ -27,7 +27,7 @@ export default {
                     context.state.total = response.data.total;
                     context.state.orders = response.data.orders;
                 } else if (response.data.status == 'token_invalid') {
-                    context.dispatch('clearCart');
+                    vm.dispatch('cart/clearCart');
                     vm.dispatch('member/clearMemberData');
                     vm.dispatch('app/alertMessage', {title: '登入逾時，請重新登入會員', path: {name: 'memberLogin'}});
                 }
@@ -53,7 +53,7 @@ export default {
                 } else if (response.data.status == 'fail') {
                     vm.dispatch('app/alertMessage', {title: response.data.message});
                 } else if (response.data.status == 'token_invalid') {
-                    context.dispatch('clearCart');
+                    vm.dispatch('cart/clearCart');
                     vm.dispatch('member/clearMemberData');
                     vm.dispatch('app/alertMessage', {title: '登入逾時，請重新登入會員', path: {name: 'memberLogin'}});
                 }

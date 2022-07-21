@@ -11,10 +11,7 @@ class Member extends Model
 
     protected $table = 'member';
     protected $primaryKey = 'member_id';
-
-    protected $casts = [
-        'created_at' => 'datetime:Y-m-d H:i:s',
-    ];
+    public $timestamps = false; // 不存在 created_at 和 updated_at
     
     const DISABLED = 'disabled';
     const ENABLED = 'enabled';
@@ -34,5 +31,6 @@ class Member extends Model
         'remark',
         'token',
         'token_expires_in',
+        'datetime',
     ];
 }

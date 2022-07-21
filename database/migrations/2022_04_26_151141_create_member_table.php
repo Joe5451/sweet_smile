@@ -26,7 +26,8 @@ class CreateMemberTable extends Migration
             $table->mediumText('remark')->nullable()->comment('管理員備註');
             $table->string('token', 255)->nullable()->comment('登入 token');
             $table->dateTime('token_expires_in')->nullable()->comment('token 到期時間');
-            $table->timestamps(); // 建立 created_at 和 updated_at
+            $table->dateTime('datetime', 0)->useCurrent()->comment('加入時間'); // useCurrent() 使用 CURRENT_TIMESTAMP 作為預設值
+            // $table->timestamps(); // 建立 created_at 和 updated_at
         });
     }
 

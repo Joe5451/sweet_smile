@@ -15,7 +15,7 @@
 
                     <tr v-for="(member, index) in members" :key="member.member_id">
                         <td class="text-end">{{ index + start_index }}</td>
-                        <td>{{ member.created_at }}</td>
+                        <td>{{ member.datetime }}</td>
                         <td>{{ member.name }}</td>
                         <td>{{ member.email }}</td>
                         <td class="text-center">
@@ -101,7 +101,7 @@
                     headers: { 'Authorization': 'Bearer ' + vm.$store.state.admin_user.access_token }
                 })
                 .then(function (response) {
-                    // console.log(response);
+                    console.log(response);
                     vm.members = response.data.members;
                     vm.total = response.data.total;
                 })

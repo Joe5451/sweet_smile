@@ -53,17 +53,17 @@ class MemberController extends Controller
         $limit = (int) $request->query('limit', 15);
         $offset = ($page - 1) * $limit;
 
-        $members = Member::orderBy('created_at', 'desc')
+        $members = Member::orderBy('datetime', 'desc')
         ->orderBy('member_id', 'desc')
-        ->select(['member_id', 'name', 'email', 'created_at'])
+        ->select(['member_id', 'name', 'email', 'datetime'])
         ->offset($offset)
         ->limit($limit)
         ->get();
 
         $total = Member::count();
 
-        // $members = Member::orderBy('created_at', 'desc')
-        // ->select(['member_id', 'name', 'email', 'created_at'])
+        // $members = Member::orderBy('datetime', 'desc')
+        // ->select(['member_id', 'name', 'email', 'datetime'])
         // ->paginate($limit)
         // ->withQueryString(); // widthQueryString() 必需接在 paginate，表示其他的查詢參數也會保留在連結中
 
@@ -76,7 +76,7 @@ class MemberController extends Controller
     }
 
     public function getMember($id, Request $request) {
-        $member = Member::select(['member_id', 'name', 'email', 'mobile', 'created_at'])
+        $member = Member::select(['member_id', 'name', 'email', 'mobile', 'datetime'])
         ->find($id);
 
         return response()->json([

@@ -16,9 +16,9 @@ export default {
             const now = new Date();
 
             if (token == '' || expires_in_cookie == '' || now.getTime() > expires_in.getTime()) {
-                console.log(token, expires_in_cookie);
-                
+                // console.log(token, expires_in_cookie);
                 context.dispatch('clearMemberData');
+                vm.dispatch('cart/updateCartQty');
             } else {
                 await axios.get('/members', {
                     params: {

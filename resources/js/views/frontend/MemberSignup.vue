@@ -102,7 +102,7 @@ export default {
                 password: vm.password,
             })
             .then(function (response) {
-                console.log(response);
+                // console.log(response);
 
                 if (response.data.status == 'success') {
                     Swal.fire({

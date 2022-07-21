@@ -3,9 +3,9 @@
         <div class="container pb-4">
             <div class="footer_inner_container">
                 <div class="footer_logo_and_link_container">
-                    <a href="#" class="footer_logo">
+                    <router-link :to="{name: 'home'}">
                         <img src="img/logo_w.svg" class="footer_logo_img">
-                    </a>
+                    </router-link>
                     <div class="footer_social_link_container">
                         <a href="#" class="footer_social_link">
                             <i class="fab fa-facebook"></i>

@@ -3,6 +3,7 @@ export default {
     state: {
         home_slider: [],
         news: [],
+        products: [],
     },
     actions: {
         getHomeSlider(context) {
@@ -29,6 +30,23 @@ export default {
             .then(function (response) {
                 // console.log(response);
                 context.state.news = response.data.news;
+            })
+            .catch(function(error) {
+                console.error("Error: ", error);
+            });
+        },
+        getHomeProducts(context) {
+            context.state.products = [];
+
+            axios.get('/products', {
+                params: { 
+                    page: 1,
+                    limit: 8
+                }
+            })
+            .then(function (response) {
+                // console.log(response);
+                context.state.products = response.data.products;
             })
             .catch(function(error) {
                 console.error("Error: ", error);

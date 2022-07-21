@@ -51,7 +51,7 @@ export default {
                 password
             })
             .then(function (response) {
-                console.log(response);
+                // console.log(response);
                 let data = response.data;
 
                 if (data.status == 'success') {

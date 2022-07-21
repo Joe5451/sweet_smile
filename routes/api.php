@@ -111,6 +111,7 @@ Route::get('/news/{id}', [NewsController::class, 'getItem']);
 
 Route::get('/product_categories', [ProductController::class, 'getCategories']);
 Route::get('/subcategory_products/{subcategory_id}', [ProductController::class, 'getSubcategoryProducts']);
+Route::get('/products', [ProductController::class, 'getItems']);
 Route::get('/products/{id}', [ProductController::class, 'getItem']);
 
 Route::post('/members', [MemberController::class, 'add']);

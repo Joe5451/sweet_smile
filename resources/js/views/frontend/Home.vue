@@ -56,84 +56,20 @@
 
                 <div class="home_product_swiper swiper">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <a href="product.php" class="product_card">
+                        <div class="swiper-slide" v-for="product in products" :key="product.id">
+                            <router-link class="product_card" :to="{name: 'product', params: { product_id: product.id } }">
                                 <div class="product_card_img_wrap">
-                                    <img src="img/banner1.jpg" class="product_card_img">
+                                    <img :src="product.product_cover_img" class="product_card_img">
                                 </div>
                                 <div class="product_card_body">
-                                    <div class="product_card_title">1.精選甜點禮盒(精選馬卡龍7份+斯里蘭卡紅茶500ml)</div>
+                                    <div class="product_card_title">{{ product.product_name }}</div>
                                     <div class="product_card_price_wrap">
-                                        <div class="product_card_price del">$780</div>
-                                        <div class="product_card_price">$690</div>
+                                        <div class="product_card_price del" v-if="product.original_price">${{ product.original_price }}</div>
+                                        <div class="product_card_price">${{ product.price }}</div>
                                     </div>
                                     <button class="product_card_btn">加入購物車</button>
                                 </div>
-                            </a>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <a href="product.php" class="product_card">
-                                <div class="product_card_img_wrap">
-                                    <img src="img/banner1.jpg" class="product_card_img">
-                                </div>
-                                <div class="product_card_body">
-                                    <div class="product_card_title">2.精選甜點禮盒(精選馬卡龍7份+斯里蘭卡紅茶500ml)</div>
-                                    <div class="product_card_price_wrap">
-                                        <div class="product_card_price del">$780</div>
-                                        <div class="product_card_price">$690</div>
-                                    </div>
-                                    <button class="product_card_btn">加入購物車</button>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <a href="product.php" class="product_card">
-                                <div class="product_card_img_wrap">
-                                    <img src="img/banner1.jpg" class="product_card_img">
-                                </div>
-                                <div class="product_card_body">
-                                    <div class="product_card_title">3.精選甜點禮盒(精選馬卡龍7份+斯里蘭卡紅茶500ml)</div>
-                                    <div class="product_card_price_wrap">
-                                        <div class="product_card_price del">$780</div>
-                                        <div class="product_card_price">$690</div>
-                                    </div>
-                                    <button class="product_card_btn">加入購物車</button>
-                                </div>
-                            </a>
-                        </div>
-                        
-                        <div class="swiper-slide">
-                            <a href="product.php" class="product_card">
-                                <div class="product_card_img_wrap">
-                                    <img src="img/banner1.jpg" class="product_card_img">
-                                </div>
-                                <div class="product_card_body">
-                                    <div class="product_card_title">4.精選甜點禮盒(精選馬卡龍7份+斯里蘭卡紅茶500ml)</div>
-                                    <div class="product_card_price_wrap">
-                                        <div class="product_card_price del">$780</div>
-                                        <div class="product_card_price">$690</div>
-                                    </div>
-                                    <button class="product_card_btn">加入購物車</button>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="swiper-slide">
-                            <a href="product.php" class="product_card">
-                                <div class="product_card_img_wrap">
-                                    <img src="img/banner1.jpg" class="product_card_img">
-                                </div>
-                                <div class="product_card_body">
-                                    <div class="product_card_title">5.精選甜點禮盒(精選馬卡龍7份+斯里蘭卡紅茶500ml)</div>
-                                    <div class="product_card_price_wrap">
-                                        <div class="product_card_price del">$780</div>
-                                        <div class="product_card_price">$690</div>
-                                    </div>
-                                    <button class="product_card_btn">加入購物車</button>
-                                </div>
-                            </a>
+                            </router-link>
                         </div>
                     </div>
 
@@ -149,7 +85,7 @@
 
                 <div class="row">
                     <div class="col-md-6" v-for="new_data in news" :key="new_data.id">
-                        <router-link class="news_list" :to="{name: 'news', params: { news_id: new_data.id }}">
+                        <router-link class="news_list" :to="{ name: 'news', params: { news_id: new_data.id } }">
                             <div class="news_list_img_wrap">
                                 <img :src="new_data.cover_img" class="news_list_img">
                             </div>
@@ -212,6 +148,9 @@
             news() {
                 return this.$store.state.home.news;
             },
+            products() {
+                return this.$store.state.home.products;
+            },
             product_categories() {
                 return this.$store.state.app.product_categories;
             },
@@ -241,6 +180,7 @@
 
             vm.$store.dispatch('home/getHomeSlider');
             vm.$store.dispatch('home/getHomeNews');
+            vm.$store.dispatch('home/getHomeProducts');
 
             vm.home_swiper =  new Swiper('.home_swiper', {
                 loop: true,

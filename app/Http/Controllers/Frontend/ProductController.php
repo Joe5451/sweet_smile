@@ -55,6 +55,27 @@ class ProductController extends Controller
         ]);
     }
 
+    public function getItems(Request $request) {
+        $page = (int) $request->query('page', 1);
+        $limit = (int) $request->query('limit', 15);
+        $offset = ($page - 1) * $limit;
+
+        $products = Product::orderBy('created_at', 'desc')
+        ->orderBy('id', 'desc')
+        ->select(['id', 'product_name', 'product_cover_img', 'price', 'original_price'])
+        ->where('display', 1)
+        ->offset($offset)
+        ->limit($limit)
+        ->get();
+
+        $total = Product::count();
+        
+        return response()->json([
+            'products' => $products,
+            'total' => $total,
+        ]);
+    }
+
     public function getItem($id, Request $request) {
         $product = Product::where('display', 1)->find($id);
 

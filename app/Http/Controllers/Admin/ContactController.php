@@ -20,6 +20,11 @@ class ContactController extends Controller
         ->limit($limit)
         ->get();
 
+        $contacts->each(function ($contact) {
+            $contact->state = Contact::process_states[$contact->state];
+            $contact->datetime = date('Y-m-d H:i:s', strtotime($contact->created_at));
+        });
+
         $total = Contact::count();
         
         return response()->json([
@@ -38,11 +43,11 @@ class ContactController extends Controller
             ]);
         }
 
-        // $contact->datetime = date('Y-m-d H:i:s', strtotime($contact->created_at));
+        $contact->datetime = date('Y-m-d H:i:s', strtotime($contact->created_at));
 
         return response()->json([
             'status' => 'success',
-            'order' => $contact
+            'contact' => $contact
         ]);
     }
 
@@ -51,12 +56,12 @@ class ContactController extends Controller
 
         $validator = Validator::make($data,
         [
-            'order_state' => 'required|numeric',
-            'order_remark' => 'nullable|string',
+            'state' => 'required|numeric',
+            'remark' => 'nullable|string',
         ]);
 
         if (!$validator->fails()) {
-            Contact::where('id', $id)->update($data);
+            Contact::find($id)->update($data);
 
             return response()->json([
                 'status' => 'success',
@@ -72,7 +77,7 @@ class ContactController extends Controller
     }
 
     public function deleteItem($id, Request $request) {
-        Contact::where('id', $id)->delete();
+        Contact::find($id)->delete();
 
         return response()->json([
             'status' => 'success',

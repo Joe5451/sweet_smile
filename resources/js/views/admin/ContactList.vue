@@ -16,15 +16,17 @@
 
                     <tr v-for="(contact, index) in contacts" :key="contact.id">
                         <td class="text-end">{{ index + start_index }}</td>
-                        <td>{{ contact.created_at }}</td>
+                        <td>{{ contact.datetime }}</td>
                         <td>{{ contact.name }}</td>
                         <td style="word-break: break-all;">{{ contact.email }}</td>
-                        <td>{{ contact.state }}</td>
+                        <td class="text-center" :class="get_state_color(contact.state)">
+                            {{ contact.state }}
+                        </td>
                         <td class="text-center">
-                            <router-link to="{ name: 'adminContact', params: {contact_id: contact.id} }" class="btn btn-sm btn-primary">
+                            <router-link :to="{ name: 'adminContactUpdate', params: {contact_id: contact.id} }" class="btn btn-sm btn-primary">
                                 管理
                             </router-link>
-                            <button class="btn btn-sm btn-danger" @click="confirmDeleteContact(contact.contact_id)">
+                            <button class="btn btn-sm btn-danger" @click="confirmDeleteContact(contact.id)">
                                 刪除
                             </button>
                         </td>
@@ -108,6 +110,12 @@
                 });
 
                 vm.$store.commit('admin_setting/hideLoading');
+            },
+            get_state_color(state) {
+                if (state == '未處理') return { 'text-danger': true };
+                else if (state == '處理中') return { 'text-warning': true };
+                else if (state == '已處理') return { 'text-primary': true };
+                else return { 'text-black': true };
             },
             confirmDeleteContact(contact_id) {
                 const vm = this;

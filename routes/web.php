@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('app');
+});
+
+Route::get('/test', function () {
+    $datetime = date('Y-m-d H:i:s');
+    $carbon_datetime = new Carbon($datetime);
+
+    echo $datetime . '<br>';
+    echo $carbon_datetime;
 });

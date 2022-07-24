@@ -6,7 +6,7 @@ export default {
         sidebar_show: true,
         ckeditor_config: {
             simpleUpload: { // 圖片、檔案上傳設定
-                uploadUrl: 'http://127.0.0.1/sweet_smile/public/api/admin/editor/upload',
+                // uploadUrl: 'http://127.0.0.1/sweet_smile/public/api/admin/editor/upload',
                 uploadUrl: process.env.MIX_API_BASE_URL + '/admin/editor/upload',
                 withCredentials: true, // Enable the XMLHttpRequest.withCredentials property.
                 headers: { // Headers sent along with the XMLHttpRequest to the upload server.

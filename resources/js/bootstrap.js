@@ -14,9 +14,7 @@ window.axios = require('axios');
 
 // axios 全域 defaults 設定
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-axios.defaults.baseURL = 'http://127.0.0.1/sweet_smile/public/api';
-// axios.defaults.baseURL = 'http://127.0.0.1/api';
+axios.defaults.baseURL = process.env.MIX_API_BASE_URL;
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

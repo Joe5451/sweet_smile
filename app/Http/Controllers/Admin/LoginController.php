@@ -8,19 +8,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\AdminToken;
 
 // JWT
+use App\Http\Controllers\Admin\JwtConfig as JwtConfig;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 class LoginController extends Controller
 {
-    var $jwt_key = '';
-    var $jwt_algo = 'HS256';
-
-    public function __construct()
-    {
-        $this->jwt_key = env('ADMIN_JWT_SECRET');
-    }
-
     public function login(Request $request)
     {
         $data = $request->input();
@@ -129,7 +122,7 @@ class LoginController extends Controller
 
     private function createToken($payload)
     {
-        $jwt = JWT::encode($payload, $this->jwt_key, $this->jwt_algo);
+        $jwt = JWT::encode($payload, JwtConfig::JWT_KEY, JwtConfig::JWT_ALGO);
 
         return $jwt;
     }

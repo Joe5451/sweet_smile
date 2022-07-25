@@ -29,6 +29,8 @@ export default {
             // });
 
             context.commit('setToken', {access_token: null, expires_in: null});
+            setCookie('admin_token', '', 0);
+            setCookie('admin_token_expires_in', '', 0);
         },
     },
     mutations: {

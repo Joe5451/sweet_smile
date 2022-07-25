@@ -124,6 +124,7 @@ export default new Router({
                 {
                     path: 'member',
                     component: Member,
+                    meta: { requireMemberAuth: true},
                     beforeEnter: (to, from, next) => {
                         let login_state = store.state.member.login_state;
                         // let token = getCookie('member_token');
@@ -176,6 +177,24 @@ export default new Router({
             name: 'admin',
             component: AdminDashboard,
             meta: { requireAdminAuth: true},
+            beforeEnter: (to, from, next) => {
+                let expires_in_cookie = getCookie('admin_token_expires_in');
+                let expires_in = new Date(expires_in_cookie);
+                let now = new Date();
+
+                if (expires_in_cookie == '' || expires_in.getTime() < now.getTime()) {
+                    console.warn('管理員 token 過期')
+                    store.dispatch('admin_user/logout');
+
+                    Qmsg.error('請重新登入', {
+                        onClose() {
+                            next({name: 'adminLogin'});
+                        }
+                    });
+                } else {
+                    next();
+                }
+            },
             children: [
                 {
                     path: 'welcome',

@@ -57,6 +57,8 @@ const app = new Vue({
 
 router.beforeEach(async (to, from, next) => {
     const frontend_route = to.matched.some(record => (record.name == 'frontend'));
+    const require_member_auth = to.matched.some(record => record.meta.requireMemberAuth);
+    const require_admin_auth = to.matched.some(record => record.meta.requireAdminAuth);
 
     if (frontend_route) {
         $('.header_nav_mobile').hide();
@@ -64,36 +66,40 @@ router.beforeEach(async (to, from, next) => {
         
         store.dispatch('app/getProductCategories');
     }
-    
-    next();
-});
 
+    if (require_member_auth) {
+        let login_state = store.state.member.login_state;
+        // let token = getCookie('member_token');
+        let expires_in_cookie = getCookie('token_expires_in');
+        let expires_in = new Date(expires_in_cookie);
+        let now = new Date();
 
+        if (login_state != 1 || expires_in_cookie == '' || expires_in.getTime() < now.getTime()) {
+            console.warn('會員驗證不通過')
+            store.dispatch('member/clearMemberData', 0);
+            next({name: 'memberLogin'});
+            store.dispatch('app/alertMessage', {title: '請登入會員'});
+        } else {
+            next();
+        }
+    } else if (require_admin_auth) {
+        let expires_in_cookie = getCookie('admin_token_expires_in');
+        let expires_in = new Date(expires_in_cookie);
+        let now = new Date();
 
-/*
-router.beforeEach(async (to, from, next) => {
-    const requireAdminAuth = to.matched.some(record => record.meta.requireAdminAuth);
+        if (expires_in_cookie == '' || expires_in.getTime() < now.getTime()) {
+            console.warn('管理員 token 過期')
+            store.dispatch('admin_user/logout');
 
-    if (requireAdminAuth) {
-        let token = store.state.admin_user.access_token;
-        
-        await axios.post('/admin/checkToken', {
-            token
-        }).then(function (response) {
-            // console.log(response);
-            
-            if (response.data.status == 'success') {
-                next();
-            } else if (response.data.status == 'fail') {
-                Qmsg.error('請重新登入', {
-                    onClose() {
-                        next({name: 'adminLogin'});
-                    }
-                });
-            }
-        });
+            Qmsg.error('請重新登入', {
+                onClose() {
+                    next({name: 'adminLogin'});
+                }
+            });
+        } else {
+            next();
+        }
     } else {
         next();
     }
-})
-*/
+});

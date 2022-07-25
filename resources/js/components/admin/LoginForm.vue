@@ -42,8 +42,11 @@
                     password
                 }).then(async function (response) {
                     // console.log(response);
+                    let data = response.data;
                     
                     if (response.data.status == 'success') {
+                        setCookieWithDateTime('admin_token', data.access_token, data.expires_in);
+                        setCookieWithDateTime('admin_token_expires_in', data.expires_in, data.expires_in);
 
                         await vm.$store.commit('admin_user/setToken', {
                             access_token: response.data.access_token,

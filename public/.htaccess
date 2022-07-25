@@ -4,6 +4,8 @@
     </IfModule>
 
     RewriteEngine On
+    # 自訂義
+    RewriteBase /
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
